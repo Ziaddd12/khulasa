@@ -636,6 +636,13 @@ textarea{resize:vertical}
 ::-webkit-scrollbar-thumb{background:#c4b5fd;border-radius:8px}
 ::-webkit-scrollbar-track{background:transparent}
 html.dark ::-webkit-scrollbar-thumb{background:#3730a3}
+/* ===== فلاش كاردز: كارت بقلبين (سؤال/إجابة) ===== */
+.fc-card{perspective:1400px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.fc-inner{position:relative;transition:transform .55s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d;min-height:150px}
+.fc-card.flipped .fc-inner{transform:rotateY(180deg)}
+.fc-face{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.fc-back{position:absolute;inset:0;transform:rotateY(180deg)}
+@media (max-width:640px){.fc-inner{min-height:180px}}
 </style>
 <style type="text/tailwindcss">
 @layer components {
@@ -678,7 +685,7 @@ html.dark ::-webkit-scrollbar-thumb{background:#3730a3}
         <p class="text-[11px] text-slate-500 dark:text-slate-400 font-semibold truncate">منصتك الذكية للتلخيص والاختبارات وتحويل الملفات</p>
       </div>
       <div class="flex-1"></div>
-      <span class="chip bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-300 hidden md:inline-flex">الإصدار 2.0</span>
+      <span class="chip bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-300 hidden md:inline-flex">الإصدار 2.2</span>
       <button id="theme-btn" type="button" title="تبديل الوضع الليلي/النهاري" class="btn btn-slate !px-3 !py-2.5 text-base leading-none">🌙</button>
     </div>
     <nav id="main-nav" class="flex items-center gap-1.5 overflow-x-auto pb-2 -mx-1 px-1" aria-label="أقسام المنصة">
@@ -688,6 +695,7 @@ html.dark ::-webkit-scrollbar-thumb{background:#3730a3}
       <button type="button" class="nav-btn" data-sec="sec4">📝 محرك الملخصات</button>
       <button type="button" class="nav-btn" data-sec="sec5">🎯 وضع الاختبارات</button>
       <button type="button" class="nav-btn" data-sec="sec6">⚡ المعالجة السحرية</button>
+      <button type="button" class="nav-btn" data-sec="sec8">📚 المحاضرات</button>
       <button type="button" class="nav-btn" data-sec="sec7">📤 التصدير والإنتاجية</button>
     </nav>
   </div>
@@ -719,6 +727,7 @@ html.dark ::-webkit-scrollbar-thumb{background:#3730a3}
       <p class="sec-sub">سجّل المحاضرة مباشرة أو ارفع ملفاً صوتياً أو صورة أو PDF — واحصل على نص مكتوب جاهز للتلخيص والاختبارات.</p>
     </div>
     <div class="save-bar">
+      <button type="button" class="btn btn-soft" data-save="sec1-paper">📄 ورقة تلخيص</button>
       <button type="button" class="btn btn-slate" data-save="sec1-txt">💾 حفظ TXT</button>
       <button type="button" class="btn btn-slate" data-save="sec1-word">📄 حفظ Word</button>
       <button type="button" class="btn btn-slate" data-copy="s1-text">📋 نسخ</button>
@@ -768,6 +777,7 @@ html.dark ::-webkit-scrollbar-thumb{background:#3730a3}
       <p class="sec-sub">ارفع ملف PDF لاستعراضه واستخراج نصوصه بالكامل — أو استخدم الصور (OCR) والنصوص المباشرة.</p>
     </div>
     <div class="save-bar">
+      <button type="button" class="btn btn-soft" data-save="sec2-paper">📄 ورقة تلخيص</button>
       <button type="button" class="btn btn-slate" data-save="sec2-txt">💾 حفظ TXT</button>
       <button type="button" class="btn btn-slate" data-save="sec2-word">📄 حفظ Word</button>
       <button type="button" class="btn btn-slate" data-copy="s2-text">📋 نسخ</button>
@@ -799,6 +809,7 @@ html.dark ::-webkit-scrollbar-thumb{background:#3730a3}
       <div class="flex flex-wrap gap-2 mt-4">
         <button type="button" class="btn btn-primary" data-send="s2-text:sec4">📝 إرسال إلى محرك الملخصات</button>
         <button type="button" class="btn btn-emerald" data-send="s2-text:sec5">🎯 إرسال إلى وضع الاختبارات</button>
+        <button type="button" class="btn btn-outline" id="s2-fixdir" title="لو الحروف نازلة مقلوبة أو الكلمات متلخبطة جرّب الزر ده — كل ضغطة تجربة إصلاح مختلفة">🔄 إصلاح اتجاه الحروف</button>
         <button type="button" class="btn btn-outline" data-clear="s2-text">🗑️ مسح</button>
       </div>
     </div>
@@ -962,6 +973,7 @@ html.dark ::-webkit-scrollbar-thumb{background:#3730a3}
       <p class="sec-sub">ارفع PDF أو صورة أو الصق نصاً — ثم اختر مستوى التلخيص وولّد الخريطة الذهنية.</p>
     </div>
     <div class="save-bar">
+      <button type="button" class="btn btn-soft" data-save="sec4-paper">📄 ورقة تلخيص</button>
       <button type="button" class="btn btn-soft" data-save="sec4-img">🖼️ الملخص صورة</button>
       <button type="button" class="btn btn-slate" data-save="sec4-pdf">📕 حفظ PDF</button>
       <button type="button" class="btn btn-slate" data-save="sec4-word">📄 حفظ Word</button>
@@ -1014,7 +1026,7 @@ html.dark ::-webkit-scrollbar-thumb{background:#3730a3}
 
       <div class="card">
         <div class="flex items-center justify-between flex-wrap gap-2 mb-3">
-          <h3 class="font-black flex items-center gap-2">🧠 الخريطة الذهنية</h3>
+          <h3 class="font-black flex items-center gap-2">🧠 الخريطة الذهنية <span id="s4-map-stats" class="label-mini font-normal"></span></h3>
           <div class="flex items-center gap-2">
             <div class="flex gap-1.5" id="s4-map-styles">
               <button type="button" class="tab-btn active" data-map="tree">🌳 شجرة</button>
@@ -1023,9 +1035,25 @@ html.dark ::-webkit-scrollbar-thumb{background:#3730a3}
             <button id="s4-map-dl" type="button" class="btn btn-soft" disabled>🖼️ تحميل PNG</button>
           </div>
         </div>
-        <div id="s4-map" class="min-h-[200px]">
+        <p class="text-[11px] text-slate-400 dark:text-slate-500 -mt-2 mb-2">🧠 الخريطة بتعرض <b>كل جُمل الملخص كاملة بدون أي اختصار</b> موزّعة على الفروع — على الموبايل اسحب جنب للمحتوى اللي على الشمال، ومزّر لتحت لكل الجُمل، وحمّلها PNG بجودة كاملة.</p>
+        <div id="s4-map" class="min-h-[200px] max-h-[640px] overflow-y-auto pe-1">
           <div class="text-sm text-slate-400 dark:text-slate-500 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-8 text-center">الخريطة الذهنية تُولَّد تلقائياً مع الملخص</div>
         </div>
+      </div>
+
+      <div class="card">
+        <div class="flex items-center justify-between flex-wrap gap-2 mb-2">
+          <h3 class="font-black flex items-center gap-2">🎯 فلاش كاردز للمراجعة</h3>
+          <div class="flex gap-2">
+            <button id="s4-fc-dl" type="button" class="btn btn-soft" disabled>📕 PDF</button>
+            <button id="s4-fc-print" type="button" class="btn btn-slate" disabled>🖨️ طباعة</button>
+          </div>
+        </div>
+        <p class="text-[11px] text-slate-400 dark:text-slate-500 mb-3">كروت مراجعة بتتولد من المحتوى تلقائياً (تعريفات + أكمل الفراغ): السؤال في الوش — اضغط على الكارت يشقلب ويوريك الإجابة، علّم ✅ عرفتها أو ❌ راجعها لحد ما تخلص الكل.</p>
+        <div id="s4-fc" class="min-h-[120px]">
+          <div class="text-sm text-slate-400 dark:text-slate-500 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-8 text-center">اضغط «اعمل فلاش كاردز» — هنبني كروت سؤال/إجابة من المحتوى تلقائياً</div>
+        </div>
+        <button id="s4-fc-gen" type="button" class="btn btn-primary w-full mt-3">⚡ اعمل فلاش كاردز من المحتوى</button>
       </div>
     </div>
   </div>
@@ -1181,6 +1209,33 @@ html.dark ::-webkit-scrollbar-thumb{background:#3730a3}
   </div>
 </section>
 
+<!-- ==================== القسم 8: مكتبة المحاضرات ==================== -->
+<section id="sec8" class="app-section hidden mx-auto max-w-7xl px-4 py-6">
+  <div class="flex items-start justify-between flex-wrap gap-3 mb-5">
+    <div>
+      <h2 class="sec-head">📚 مكتبة المحاضرات</h2>
+      <p class="sec-sub">كل محاضرة ترفعها في أي قسم من المنصة تُحفظ هنا تلقائياً مع <b>الملف الأصلي نفسه</b> (PDF / صورة / تسجيل صوتي) — راجعها وشغّل الصوت ونزّل الملف في أي وقت، ولخّصها أو اعمل منها ورقة تلخيص أو اختبار أو خريطة ذهنية بضغطة.</p>
+    </div>
+    <span id="lec-count" class="chip bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-300"></span>
+  </div>
+
+  <div class="card mb-5" data-uploader='{"key":"lec","modes":["pdf","image","audio","text"],"target":"lec-inbox"}'></div>
+  <textarea id="lec-inbox" class="hidden" aria-hidden="true" tabindex="-1"></textarea>
+
+  <div class="card mb-5">
+    <div class="flex items-center gap-3 flex-wrap">
+      <input type="text" id="lec-search" class="field flex-1 min-w-[220px]" placeholder="🔍 ابحث في محاضراتك بالاسم...">
+      <button type="button" id="lec-refresh" class="btn btn-slate">🔄 تحديث</button>
+    </div>
+  </div>
+
+  <div id="lec-grid" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+
+  <div class="card bg-gradient-to-l from-indigo-600 to-violet-600 dark:from-indigo-700 dark:to-violet-700 border-0 text-white !p-5 mt-5">
+    <p class="text-[13px] font-bold leading-relaxed">💡 المحاضرات محفوظة داخل متصفحك فقط (خصوصية كاملة وبدون سيرفر) — النص في الذاكرة السريعة والملف الأصلي في تخزين المتصفح الدائم (IndexedDB) فبيفضل موجود بعد قفل الصفحة. لو مسحت بيانات المتصفح هتتمسح كل حاجة — صدّر نسخة احتياطية من قسم «التصدير والإنتاجية» كل فترة.</p>
+  </div>
+</section>
+
 <!-- ==================== القسم 7: التصدير والإنتاجية ==================== -->
 <section id="sec7" class="app-section hidden mx-auto max-w-7xl px-4 py-6">
   <div class="flex items-start justify-between flex-wrap gap-3 mb-5">
@@ -1298,7 +1353,7 @@ html.dark ::-webkit-scrollbar-thumb{background:#3730a3}
         <p class="text-[13px] font-bold">تصميم وتطوير: <span class="text-indigo-500">Ziad Ashraf</span> (زياد أشرف)</p>
         <a href="https://wa.me/201099713432" target="_blank" rel="noopener" class="text-[12px] font-bold text-emerald-600 dark:text-emerald-400 hover:underline">💬 واتساب: <bdi dir="ltr">+20 109 971 3432</bdi></a>
       </div>
-      <p class="text-[11px] text-slate-400 dark:text-slate-500">الإصدار 2.0 © 2026 — جميع الحقوق محفوظة</p>
+      <p class="text-[11px] text-slate-400 dark:text-slate-500">الإصدار 2.1 © 2026 — جميع الحقوق محفوظة</p>
     </div>
   </div>
 </footer>
@@ -1365,6 +1420,51 @@ function lsGet(k, raw) {
   } catch (e) { return null; }
 }
 function lsDel(k) { try { localStorage.removeItem(LS_PREFIX + k); } catch (e) {} }
+
+/* ===== تخزين الملفات الأصلية (IndexedDB) =====
+   مكتبة المحاضرات لازم تحتفظ بالملف نفسه (PDF / صورة / تسجيل صوتي) مش النص بس،
+   والملفات كبيرة فلا تصلح لـ localStorage — نستخدم IndexedDB المتاحة في كل المتصفحات */
+let _idbP = null;
+function idbOpen() {
+  if (_idbP) return _idbP;
+  _idbP = new Promise(res => {
+    try {
+      const rq = indexedDB.open('khulasa_store', 1);
+      rq.onupgradeneeded = () => { try { rq.result.createObjectStore('files'); } catch (e) {} };
+      rq.onsuccess = () => res(rq.result);
+      rq.onerror = () => res(null);
+      rq.onblocked = () => res(null);
+    } catch (e) { res(null); }
+  });
+  return _idbP;
+}
+async function idbPut(key, val) {
+  const db = await idbOpen(); if (!db) return false;
+  return new Promise(res => {
+    try {
+      const tx = db.transaction('files', 'readwrite');
+      tx.objectStore('files').put(val, key);
+      tx.oncomplete = () => res(true);
+      tx.onerror = () => res(false);
+      tx.onabort = () => res(false);
+    } catch (e) { res(false); }
+  });
+}
+async function idbGet(key) {
+  const db = await idbOpen(); if (!db) return null;
+  return new Promise(res => {
+    try {
+      const tx = db.transaction('files', 'readonly');
+      const rq = tx.objectStore('files').get(key);
+      rq.onsuccess = () => res(rq.result || null);
+      rq.onerror = () => res(null);
+    } catch (e) { res(null); }
+  });
+}
+async function idbDel(key) {
+  const db = await idbOpen(); if (!db) return;
+  try { const tx = db.transaction('files', 'readwrite'); tx.objectStore('files').delete(key); } catch (e) {}
+}
 
 /* ===== التنزيل + مركز الحفظ (Save Hub) — الحل النهائي لمشكلة «مبيحفظش حاجة» =====
    بعض البيئات تمنع التنزيل البرمجي بصمت تاماً: معاينة مدمجة داخل موقع/تطبيق (iframe)،
@@ -1529,7 +1629,8 @@ function saveWordDoc(name, title, bodyHtml) {
 /* تحويل أي كانفاس جاهز إلى PDF متعدد الصفحات عبر jsPDF */
 function canvasToPdfPages(canvas, name) {
   const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF('p', 'mm', 'a4');
+  /* compress:true → ضغط Flate لبيانات الصفحات — نفس الجودة الحادة بحجم ملف منطقي */
+  const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4', compress: true });
   const pw = pdf.internal.pageSize.getWidth();
   const ph = pdf.internal.pageSize.getHeight();
   const pageHpx = Math.floor(canvas.width * ph / pw);
@@ -1540,31 +1641,77 @@ function canvasToPdfPages(canvas, name) {
     c2.width = canvas.width; c2.height = sliceH;
     c2.getContext('2d').drawImage(canvas, 0, y, canvas.width, sliceH, 0, 0, canvas.width, sliceH);
     if (!first) pdf.addPage();
-    pdf.addImage(c2.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, pw, sliceH * pw / canvas.width);
+    /* PNG بدون فقد = نص حاد واضح — الـ JPEG كان بيخلي الصفحات باهتة ومشوشة */
+    pdf.addImage(c2.toDataURL('image/png'), 'PNG', 0, 0, pw, sliceH * pw / canvas.width);
     first = false; y += sliceH;
   }
   downloadBlob(pdf.output('blob'), name + '.pdf');
   toast('تم حفظ الـ PDF ✓', 'success');
 }
-/* الطبقة 1: html2canvas — الأغنى بصرياً */
+/* ============ مرحلة التصدير الفاتحة (مصدر الـ PDF/الصورة النظيفة) ============
+   المشكلة القديمة: التصدير كان بيلقط العنصر وهو بلون الوضع الداكن (نص فاتح)
+   فوق خلفية بيضاء => نص باهت شبه مخفي + JPEG مضغوط => وحش.
+   الحل: نستنسخ العنصر خارج الشاشة في «ورقة» فاتحة دائماً، نشيل كل فئات
+   الوضع الداكن (dark:*)، ونضيف ترويسة وتذييل بالهوية — فالناتج حاد وجميل
+   في الوضعين فاتح/داكن. */
+function captureLightClone(el, title, opt) {
+  opt = opt || {};
+  const stage = document.createElement('div');
+  stage.setAttribute('dir', 'rtl');
+  stage.style.cssText = 'position:fixed;left:-99999px;top:0;width:' + (opt.width || 860) + 'px;background:#ffffff;color:#0f172a;font-family:Cairo,\'Segoe UI\',Tahoma,Arial,sans-serif;line-height:1.9;';
+  const head = document.createElement('div');
+  head.style.cssText = 'background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#ffffff;border-radius:16px;padding:20px 26px;margin-bottom:20px;';
+  head.innerHTML = '<div style="font-size:13px;font-weight:700;opacity:.88">منصة خُلاصة • ' + esc(new Date().toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' })) + '</div>' +
+    '<div style="font-size:23px;font-weight:900;margin-top:4px">' + esc(title || 'منصة خلاصة') + '</div>';
+  const clone = el.cloneNode(true);
+  clone.style.cssText += ';background:#ffffff;color:#0f172a;max-height:none;overflow:visible;';
+  /* شيل فئات الوضع الداكن من كل عنصر (بما فيها القيم العشوائية dark:bg-[#...]) */
+  (function strip(node) {
+    if (node.getAttribute) {
+      const cls = node.getAttribute('class');
+      if (cls) node.setAttribute('class', cls.replace(/(^|\s)dark:\S+/g, '$1').replace(/\s{2,}/g, ' ').trim());
+    }
+    const kids = node.childNodes || [];
+    for (let i = 0; i < kids.length; i++) strip(kids[i]);
+  })(clone);
+  /* ارفع تباين أي نص رمادي فاتح بقا بعد إزالة الوضع الداكن */
+  try {
+    clone.querySelectorAll('.text-slate-300,.text-slate-400,.text-slate-500').forEach(n => { n.style.color = '#475569'; });
+  } catch (e) {}
+  const foot = document.createElement('div');
+  foot.style.cssText = 'border-top:2px solid #e2e8f0;margin-top:24px;padding-top:12px;font-size:12.5px;font-weight:700;color:#64748b;display:flex;justify-content:space-between;align-items:center;';
+  foot.innerHTML = '<span>منصة خُلاصة (khulasa) — تطوير Ziad Ashraf</span><bdi dir="ltr">WhatsApp +20 109 971 3432</bdi>';
+  stage.appendChild(head); stage.appendChild(clone); stage.appendChild(foot);
+  document.body.appendChild(stage);
+  return stage;
+}
+async function h2cCapture(stage, targetScale) {
+  const w = Math.max(1, stage.offsetWidth || 860), h = Math.max(1, stage.scrollHeight || stage.offsetHeight || 1);
+  const fit = s => Math.min(s, Math.sqrt(14000000 / (w * h)), 4096 / Math.max(w, h));
+  const scales = [Math.max(0.6, Math.min(targetScale || 2.2, fit(targetScale || 2.2))), Math.max(0.6, Math.min(1.2, fit(1.2))), 0.6];
+  let lastErr = null;
+  for (const scale of scales) {
+    try {
+      const canvas = await html2canvas(stage, { scale: scale, backgroundColor: '#ffffff', useCORS: true, logging: false, windowWidth: Math.max(w, 900) });
+      if (canvas && canvas.width > 10 && canvas.height > 10) return canvas;
+      lastErr = new Error('empty canvas');
+    } catch (e) { lastErr = e; console.error('capture attempt scale=' + scale + ' failed:', e); }
+  }
+  throw lastErr || new Error('capture failed');
+}
+/* الطبقة 1: html2canvas على النسخة الفاتحة الماركة — الأغنى بصرياً وأوضح نص */
 async function saveElementAsPDF(el, name) {
   if (!el || !el.textContent.trim()) { toast('لا يوجد محتوى للحفظ', 'warn'); return; }
   toast('جارٍ تجهيز الـ PDF...', 'info');
   if (await ensureH2C()) {
-    /* حماية الجوال: الكانفاس الأضخم من ~16.7 مليون بكسل يفشل على iOS — مقاييس متكيفة مع إعادة المحاولة */
-    const rect = el.getBoundingClientRect();
-    const w = Math.max(1, Math.ceil(rect.width)), h = Math.max(1, Math.ceil(rect.height));
-    const fit = s => Math.min(s, Math.sqrt(14000000 / (w * h)), 4096 / Math.max(w, h));
-    const scales = [Math.max(0.5, Math.min(2, fit(2))), Math.max(0.5, Math.min(1, fit(1))), 0.5];
-    let lastErr = null;
-    for (const scale of scales) {
-      try {
-        const canvas = await html2canvas(el, { scale: scale, backgroundColor: '#ffffff', useCORS: true, logging: false });
-        canvasToPdfPages(canvas, name);
-        return;
-      } catch (e) { lastErr = e; console.error('export attempt scale=' + scale + ' failed:', e); }
-    }
-    console.error(lastErr);
+    let stage = null;
+    try {
+      stage = captureLightClone(el, name.replace(/^khulasa-/, ''));
+      const canvas = await h2cCapture(stage, 2.2);
+      canvasToPdfPages(canvas, name);
+      return;
+    } catch (e) { console.error('light-clone pdf failed:', e); }
+    finally { if (stage) stage.remove(); }
   }
   /* الطبقة 2: محرك الرسم الأصلي (كانفس + نص عربي منسوج بالمتصفح نفسه) — لا يحتاج html2canvas إطلاقاً */
   if (await ensureJsPdf()) {
@@ -1581,10 +1728,11 @@ async function saveElementAsPNG(el, name) {
   if (!el) return;
   try {
     if (!(await ensureH2C())) throw new Error('no-h2c');
-    const rect = el.getBoundingClientRect();
-    const w = Math.max(1, Math.ceil(rect.width)), h = Math.max(1, Math.ceil(rect.height));
-    const scale = Math.max(0.5, Math.min(2, Math.sqrt(14000000 / (w * h)), 4096 / Math.max(w, h)));
-    const canvas = await html2canvas(el, { scale: scale, backgroundColor: null, useCORS: true, logging: false });
+    /* نفس أسلوب الـ PDF: نسخة فاتحة بخلفية بيضاء — الصورة تطلع واضحة مش باهتة */
+    const stage = captureLightClone(el, name.replace(/^khulasa-/, ''), { width: 900 });
+    let canvas;
+    try { canvas = await h2cCapture(stage, 2); }
+    finally { stage.remove(); }
     canvas.toBlob(b => { if (b) downloadBlob(b, name + '.png'); toast('تم حفظ الصورة ✓', 'success'); });
   } catch (e) {
     console.error(e);
@@ -1743,18 +1891,123 @@ function setupPdfWorker() {
     }
   } catch (e) {}
 }
+/* ===== إعادة بناء نص الـ PDF بدقة: تجميع السطور + إدراج المسافات من الإحداثيات =====
+   المشكلة القديمة: نص PDF مخزّن كقطع صغيرة (أحياناً حرف-حرف) بدون مسافات، فتخرج الحروف
+   متلاصقة/متداخلة. الحل: نستخدم إحداثيات كل قطعة (x، y، العرض، الارتفاع) لنركّب السطر
+   ونضع المسافة في مكانها الصحيح، ونكشف العربي المخزّن «مقلوباً» ونصلحه تلقائياً. */
+function looksReversedArabic(line) {
+  const words = String(line || '').split(/\s+/).filter(w => /[\u0600-\u06FF]/.test(w));
+  if (words.length < 2) return false;
+  /* في العربي السليم: «ة/ى» لا تبدأ بها كلمة أبداً، و«ال» التعريف في أول الكلمة.
+     لو الاتجاه معكوس تظهر «ة» في أول الكلمات و«لا» في آخرها. */
+  const startsTa = words.filter(w => /^[ةى]/.test(w)).length;
+  const endsTa = words.filter(w => /[ةى]$/.test(w)).length;
+  const startsAl = words.filter(w => /^(ال|وال|بال|كال|فال|لل)/.test(w)).length;
+  const endsLa = words.filter(w => w.length >= 4 && /لا$/.test(w)).length;
+  return (startsTa >= 1 && startsTa >= endsTa) || (startsAl === 0 && endsLa >= 3);
+}
+function fixReversedArabicLine(line) {
+  return looksReversedArabic(line) ? String(line).split('').reverse().join('') : line;
+}
+function rebuildTextFromItems(items) {
+  const its = [];
+  for (const it of (items || [])) {
+    if (!it || typeof it.str !== 'string' || !it.str.trim()) continue;
+    /* إصلاح «الحروف الواخدة في بعض»: تطبيع NFKC بيفك أشكال العرض العربية
+       (ﺍ ﻟ ﻌ ﻤ … مخزّنة في كتير من ملفات PDF) لحروفها الأصلية المتصلة صح،
+       وبنحذف التطويل ـ — فالكلمات تظهر سليمة وقابلة للنسخ والبحث والتلخيص */
+    let s0 = it.str;
+    try { if (s0.normalize) s0 = s0.normalize('NFKC'); } catch (e) {}
+    s0 = s0.replace(/\u0640/g, '');
+    its.push({
+      s: s0,
+      x: it.transform ? it.transform[4] : 0,
+      y: it.transform ? it.transform[5] : 0,
+      w: it.width || 0,
+      h: Math.abs((it.transform && it.transform[3]) || it.height || 10) || 10,
+      eol: !!it.hasEOL
+    });
+  }
+  if (!its.length) return '';
+  /* 1) تجميع القطع في سطور حسب الإحداثي الرأسي وعلامة نهاية السطر */
+  const lines = [];
+  let cur = [];
+  for (const it of its) {
+    if (!cur.length) { cur.push(it); if (it.eol) { lines.push(cur); cur = []; } continue; }
+    const prev = cur[cur.length - 1];
+    const tol = Math.max(2.5, ((it.h + prev.h) / 2) * 0.55);
+    if (Math.abs(it.y - prev.y) <= tol) {
+      cur.push(it);
+      if (it.eol) { lines.push(cur); cur = []; }
+    } else {
+      lines.push(cur); cur = [it];
+      if (it.eol) { lines.push(cur); cur = []; }
+    }
+  }
+  if (cur.length) lines.push(cur);
+  /* 2) ترتيب القطع داخل كل سطر حسب الاتجاه + إدراج مسافة عند وجود فجوة حقيقية */
+  return lines.map(line => {
+    const parts = line.filter(o => o.s && o.s.trim());
+    if (!parts.length) return '';
+    const joined = parts.map(o => o.s).join('');
+    const arCount = (joined.match(/[\u0600-\u06FF]/g) || []).length;
+    const latinCount = (joined.match(/[A-Za-z]/g) || []).length;
+    const rtl = arCount > 0 && arCount >= latinCount;
+    const arr = parts.slice().sort((a, b) => rtl ? (b.x - a.x) : (a.x - b.x));
+    const avgH = arr.reduce((a, o) => a + o.h, 0) / arr.length;
+    let out = '';
+    for (let i = 0; i < arr.length; i++) {
+      const o = arr[i];
+      if (i > 0) {
+        const p = arr[i - 1];
+        const gap = rtl ? (p.x - (o.x + o.w)) : (o.x - (p.x + p.w));
+        if (gap > Math.max(1.1, avgH * 0.17) && !/\s$/.test(out) && !/^\s/.test(o.s)) out += ' ';
+      }
+      out += o.s;
+    }
+    out = out.replace(/[ \t\u00A0]{2,}/g, ' ').trim();
+    return rtl ? fixReversedArabicLine(out) : out;
+  }).filter(l => l.length).join('\n');
+}
+/* خطوط PDF بعضها بيخزن كل حرف في قطعة منفصلة فيطلع النص «مفرّق حرف حرف» —
+   نعيد لصق الحروف العربية المفردة المتتالية في كلمة واحدة (آمن: بيشتغل بس لما السطر أغلبه حروف مفردة) */
+function fixLetterSpaced(line) {
+  const toks = String(line || '').split(/\s+/).filter(Boolean);
+  if (toks.length < 5) return line;
+  const isSingle = t => /^[\u0621-\u064A]$/.test(t);
+  const singles = toks.filter(isSingle).length;
+  if (singles < 5 || singles < toks.length * 0.6) return line;
+  let out = '', run = '';
+  const flush = () => { if (run) { out += (out ? ' ' : '') + run; run = ''; } };
+  toks.forEach(t => { if (isSingle(t)) run += t; else { flush(); out += (out ? ' ' : '') + t; } });
+  flush();
+  return out;
+}
+function cleanupExtractedText(t) {
+  let s = String(t || '');
+  try { if (s.normalize) s = s.normalize('NFKC'); } catch (e) {}
+  s = s.replace(/\u0640/g, '');
+  s = s.replace(/[\u200B-\u200F\u202A-\u202E\u2066-\u2069\uFEFF]/g, '');
+  s = s.replace(/[ \t\u00A0]{2,}/g, ' ');
+  s = s.replace(/\s+([،.؛!؟:,])/g, '$1');
+  s = s.replace(/([،؛!؟])(?=[^\s\n\d])/g, '$1 ');
+  s = s.replace(/([.!؟?]){2,}/g, '$1');
+  s = s.split('\n').map(fixLetterSpaced).join('\n');
+  s = s.replace(/\n{3,}/g, '\n\n');
+  return s.trim();
+}
 async function extractPdfText(file, onProgress) {
   if (!window.pdfjsLib) { const e = new Error('NO_PDFJS'); e.noLib = true; throw e; }
   const buf = await file.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+  const pdf = await pdfjsLib.getDocument({ data: buf, useSystemFonts: true }).promise;
   const out = [];
   for (let i = 1; i <= pdf.numPages; i++) {
     const page = await pdf.getPage(i);
-    const tc = await page.getTextContent();
-    out.push(tc.items.map(it => it.str).join(' '));
+    const tc = await page.getTextContent({ disableCombineTextItems: false, normalizeWhitespace: false });
+    out.push(rebuildTextFromItems(tc.items));
     if (onProgress) onProgress(i, pdf.numPages);
   }
-  return { text: out.join('\n\n').trim(), pages: pdf.numPages };
+  return { text: cleanupExtractedText(out.join('\n\n')), pages: pdf.numPages };
 }
 async function renderPdfThumbs(file, container, maxPages) {
   container.innerHTML = '';
@@ -1778,13 +2031,66 @@ async function renderPdfThumbs(file, container, maxPages) {
   }
   return pdf.numPages;
 }
+/* محرك OCR بعامل واحد مُعاد استخدامه (أسرع بكثير في الصفحات المتعددة)
+   + معالجة مسبقة للصورة: تكبير الصور الصغيرة + تدرّج رمادي + رفع التباين
+   ← دي أهم حاجة تمنع التصاق الحروف في نتائج القراءة */
+let _ocrWorker = null, _ocrLogger = null;
+async function getOcrWorker() {
+  if (_ocrWorker) return _ocrWorker;
+  _ocrWorker = await Tesseract.createWorker('ara+eng', 1, { logger: m => { if (_ocrLogger) _ocrLogger(m); } });
+  try { await _ocrWorker.setParameters({ preserve_interword_spaces: '1' }); } catch (e) {}
+  return _ocrWorker;
+}
+async function ocrPreprocess(file) {
+  try {
+    const url = URL.createObjectURL(file);
+    let img;
+    try { img = await loadImageEl(url); } finally { URL.revokeObjectURL(url); }
+    const w = img.naturalWidth, h = img.naturalHeight;
+    if (!w || !h) return file;
+    const scale = Math.min(2.5, Math.max(1, 1400 / w));
+    const c = document.createElement('canvas');
+    c.width = Math.round(w * scale); c.height = Math.round(h * scale);
+    const ctx = c.getContext('2d');
+    ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, c.width, c.height);
+    ctx.drawImage(img, 0, 0, c.width, c.height);
+    try {
+      const d = ctx.getImageData(0, 0, c.width, c.height);
+      const px = d.data;
+      let mn = 255, mx = 0;
+      for (let i = 0; i < px.length; i += 4) {
+        const g = (px[i] * 0.299 + px[i + 1] * 0.587 + px[i + 2] * 0.114) | 0;
+        px[i] = px[i + 1] = px[i + 2] = g;
+        if (g < mn) mn = g; if (g > mx) mx = g;
+      }
+      const rng = Math.max(1, mx - mn);
+      for (let i = 0; i < px.length; i += 4) {
+        const v = Math.min(255, Math.max(0, ((px[i] - mn) * 255 / rng) | 0));
+        px[i] = px[i + 1] = px[i + 2] = v;
+      }
+      ctx.putImageData(d, 0, 0);
+    } catch (e) {}
+    const blob = await new Promise(r => c.toBlob(r, 'image/png'));
+    return blob || file;
+  } catch (e) { return file; }
+}
 async function ocrImage(file, onProgress) {
   const ok = await ensureTesseract();
   if (!ok) { const e = new Error('OCR_OFFLINE'); e.noLib = true; throw e; }
-  const result = await Tesseract.recognize(file, 'ara+eng', {
-    logger: m => { if (onProgress && m.progress != null) onProgress(m); }
-  });
-  return (result.data.text || '').trim();
+  const src = await ocrPreprocess(file);
+  _ocrLogger = onProgress || null;
+  try {
+    let result;
+    try {
+      const w = await getOcrWorker();
+      result = await w.recognize(src);
+    } catch (e) {
+      console.warn('worker ocr failed, fallback to recognize():', e);
+      result = await Tesseract.recognize(src, 'ara+eng', { logger: m => { if (onProgress) onProgress(m); } });
+    }
+    return cleanupExtractedText((result.data.text || '').replace(/[ \t]+\n/g, '\n'));
+  } finally { _ocrLogger = null; }
 }
 async function loadImageEl(src) {
   return new Promise((res, rej) => { const img = new Image(); img.onload = () => res(img); img.onerror = rej; img.src = src; });
@@ -1879,6 +2185,7 @@ async function routeFiles(files, target, fileBox, progressWrap) {
           appendTextTo(target, r.text);
           setChip(chipEl, CHIP_OK, '✔ ' + r.pages + ' صفحة');
           toast('تم استخراج نص "' + f.name + '" (' + r.pages + ' صفحة) ✓', 'success');
+          registerLecture({ name: f.name, kind: 'pdf', size: f.size, pages: r.pages, text: r.text, file: f });
         } else {
           setChip(chipEl, CHIP_WARN, '⚠️ بدون نص');
           toast('الملف "' + f.name + '" يبدو ممسوحاً ضوئياً (لا يحتوي نصاً مكتوباً) — ارفع صفحاته كصور مع اتصال بالإنترنت لقراءتها بالـ OCR', 'info');
@@ -1910,23 +2217,28 @@ async function routeFiles(files, target, fileBox, progressWrap) {
         hideProgress(progressWrap);
         if (ocrOffline) {
           setChip(chipEl, CHIP_WARN, '🖼️ أُضيفت');
+          registerLecture({ name: f.name, kind: 'image', size: f.size, text: '', file: f });
           toast('أُضيفت الصورة "' + f.name + '" بنجاح — قراءة النص من الصور تحتاج اتصالاً بالإنترنت (لتحميل القارئ أول مرة فقط)', 'info');
         } else if ((text || '').trim().length >= 5) {
           appendTextTo(target, text);
           setChip(chipEl, CHIP_OK, '✔ OCR');
           toast('تمت قراءة نص الصورة "' + f.name + '" ✓', 'success');
+          registerLecture({ name: f.name, kind: 'image', size: f.size, text: text, file: f });
         } else {
           setChip(chipEl, CHIP_WARN, '⚠️ بدون نص');
+          registerLecture({ name: f.name, kind: 'image', size: f.size, text: '', file: f });
           toast('لم يُعثر على نص واضح في الصورة "' + f.name + '" — جرّب صورة أوضح أو بدقة أعلى', 'info');
         }
         try { if (hooks.onImage) hooks.onImage(f, text || ''); } catch (e) { console.error('onImage hook:', e); }
       } else if (kind === 'audio') {
         setChip(chipEl, CHIP_AUDIO, '🎙️ صوت');
-        toast('تم إضافة الملف الصوتي: ' + f.name + ' — التفريغ المباشر للملفات يتطلب التسجيل الحي، استخدم زر النص التجريبي أو الصق النص', 'info');
+        registerLecture({ name: f.name, kind: 'audio', size: f.size, text: '', file: f });
+        toast('تم حفظ التسجيل "' + f.name + '" في مكتبة المحاضرات ✓ — هتلاقيه في قسم «المحاضرات» وتقدر تشغّله في أي وقت', 'success', 6000);
       } else {
         const t = await f.text();
         appendTextTo(target, t);
         setChip(chipEl, CHIP_OK, '✔ نص');
+        registerLecture({ name: f.name, kind: 'text', size: f.size, text: t, file: f });
       }
     } catch (err) {
       console.error(err);
@@ -2057,6 +2369,7 @@ function buildUploaders() {
     $('[data-use-paste]', box).addEventListener('click', () => {
       if (!paste.value.trim()) { toast('اكتب أو الصق نصاً أولاً', 'warn'); return; }
       appendTextTo(target, paste.value);
+      if (cfg.key === 'lec') registerLecture({ name: 'نص ملصوق — ' + new Date().toLocaleDateString('ar-EG'), kind: 'text', size: paste.value.length, text: paste.value });
       paste.value = '';
       toast('تمت إضافة النص ✓', 'success');
     });
@@ -2192,7 +2505,10 @@ function setupCommonButtons() {
     else if (what === 'sec1-word') { const v = $('#s1-text').value.trim(); if (!v) return toast('لا يوجد نص', 'warn'); saveWordDoc('khulasa-التفريغ-الصوتي', 'التفريغ الصوتي — منصة خلاصة', textToPrintHtml('التفريغ الصوتي', v).replace(/^<h1>.*?<\/h1>/, '<h1>التفريغ الصوتي</h1>')); }
     else if (what === 'sec2-txt') { const v = $('#s2-text').value.trim(); if (!v) return toast('لا يوجد نص', 'warn'); saveTXT('khulasa-نص-PDF', v); }
     else if (what === 'sec2-word') { const v = $('#s2-text').value.trim(); if (!v) return toast('لا يوجد نص', 'warn'); saveWordDoc('khulasa-نص-PDF', 'نص PDF — منصة خلاصة', textToPrintHtml('نص الـ PDF', v).replace(/^<h1>.*?<\/h1>/, '<h1>نص الـ PDF</h1>')); }
-    else if (what === 'sec4-pdf') await saveElementAsPDF($('#s4-output'), 'khulasa-الملخص');
+    else if (what === 'sec1-paper') paperFromSource('#s1-text', 'قسم التفريغ الصوتي');
+    else if (what === 'sec2-paper') paperFromSource('#s2-text', 'قارئ PDF');
+    else if (what === 'sec4-paper') openPaperSheet();
+    else if (what === 'sec4-pdf') { const el = $('#s4-output'); if (!el || !el.dataset.done || !el.innerText.trim()) return toast('ولّد الملخص أولاً', 'warn'); await saveElementAsPDF(el, 'khulasa-الملخص'); }
     else if (what === 'sec4-img') openImageCards('sec4');
     else if (what === 'sec4-word') { const el = $('#s4-output'); if (!el.innerText.trim()) return toast('ولّد الملخص أولاً', 'warn'); saveWordDoc('khulasa-الملخص', 'الملخص — منصة خلاصة', '<h1>الملخص</h1>' + el.innerHTML); }
     else if (what === 'sec4-txt') { const el = $('#s4-output'); if (!el.innerText.trim()) return toast('ولّد الملخص أولاً', 'warn'); saveTXT('khulasa-الملخص', el.innerText); }
@@ -2229,10 +2545,26 @@ function setupSection2() {
       const ta = $('#s2-text');
       ta.value = r.text;
       ta.dispatchEvent(new Event('input', { bubbles: true }));
-      toast('تم استخراج ' + r.pages + ' صفحة بنجاح ✓', 'success');
+      toast('تم استخراج ' + r.pages + ' صفحة بنجاح ✓ — لو الحروف لسه متلخبطة جرّب زر «إصلاح اتجاه الحروف»', 'success', 6000);
     } catch (e) { toast('تعذر استخراج النص من الملف' + (e && e.noLib ? ' — افتح الصفحة مرة واحدة مع اتصال إنترنت' : ''), 'error'); }
     wrap.classList.add('hidden');
     $('#s2-progress-bar').style.width = '0%';
+  });
+  /* زر إصلاح اتجاه الحروف: كل ضغطة تجربة إصلاح مختلفة (عكس الحروف ← عكس الكلمات ← رجوع) */
+  let s2Dir = 0;
+  $('#s2-fixdir').addEventListener('click', () => {
+    const ta = $('#s2-text');
+    const t = ta.value.trim();
+    if (!t) { toast('لا يوجد نص لإصلاحه', 'warn'); return; }
+    s2Dir = (s2Dir + 1) % 3;
+    let out = t;
+    if (s2Dir === 1) out = t.split('\n').map(l => looksReversedArabic(l) ? l.split('').reverse().join('') : l).join('\n');
+    else if (s2Dir === 2) out = t.split('\n').map(l => l.split(/\s+/).reverse().join(' ')).join('\n');
+    ta.value = out;
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+    toast(s2Dir === 1 ? 'عكسنا ترتيب الحروف للسطور العربية المقلوبة ✓ — لو لسه مبوظة اضغط الزر تاني'
+      : s2Dir === 2 ? 'عكسنا ترتيب الكلمات ✓ — لو رجع سليم اضغط الزر تاني للرجوع للأصل'
+      : 'رجّعنا النص الأصلي', 'success');
   });
 }
 
@@ -2308,46 +2640,131 @@ function formatTextAr(t) {
    الخريطة الذهنية: بيانات + عرض شجرة SVG + عرض شبكة
    ========================================================= */
 const MAP_COLORS = ['#4f46e5', '#7c3aed', '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#ec4899', '#14b8a6'];
-function buildMapData(text, title) {
-  const sents = splitSentences(text);
-  const kws = topKeywords(text, 6);
-  const center = title || (sents.length ? trimWords(sents[0], 6) : 'المحتوى');
-  const branches = kws.map(k => {
-    const rel = sents.filter(s => s.includes(k.word)).slice(0, 2).map(s => trimWords(s, 9));
-    return { label: k.word, count: k.count, children: rel };
+function buildMapData(text, title, pickedSents) {
+  /* التغطية الكاملة: كل جملة من جمل الملخص تظهر في الخريطة — الجملة تُسند للفرع الأنسب لها
+     (الفرع اللي كلمته المفتاحية متكررة فيها أكتر)، واللي مالها مفتاح تروح لفرع «أفكار أخرى». */
+  const sents = (pickedSents && pickedSents.length ? pickedSents.map(p => p.s) : splitSentences(text).slice(0, 100));
+  const kws = topKeywords(text, 8);
+  const center = title || (sents.length ? trimWords(sents[0], 7) : 'المحتوى');
+  const branches = kws.map(k => ({ label: k.word, count: k.count, children: [] }));
+  const other = [];
+  sents.forEach((s, si) => {
+    /* الجملة تروح لأقوى كلمة مفتاحية فيها — ولو فيه تعادل نوزّع بالتناوب
+       عشان الخريطة تبقى متوازنة وكل الملخص موزّع على الفروع */
+    const counts = kws.map(k => s.split(k.word).length - 1);
+    const mx = counts.length ? Math.max.apply(null, counts) : 0;
+    let best = -1;
+    if (mx > 0) {
+      const cands = [];
+      counts.forEach((c, i) => { if (c === mx) cands.push(i); });
+      best = cands[si % cands.length];
+    }
+    /* الجملة تدخل الخريطة كاملة بدون أي اختصار — الخريطة بتتمد تلقائياً لتحت
+       والالتفاف بقى بالبكسل (مش بعدد الحروف) فمستحيل حرف يتقص */
+    if (best >= 0) branches[best].children.push(s);
+    else other.push(s);
   });
-  return { center, branches };
+  if (other.length) {
+    if (branches.filter(b => b.children.length).length < 8) branches.push({ label: 'أفكار أخرى', count: other.length, children: other });
+    else branches[branches.length - 1].children.push(...other);
+  }
+  /* نستبعد الفروع الفاضية (كلمات مفتاحية ما امتدت لها جُمل) — عشان ميبقاش صناديق فاضية في الخريطة */
+  const used = branches.filter(b => b.children.length);
+  if (!used.length) used.push({ label: 'الملخص', count: sents.length, children: sents.slice() });
+  return { center, branches: used, totalSents: sents.length };
 }
 function svgEscape(s) { return esc(s); }
-function renderMapTree(data) {
-  const W = 860, H = 560, cx = W / 2, cy = H / 2;
-  const n = data.branches.length;
-  const rx = 300, ry = 200;
-  let nodes = '', lines = '';
-  data.branches.forEach((b, i) => {
-    const ang = -Math.PI / 2 + i * (2 * Math.PI / Math.max(n, 1));
-    const x = cx + rx * Math.cos(ang), y = cy + ry * Math.sin(ang);
-    const color = MAP_COLORS[i % MAP_COLORS.length];
-    lines += '<line x1="' + cx + '" y1="' + cy + '" x2="' + x + '" y2="' + y + '" stroke="' + color + '" stroke-width="2.5" stroke-opacity=".55"/>';
-    const labelLines = wrapSvgText(b.label, 14, 120);
-    const bw = 150, bh = 26 + labelLines.length * 18 + b.children.length * 17 + 10;
-    const childLines = b.children.map((ch, ci) =>
-      '<text x="0" y="' + (34 + labelLines.length * 18 + ci * 17) + '" text-anchor="middle" font-size="10.5" fill="#475569" font-family="Cairo,Arial">' + svgEscape(trimWords(ch, 11)) + '</text>').join('');
-    nodes += '<g transform="translate(' + x + ',' + y + ')">' +
-      '<rect x="' + (-bw / 2) + '" y="' + (-bh / 2) + '" width="' + bw + '" height="' + bh + '" rx="14" fill="#ffffff" stroke="' + color + '" stroke-width="2.5"/>' +
-      '<rect x="' + (-bw / 2) + '" y="' + (-bh / 2) + '" width="' + bw + '" height="8" rx="4" fill="' + color + '"/>' +
-      labelLines.map((ln, li) => '<text x="0" y="' + (12 + li * 18) + '" text-anchor="middle" font-size="14" font-weight="700" fill="' + color + '" font-family="Cairo,Arial">' + svgEscape(ln) + '</text>').join('') +
-      childLines + '</g>';
+/* قياس عرض النص الحقيقي بالبكسل على أكتر من خط محتمل (Cairo أونلاين / Arial أوفلاين)
+   — بنلف على أعرضهم فالسطور تناسب العرض سواء اتحملت الخط أو لأ */
+let __mapMeas = null;
+function mapTextWidth(text, size, weight) {
+  if (!__mapMeas) __mapMeas = document.createElement('canvas').getContext('2d');
+  let mx = 0;
+  ['Cairo', 'Arial', 'Tahoma'].forEach(f => {
+    try {
+      __mapMeas.direction = 'rtl';
+      __mapMeas.font = (weight || 400) + ' ' + size + 'px ' + f + ', sans-serif';
+      const w = __mapMeas.measureText(text).width;
+      if (w > mx) mx = w;
+    } catch (e) {}
   });
-  const centerLines = wrapSvgText(data.center, 15, 170);
-  const cw = 200, chh = 30 + centerLines.length * 22;
-  const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" style="max-width:100%;height:auto">' +
+  return mx;
+}
+/* لفّ نص بالعرض الحقيقي بالبكسل — مفيش أي قص للكلام (الحد الأقصى للسطور بس سلّمة أمان) */
+function svgWrapPx(text, maxW, size, weight, maxLines) {
+  const words = String(text || '').split(/\s+/).filter(Boolean);
+  const lines = []; let cur = '';
+  for (const w of words) {
+    const t = cur ? cur + ' ' + w : w;
+    if (mapTextWidth(t, size, weight) > maxW && cur) { lines.push(cur); cur = w; }
+    else cur = t;
+  }
+  if (cur) lines.push(cur);
+  if (maxLines && lines.length > maxLines) {
+    const kept = lines.slice(0, maxLines - 1);
+    kept.push(trimWords(lines.slice(maxLines - 1).join(' '), 14));
+    return kept;
+  }
+  return lines.length ? lines : ['—'];
+}
+function renderMapTree(data) {
+  /* شجرة أفقية من اليمين لليسار (مناسبة للعربي): المركز يمين والفروع متمددة لتحت —
+     الارتفاع بيتحسب من المحتوى نفسه بالبكسل فمستحيل يتقص ملخص أو يتراكب الفروع */
+  const W = 1080, PAD = 26, CW = 210, GAP = 12;
+  const BW = W - PAD * 2 - CW - 60; /* عرض صندوق الفرع */
+  const KID_SIZE = 12.5, KID_W = BW - 64;   /* عرض النص المتاح داخل الصندوق */
+  const LBL_SIZE = 15, LBL_W = CW - 30;
+  const meas = data.branches.map(b => {
+    const labelLines = svgWrapPx(b.label, LBL_W, LBL_SIZE, 800, 3);
+    /* كل جُمل الملخص تظهر كاملة — بدون حد أقصى عملي للسطور (سلّمة أمان 60 سطر بس للجملة الخرافية) */
+    const kids = b.children.map(ch => svgWrapPx(ch, KID_W, KID_SIZE, 400, 60));
+    const h = 14 + labelLines.length * 22 + kids.reduce((a, ls) => a + ls.length * 18 + 6, 0) + 12;
+    return { b, labelLines, kids, h: Math.max(52, h) };
+  });
+  const contentH = meas.reduce((a, m) => a + m.h + GAP, -GAP);
+  const H = Math.max(520, contentH + PAD * 2);
+  const cx = W - PAD - CW / 2, cy = H / 2;
+  const BX = PAD;
+  let nodes = '', links = '';
+  let y = PAD + Math.max(0, (H - PAD * 2 - contentH) / 2);
+  meas.forEach((m, i) => {
+    const color = MAP_COLORS[i % MAP_COLORS.length];
+    const by = y, bh = m.h;
+    const x1 = cx - CW / 2, y1 = cy, x2 = BX + BW, y2 = by + bh / 2;
+    const mx = (x1 + x2) / 2;
+    links += '<path d="M ' + x1 + ' ' + y1 + ' C ' + mx + ' ' + y1 + ', ' + mx + ' ' + y2 + ', ' + x2 + ' ' + y2 + '" fill="none" stroke="' + color + '" stroke-width="2.4" stroke-opacity=".55"/>';
+    let inner = '<rect x="' + BX + '" y="' + by + '" width="' + BW + '" height="' + bh + '" rx="14" fill="#ffffff" stroke="' + color + '" stroke-width="2"/>' +
+      '<rect x="' + (BX + BW - 7) + '" y="' + (by + 8) + '" width="7" height="' + Math.max(10, bh - 16) + '" rx="3.5" fill="' + color + '"/>';
+    const hasKids = m.kids.length > 0;
+    m.labelLines.forEach((ln, li) => {
+      const ly = hasKids ? (by + 30 + li * 22) : (by + bh / 2 + 5 - (m.labelLines.length - 1 - li) * 22);
+      inner += '<text x="' + (BX + BW - 20) + '" y="' + ly + '" text-anchor="start" font-size="15" font-weight="800" fill="' + color + '" font-family="Cairo,Arial">' + svgEscape(ln) + '</text>';
+    });
+    let ty = by + 14 + m.labelLines.length * 22 + 4;
+    m.kids.forEach(ls => {
+      inner += '<text x="' + (BX + BW - 26) + '" y="' + (ty + 13) + '" text-anchor="start" font-size="12.5" font-weight="700" fill="#334155" font-family="Cairo,Arial">• ' + svgEscape(ls[0]) + '</text>';
+      ty += 18;
+      for (let li = 1; li < ls.length; li++) {
+        inner += '<text x="' + (BX + BW - 34) + '" y="' + (ty + 13) + '" text-anchor="start" font-size="12.5" fill="#64748b" font-family="Cairo,Arial">' + svgEscape(ls[li]) + '</text>';
+        ty += 18;
+      }
+      ty += 6;
+    });
+    nodes += '<g>' + inner + '</g>';
+    y += bh + GAP;
+  });
+  const centerLines = svgWrapPx(data.center, CW - 34, LBL_SIZE, 800, 4);
+  const chh = Math.max(64, 24 + centerLines.length * 22);
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" direction="rtl" style="max-width:100%;height:auto">' +
     '<rect width="' + W + '" height="' + H + '" rx="18" fill="#f8fafc"/>' +
-    (document.documentElement.classList.contains('dark') ? '<rect width="' + W + '" height="' + H + '" rx="18" fill="#0f1830" fill-opacity=".92"/>' : '') +
-    lines +
+    links +
     '<g transform="translate(' + cx + ',' + cy + ')">' +
-      '<rect x="' + (-cw / 2) + '" y="' + (-chh / 2) + '" width="' + cw + '" height="' + chh + '" rx="18" fill="#4f46e5"/>' +
-      centerLines.map((ln, li) => '<text x="0" y="' + (6 + li * 22) + '" text-anchor="middle" font-size="15" font-weight="800" fill="#ffffff" font-family="Cairo,Arial">' + svgEscape(ln) + '</text>').join('') +
+      '<rect x="' + (-CW / 2) + '" y="' + (-chh / 2) + '" width="' + CW + '" height="' + chh + '" rx="18" fill="#4f46e5"/>' +
+      '<rect x="' + (-CW / 2) + '" y="' + (-chh / 2) + '" width="' + CW + '" height="10" rx="5" fill="#7c3aed"/>' +
+      centerLines.map((ln, li) => {
+        const off = li - (centerLines.length - 1) / 2;
+        return '<text x="0" y="' + (off * 22 + 6) + '" text-anchor="middle" font-size="15" font-weight="800" fill="#ffffff" font-family="Cairo,Arial">' + svgEscape(ln) + '</text>';
+      }).join('') +
     '</g>' + nodes + '</svg>';
   return svg;
 }
@@ -2381,12 +2798,18 @@ function svgToPngDownload(svgString, name) {
     const xml = new XMLSerializer().serializeToString(new DOMParser().parseFromString(svgString, 'image/svg+xml').documentElement);
     const img = new Image();
     img.onload = () => {
+      /* نقرأ أبعاد الـ SVG نفسه — الخريطة بقت ممتدة رأسياً حسب المحتوى */
+      const mw = svgString.match(/width="(\d+(?:\.\d+)?)"\s+height="(\d+(?:\.\d+)?)"/);
+      const sw = mw ? parseFloat(mw[1]) : (img.width || 860);
+      const sh = mw ? parseFloat(mw[2]) : (img.height || 560);
+      const scale = Math.min(2.2, Math.max(1, 1500 / sw));
       const c = document.createElement('canvas');
-      c.width = 1720; c.height = 1120;
+      c.width = Math.min(12000, Math.round(sw * scale));
+      c.height = Math.min(24000, Math.round(sh * scale));
       const ctx = c.getContext('2d');
       ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, c.width, c.height);
       ctx.drawImage(img, 0, 0, c.width, c.height);
-      c.toBlob(b => { downloadBlob(b, name + '.png'); toast('تم حفظ الخريطة ✓', 'success'); });
+      c.toBlob(b => { if (b) downloadBlob(b, name + '.png'); toast('تم حفظ الخريطة ✓', 'success'); });
     };
     img.onerror = () => toast('تعذر تحويل الخريطة لصورة', 'error');
     img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(xml);
@@ -2662,7 +3085,7 @@ function icBuildCard(spec) {
 /* تحويل نص خام إلى بطاقة ماركة (بديل PDF عندما يفشل html2canvas) */
 function textToBrandCanvas(title, text) {
   const blocks = [];
-  String(text || '').split('\n').map(s => s.trim()).filter(Boolean).slice(0, 300).forEach(ln => {
+  String(text || '').split('\n').map(s => s.trim()).filter(Boolean).slice(0, 800).forEach(ln => {
     if (/^[•\-–*]\s+/.test(ln)) blocks.push({ type: 'b', text: ln.replace(/^[•\-–*]\s+/, '') });
     else if (ln.length <= 42) blocks.push({ type: 'h', text: ln });
     else blocks.push({ type: 'p', text: ln });
@@ -2675,6 +3098,7 @@ function textToBrandCanvas(title, text) {
    «الملخص كصور» — بطاقات جاهزة للحفظ والمشاركة
    ========================================================= */
 let IC_ITEMS = [];
+let IC_PDF_NAME = 'khulasa-الملخص';
 function icDataFromS4() {
   const el = $('#s4-output');
   if (!el || !el.dataset.done || !el.innerText.trim()) return null;
@@ -2709,43 +3133,66 @@ function openImageCards(src) {
     return;
   }
   try { buildImageCards(data, src); } catch (e) { console.error(e); toast('تعذر بناء الصور — حاول تاني', 'error'); return; }
+  $('#ic-title').textContent = src === 'sec6' ? '⚡ صور المعالجة الشاملة' : '🖼️ الملخص كصور جاهزة';
   $('#imgcards-modal').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
 }
 function closeImageCards() { $('#imgcards-modal').classList.add('hidden'); document.body.style.overflow = ''; }
-function buildImageCards(data, src) {
+function renderIcItems() {
   const grid = $('#ic-grid');
   grid.innerHTML = '';
+  IC_ITEMS.forEach(it => grid.appendChild(icCardTile(it.canvas, it.name)));
+}
+function buildImageCards(data, src) {
   IC_ITEMS = [];
   const base = 'khulasa-' + (src === 'sec6' ? 'المعالجة-الشاملة' : 'الملخص');
+  IC_PDF_NAME = base;
   const specs = [];
   const blocks = data.blocks || [];
   if (blocks.length <= 5) {
     specs.push({ kind: 'tall', title: data.title, blocks: blocks, keys: data.keys, ratio: data.ratio, words: data.sumWords || data.origWords });
   } else {
     specs.push({ kind: 'cover', title: data.title, ratio: data.ratio, words: data.origWords });
-    let cur = [], curW = 0;
-    const flush = () => { if (cur.length) { specs.push({ kind: 'slide', title: data.title, blocks: cur }); cur = []; curW = 0; } };
-    blocks.forEach(b => {
-      /* تكلفة تحسب طول النص: الفقرات الطويلة تأخذ مساحة أكبر — لتعبئة الشريحة دون فيض */
-      const len = (b.text || '').length;
-      const cost = b.type === 'p' ? 2 + Math.ceil(len / 70) : (b.type === 'h' ? 1 : 1.5 + Math.max(0, Math.ceil((len - 60) / 90)));
-      if (curW + cost > 6.5) flush();
-      cur.push(b); curW += cost;
+    /* توزيع بالقياس الحقيقي: بنقيس ارتفاع كل بلوك بنفس مقاييس الرسم —
+       فمستحيل بلوك يتشال من الشريحة بصمت (الخلل القديم: تقدير بالتكلفة كان بيسيب نص بره) */
+    const mctx = document.createElement('canvas').getContext('2d');
+    const SLIDE_MAX = 880; /* مساحة المحتوى المتاحة داخل شريحة (ارتفاع أقصى 1350) */
+    const blockSlideH = b => {
+      if (b.type === 'h') { mctx.font = icFont(33, 900); return 64; }
+      if (b.type === 'b') { mctx.font = icFont(31, 400); return icWrap(mctx, b.text, 912).length * 52 + 28; }
+      mctx.font = icFont(30, 400); return icWrap(mctx, b.text, 952).length * 50 + 26;
+    };
+    /* بلوك خرافي الطول؟ نقسمه لجُمل صغيرة عشان يدخل الشرائح كله */
+    const splitGiant = b => {
+      let parts = splitSentences(b.text).map(s => ({ type: b.type === 'h' ? 'p' : b.type, text: s })).filter(p => p.text.length > 12);
+      if (parts.length <= 1) {
+        parts = [];
+        const ws = String(b.text || '').split(/\s+/).filter(Boolean);
+        for (let i = 0; i < ws.length; i += 40) parts.push({ type: 'p', text: ws.slice(i, i + 40).join(' ') });
+      }
+      return parts.length ? parts : [b];
+    };
+    let cur = [], curH = 0;
+    const flush = () => { if (cur.length) { specs.push({ kind: 'slide', title: data.title, blocks: cur }); cur = []; curH = 0; } };
+    blocks.forEach(b0 => {
+      (blockSlideH(b0) > SLIDE_MAX ? splitGiant(b0) : [b0]).forEach(b => {
+        const bh = blockSlideH(b);
+        if (curH + bh > SLIDE_MAX && cur.length) flush();
+        cur.push(b); curH += bh;
+      });
     });
     flush();
     if (data.keys && data.keys.length) specs.push({ kind: 'end', keys: data.keys });
   }
   const total = specs.length;
+  window.__icSpecs = specs; /* فحص/تطوير: توزيع البلوكات على الشرائح */
   specs.forEach((sp, i) => { if (sp.kind === 'slide') { sp.idx = i; sp.total = total; } });
   specs.forEach((sp, i) => {
     try {
-      const canvas = icBuildCard(sp);
-      const nm = base + (total > 1 ? '-' + (i + 1) : '') + '.png';
-      IC_ITEMS.push({ canvas: canvas, name: nm });
-      grid.appendChild(icCardTile(canvas, nm));
+      IC_ITEMS.push({ canvas: icBuildCard(sp), name: base + (total > 1 ? '-' + (i + 1) : '') + '.png' });
     } catch (e) { console.error('card ' + i, e); }
   });
+  renderIcItems();
   $('#ic-count').textContent = IC_ITEMS.length ? IC_ITEMS.length + (IC_ITEMS.length === 1 ? ' صورة جاهزة' : ' صور جاهزة') : '';
   if (!IC_ITEMS.length) toast('تعذر بناء الصور على هذا الجهاز', 'error');
 }
@@ -2784,6 +3231,10 @@ function setupImageCards() {
   $('#ic-close').addEventListener('click', closeImageCards);
   m.addEventListener('click', e => { if (e.target === m) closeImageCards(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !m.classList.contains('hidden')) closeImageCards(); });
+  $('#ic-pdf').addEventListener('click', async () => {
+    if (!IC_ITEMS.length) return toast('لا يوجد محتوى للتصدير', 'warn');
+    await saveCanvasesAsPdf(IC_ITEMS.map(x => x.canvas), IC_PDF_NAME, /ورقة/.test(IC_PDF_NAME));
+  });
   $('#ic-save-all').addEventListener('click', async () => {
     if (!IC_ITEMS.length) return toast('لا توجد صور — ولّد الملخص أولاً', 'warn');
     toast('جارٍ حفظ ' + IC_ITEMS.length + ' صور...', 'info');
@@ -2792,9 +3243,247 @@ function setupImageCards() {
       await new Promise(res => it.canvas.toBlob(b => { if (b) downloadBlob(b, it.name, true); res(); }));
       await sleep(420);
     }
-    actionToast('تم حفظ ' + IC_ITEMS.length + ' صور ✓ — لو فيه صور ما ظهرتش، استخدم «حفظ الصورة» لكل صورة (بتفتح مركز الحفظ)', 'success',
+    actionToast('تم حفظ ' + IC_ITEMS.length + ' صور ✓ — لو فيه صور ما ظهرشت، استخدم «حفظ الصورة» لكل صورة (بتفتح مركز الحفظ)', 'success',
       [{ label: '🖼️ لمس طويل = حفظ مضمون', fn: () => toast('اضغط مطولاً على أي صورة في القايمة دي ← «حفظ الصورة» — شغالة في كل التطبيقات', 'info', 7000) }]);
   });
+}
+
+/* =========================================================
+   «ورقة التلخيص» — صفحة A4 أنيقة جاهزة للطباعة والمذاكرة من الملخص
+   ========================================================= */
+const PP = { W: 1240, H: 1754, PAD: 84 }; /* مقاس A4 بدقة 150dpi */
+function ppFont(size, weight) { return (weight || 400) + ' ' + size + 'px Cairo, "Segoe UI", Tahoma, Arial, sans-serif'; }
+function saveCanvasesAsPdf(canvases, name, a4) {
+  if (!canvases || !canvases.length) return Promise.resolve(toast('لا يوجد محتوى للتصدير', 'warn'));
+  return ensureJsPdf().then(ok => {
+    if (!ok) { toast('محرك PDF غير متاح — تأكد من تحميل الصفحة كاملة', 'error'); return; }
+    const { jsPDF } = window.jspdf;
+    let pdf = null;
+    canvases.forEach(c => {
+      const landscape = c.width > c.height;
+      const w = a4 ? 210 : 200, h = a4 ? 297 : 200 * c.height / c.width;
+      if (!pdf) pdf = new jsPDF({ unit: 'mm', format: a4 ? 'a4' : [w, h], orientation: landscape ? 'l' : 'p', compress: true });
+      else pdf.addPage(a4 ? 'a4' : [w, h], landscape ? 'l' : 'p');
+      /* PNG بدون فقد = نص عربي حاد — الـ JPEG كان بيطلع باهت ومشوش */
+      pdf.addImage(c.toDataURL('image/png'), 'PNG', 0, 0, w, h);
+    });
+    downloadBlob(pdf.output('blob'), name + '.pdf');
+    toast('تم حفظ الـ PDF ✓', 'success');
+  });
+}
+function paperDataFromS4() {
+  let el = $('#s4-output');
+  if (!el || !el.dataset.done) {
+    let raw = $('#s4-text').value.trim();
+    /* لو محرك الملخصات فاضي: نستخدم تلقائياً النص المستخرج الأول (قارئ PDF أو التفريغ الصوتي)
+       — عشان «ورقة التلخيص» تشتغل من النص اللي استخرجناه من غير خطوة إضافية */
+    if (countWords(raw) < 10) {
+      const s2 = $('#s2-text').value.trim(), s1 = $('#s1-text').value.trim();
+      const best = countWords(s2) >= countWords(s1) ? s2 : s1;
+      if (countWords(best) >= 10) {
+        raw = best;
+        $('#s4-text').value = best;
+        $('#s4-text').dispatchEvent(new Event('input', { bubbles: true }));
+        toast('مفيش ملخص لسه — استخدمنا النص المستخرج من ' + (best === s2 ? 'قارئ PDF' : 'قسم التفريغ') + ' وولّدنا الملخص تلقائياً ✓', 'info', 5000);
+      }
+    }
+    if (!raw) { toast('أضف نصاً أولاً — أو استخدم زر «ورقة تلخيص» من قسم التفريغ / قارئ PDF عشان نستخدم النص المستخرج هناك', 'warn', 6000); return null; }
+    generateSummary(false);
+    el = $('#s4-output');
+  }
+  const L = window.__s4Last;
+  if (!L || !L.blocks || !L.blocks.length) { toast('ولّد الملخص أولاً', 'warn'); return null; }
+  return {
+    title: (s4MapData && s4MapData.center ? s4MapData.center : (L.title || 'ورقة تلخيص')),
+    blocks: L.blocks, keys: L.keys || [],
+    ratio: L.ratio, words: L.sumWords, origWords: L.origWords,
+    level: String(L.title || '').replace(/^ملخص\s*—?\s*/, '')
+  };
+}
+/* ورقة تلخيص مباشرة من نص مستخرج في قسم معين (التفريغ / قارئ PDF) */
+function paperFromSource(sel, label) {
+  const ta = $(sel);
+  const t = ta && ta.value.trim();
+  if (!t || countWords(t) < 10) { toast('مفيش نص كفاية في ' + label + ' — استخرج نصاً أولاً أو ارفع ملفاً', 'warn'); return; }
+  const s4 = $('#s4-text');
+  s4.value = t;
+  s4.dispatchEvent(new Event('input', { bubbles: true }));
+  generateSummary(false);
+  openPaperSheet();
+}
+function buildPaperPages(data) {
+  const W = PP.W, H = PP.H, PAD = PP.PAD, CW = W - PAD * 2;
+  const HEAD_H = 320, CONT_H = 96, FOOT_H = 110;
+  const CHIPS_Y = 322, Y0 = 420;
+  const dateStr = new Date().toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
+  /* 1) قياس ارتفاع كل بلوك + توزيعه على صفحات A4 */
+  const meas = document.createElement('canvas').getContext('2d');
+  const blockH = b => {
+    if (b.type === 'h') { meas.font = ppFont(30, 900); return icWrap(meas, b.text, CW - 10).length * 46 + 30; }
+    if (b.type === 'b') { meas.font = ppFont(26, 400); return icWrap(meas, b.text, CW - 48).length * 42 + 16; }
+    meas.font = ppFont(25, 400); return icWrap(meas, b.text, CW).length * 41 + 16;
+  };
+  const firstLimit = H - FOOT_H - Y0;
+  const nextLimit = H - FOOT_H - 186;
+  const pages = [];
+  let cur = [], curH = 0, limit = firstLimit;
+  (data.blocks || []).forEach(b => {
+    const bh = blockH(b);
+    if (curH + bh > limit && cur.length) { pages.push(cur); cur = []; curH = 0; limit = nextLimit; }
+    cur.push(b); curH += bh;
+  });
+  const keys = (data.keys || []).slice(0, 14);
+  if (keys.length) {
+    meas.font = ppFont(24, 700);
+    const chips = keys.map(k => ({ t: k, w: meas.measureText(k).width + 52 }));
+    const rows = [[]]; let rowW = 0;
+    chips.forEach(ch => {
+      if (rowW + ch.w > CW && rows[rows.length - 1].length) { rows.push([]); rowW = 0; }
+      rows[rows.length - 1].push(ch); rowW += ch.w + 14;
+    });
+    const kh = 66 + rows.length * 66 + 10;
+    if (curH + kh > limit && cur.length) { pages.push(cur); cur = []; curH = 0; limit = nextLimit; }
+    cur.push({ type: 'keys', rows: rows }); curH += kh;
+  }
+  if (cur.length) pages.push(cur);
+  if (!pages.length) pages.push([{ type: 'p', text: 'لا يوجد محتوى بعد' }]);
+  const total = pages.length;
+  const stats = [];
+  if (data.ratio != null) stats.push('نسبة التلخيص: ' + data.ratio + '%');
+  if (data.words != null) stats.push('الملخص: ' + data.words + ' كلمة');
+  if (data.origWords != null) stats.push('النص الأصلي: ' + data.origWords + ' كلمة');
+  if (data.level) stats.push(data.level);
+  /* 2) رسم كل صفحة */
+  return pages.map((blocks, pi) => {
+    const c = document.createElement('canvas'); c.width = W; c.height = H;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = '#e0e7ff'; ctx.lineWidth = 3;
+    icRoundRect(ctx, 26, 26, W - 52, H - 52, 24); ctx.stroke();
+    ctx.direction = 'rtl';
+    let yTop;
+    if (pi === 0) {
+      const g = ctx.createLinearGradient(0, 0, W, 260);
+      g.addColorStop(0, '#4f46e5'); g.addColorStop(1, '#7c3aed');
+      ctx.fillStyle = g;
+      icRoundRect(ctx, 44, 44, W - 88, 216, 22); ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,0.16)';
+      ctx.beginPath(); ctx.arc(PAD + 40, 140, 58, 0, 7); ctx.fill();
+      ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center'; ctx.font = ppFont(56, 900);
+      ctx.fillText('خ', PAD + 40, 162);
+      ctx.textAlign = 'right';
+      ctx.font = ppFont(26, 700); ctx.fillStyle = 'rgba(255,255,255,0.88)';
+      ctx.fillText('منصة خُلاصة • ورقة تلخيص دراسية', W - PAD, 102, CW - 150);
+      ctx.font = ppFont(42, 900); ctx.fillStyle = '#ffffff';
+      const tl = icWrap(ctx, data.title || 'ورقة تلخيص', CW - 150);
+      let ty = 158;
+      tl.slice(0, 2).forEach(ln => { ctx.fillText(ln, W - PAD, ty, CW - 150); ty += 54; });
+      ctx.font = ppFont(23, 700); ctx.fillStyle = 'rgba(255,255,255,0.92)';
+      ctx.fillText('🗓️ ' + dateStr, W - PAD, 246);
+      /* شرائح البيانات السريعة */
+      ctx.font = ppFont(22, 700);
+      let sx = W - PAD;
+      stats.forEach(s => {
+        const wch = ctx.measureText(s).width + 44;
+        sx -= wch;
+        ctx.fillStyle = '#eef2ff'; icRoundRect(ctx, sx, CHIPS_Y, wch, 48, 24); ctx.fill();
+        ctx.strokeStyle = '#c7d2fe'; ctx.lineWidth = 2; icRoundRect(ctx, sx, CHIPS_Y, wch, 48, 24); ctx.stroke();
+        ctx.fillStyle = '#4338ca'; ctx.textAlign = 'center';
+        ctx.fillText(s, sx + wch / 2, CHIPS_Y + 31);
+        ctx.textAlign = 'right';
+        sx -= 14;
+      });
+      yTop = Y0;
+    } else {
+      const g = ctx.createLinearGradient(0, 0, W, 140);
+      g.addColorStop(0, '#4f46e5'); g.addColorStop(1, '#7c3aed');
+      ctx.fillStyle = g; icRoundRect(ctx, 44, 44, W - 88, CONT_H, 18); ctx.fill();
+      ctx.fillStyle = '#ffffff'; ctx.font = ppFont(26, 800); ctx.textAlign = 'right';
+      ctx.fillText('📄 ' + (data.title || 'ورقة تلخيص'), W - PAD, 44 + CONT_H / 2 + 9, CW - 160);
+      ctx.font = ppFont(22, 700); ctx.fillStyle = 'rgba(255,255,255,0.9)';
+      ctx.textAlign = 'left'; ctx.direction = 'ltr';
+      ctx.fillText((pi + 1) + ' / ' + total, PAD + 10, 44 + CONT_H / 2 + 8);
+      ctx.direction = 'rtl'; ctx.textAlign = 'right';
+      yTop = 44 + CONT_H + 46;
+    }
+    /* 3) المحتوى */
+    let y = yTop;
+    const yLimit = H - FOOT_H;
+    blocks.forEach(b => {
+      if (y > yLimit) return;
+      if (b.type === 'keys') {
+        if (y + 60 > yLimit) return;
+        ctx.fillStyle = '#0f172a'; ctx.font = ppFont(27, 900);
+        ctx.fillText('🔑 الكلمات المفتاحية', W - PAD, y + 22);
+        y += 56;
+        ctx.font = ppFont(24, 700);
+        b.rows.forEach(row => {
+          let x = W - PAD;
+          row.forEach(ch => {
+            x -= ch.w;
+            ctx.fillStyle = '#eef2ff'; icRoundRect(ctx, x, y, ch.w, 50, 25); ctx.fill();
+            ctx.strokeStyle = '#c7d2fe'; ctx.lineWidth = 2; icRoundRect(ctx, x, y, ch.w, 50, 25); ctx.stroke();
+            ctx.fillStyle = '#4338ca'; ctx.textAlign = 'center';
+            ctx.fillText(ch.t, x + ch.w / 2, y + 33);
+            ctx.textAlign = 'right';
+            x -= 14;
+          });
+          y += 66;
+        });
+        y += 10;
+        return;
+      }
+      if (b.type === 'h') {
+        ctx.fillStyle = '#4338ca'; ctx.font = ppFont(30, 900);
+        icWrap(ctx, b.text, CW - 10).forEach(ln => { ctx.fillText(ln, W - PAD, y + 30, CW); y += 46; });
+        y += 30;
+        ctx.strokeStyle = '#c7d2fe'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(W - PAD, y - 16); ctx.lineTo(W - PAD - 130, y - 16); ctx.stroke();
+        return;
+      }
+      if (b.type === 'b') {
+        ctx.font = ppFont(26, 400);
+        const lines = icWrap(ctx, b.text, CW - 48);
+        ctx.fillStyle = '#4f46e5';
+        ctx.beginPath(); ctx.arc(W - PAD - 8, y + 28, 8, 0, 7); ctx.fill();
+        ctx.fillStyle = '#334155';
+        lines.forEach(ln => { ctx.fillText(ln, W - PAD - 34, y + 38, CW - 34); y += 42; });
+        y += 16;
+        return;
+      }
+      ctx.font = ppFont(25, 400);
+      ctx.fillStyle = '#334155';
+      icWrap(ctx, b.text, CW).forEach(ln => { ctx.fillText(ln, W - PAD, y + 34, CW); y += 41; });
+      y += 16;
+    });
+    /* 4) التذييل */
+    ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(PAD, H - 84); ctx.lineTo(W - PAD, H - 84); ctx.stroke();
+    ctx.direction = 'rtl'; ctx.textAlign = 'right';
+    ctx.fillStyle = '#64748b'; ctx.font = ppFont(22, 700);
+    ctx.fillText('منصة خُلاصة (khulasa) — تطوير Ziad Ashraf', W - PAD, H - 44);
+    ctx.direction = 'ltr'; ctx.textAlign = 'left';
+    ctx.fillText('+20 109 971 3432', PAD, H - 44);
+    ctx.direction = 'rtl'; ctx.textAlign = 'center';
+    ctx.font = ppFont(19, 700); ctx.fillStyle = '#94a3b8';
+    ctx.fillText('صفحة ' + (pi + 1) + ' من ' + total, W / 2, H - 44);
+    return c;
+  });
+}
+function openPaperSheet() {
+  const data = paperDataFromS4();
+  if (!data) return;
+  toast('جارٍ تجهيز ورقة التلخيص...', 'info');
+  let pages;
+  try { pages = buildPaperPages(data); }
+  catch (e) { console.error(e); toast('تعذر بناء الورقة — حاول تاني', 'error'); return; }
+  IC_PDF_NAME = 'khulasa-ورقة-تلخيص';
+  IC_ITEMS = pages.map((c, i) => ({ canvas: c, name: 'khulasa-ورقة-تلخيص' + (pages.length > 1 ? '-ص' + (i + 1) : '') + '.png' }));
+  renderIcItems();
+  $('#ic-title').textContent = '📄 ورقة التلخيص جاهزة';
+  $('#ic-count').textContent = pages.length + (pages.length === 1 ? ' صفحة A4 جاهزة' : ' صفحات A4 جاهزة');
+  $('#imgcards-modal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
 }
 
 /* =========================================================
@@ -2872,15 +3561,219 @@ function generateSummary(withToast) {
     })()
   };
   lsSet('last_summary', $('#s4-output').innerText);
-  if ($('#s4-auto-map').checked) { s4MapData = buildMapData(text); renderMap(); }
+  if ($('#s4-auto-map').checked) { s4MapData = buildMapData(text, null, result.picked); renderMap(); }
   if (withToast) toast('تم توليد الملخص ✓', 'success');
 }
 function renderMap() {
   const box = $('#s4-map');
   if (!s4MapData) return;
-  if (s4MapStyle === 'tree') box.innerHTML = renderMapTree(s4MapData);
+  /* على الموبايل: الـ SVG بله عرض أدنى مع سحب أفقي — عشان النص يفضل مقروء */
+  if (s4MapStyle === 'tree') box.innerHTML = '<div class="overflow-x-auto"><div style="min-width:900px">' + renderMapTree(s4MapData) + '</div></div>';
   else box.innerHTML = renderMapGrid(s4MapData);
   $('#s4-map-dl').disabled = false;
+  const st = $('#s4-map-stats');
+  if (st) st.textContent = '🧮 (' + s4MapData.totalSents + ' جملة كاملة على ' + s4MapData.branches.length + ' فرع)';
+}
+
+/* =========================================================
+   🎯 فلاش كاردز — كروت مراجعة تفاعلية من المحتوى المستخرج
+   نبنيها محلياً بدون أي خدمة خارجية:
+   1) سطور «عنوان: شرح»   2) تعريفات «X هو/هي/يعني Y»   3) أكمل الفراغ من الكلمات المفتاحية
+   ========================================================= */
+let FC = null;
+function buildFlashcards(text) {
+  const src = String(text || '');
+  const sents = splitSentences(src);
+  const kws = topKeywords(src, 16).filter(k => k.word.length >= 3);
+  const out = []; const seen = new Set();
+  const push = (q, a, hint) => {
+    q = String(q || '').replace(/\s+/g, ' ').trim();
+    a = String(a || '').replace(/\s+/g, ' ').trim();
+    if (!q || !a || q.length < 8 || a.length < 2 || seen.has(q) || out.length >= 18) return;
+    seen.add(q); out.push({ q: q, a: a, hint: hint || '' });
+  };
+  /* 1) سطور «عنوان: شرح» — أدق أنواع الكروت */
+  src.split('\n').forEach(ln => {
+    const m = ln.match(/^\s*([^:：]{3,50})\s*[:：]\s*(.{8,})\s*$/);
+    if (m && countWords(m[2]) >= 2) push('وضّح: ' + m[1].trim(), m[2].trim(), ln.trim());
+  });
+  /* 2) تعريفات «X هو/هي/يعني Y» */
+  sents.forEach(s => {
+    const m = s.match(/^(.{3,60}?)\s+(?:هو|هي|هى|يعني)\s+(.{10,})$/);
+    if (m) push('ما المقصود بـ «' + m[1].trim() + '»؟', m[2].trim(), s);
+  });
+  /* 3) أكمل الفراغ — جملة فيها كلمة مفتاحية بنخبيها */
+  const usedS = new Set();
+  kws.forEach(k => {
+    const s = sents.find(x => !usedS.has(x) && x.indexOf(k.word) !== -1);
+    if (!s) return;
+    usedS.add(s);
+    push('أكمل: ' + s.replace(k.word, '……'), k.word, s);
+  });
+  /* 4) لو لسه أقل من ٦ كروت: زيادة كروت «أكمل» من باقي الكلمات */
+  if (out.length < 6) {
+    kws.forEach(k => {
+      if (out.length >= 12) return;
+      const s = sents.find(x => x.indexOf(k.word) !== -1);
+      if (s) push('أكمل: ' + s.replace(k.word, '……'), k.word, s);
+    });
+  }
+  return shuffle(out);
+}
+function fcStart(cards) {
+  FC = { all: cards.slice(), queue: shuffle(cards.slice()), total: cards.length, known: 0, missed: [], done: false };
+  $('#s4-fc-dl').disabled = false;
+  $('#s4-fc-print').disabled = false;
+  fcRender();
+}
+function fcGenerateFrom(src) {
+  if (countWords(src) < 12) { toast('المحتوى قصير على الكروت — ارفع ملفاً أو الصق نصاً أطول', 'warn'); return false; }
+  const cards = buildFlashcards(src);
+  if (cards.length < 3) { toast('ما قدرتش أكون كروت كفاية من المحتوى ده — جرب نصاً أطول أو أوضح', 'warn'); return false; }
+  fcStart(cards);
+  toast('جهزت ' + cards.length + ' كارت مراجعة ✓ — اضغط على الكارت يشقلب يوريك الإجابة', 'success', 6000);
+  return true;
+}
+function fcRender() {
+  const box = $('#s4-fc'); if (!box) return;
+  if (!FC || !FC.all.length) return;
+  if (FC.done) {
+    const hard = FC.missed.length;
+    box.innerHTML =
+      '<div class="rounded-2xl border-2 border-emerald-200 dark:border-emerald-800 bg-emerald-50/60 dark:bg-emerald-500/10 p-6 text-center">' +
+      '<p class="text-3xl mb-1">🎓</p>' +
+      '<p class="font-black text-[16px] mb-1">خلصت كل الكروت!</p>' +
+      '<p class="text-[13px] text-slate-500 dark:text-slate-300 mb-4">عرفت <b class="text-emerald-600">' + FC.known + '</b> من ' + FC.total + (hard ? ' — وباقي <b class="text-rose-500">' + hard + '</b> محتاجة مراجعة' : ' — برافو عليك! 🎉') + '</p>' +
+      '<div class="flex flex-wrap gap-2 justify-center">' +
+      '<button type="button" class="btn btn-primary justify-center" data-fc-end="all">🔄 من الأول</button>' +
+      (hard ? '<button type="button" class="btn btn-rose justify-center" data-fc-end="hard">❌ راجع الصعبة بس (' + hard + ')</button>' : '') +
+      '</div></div>';
+    box.querySelectorAll('[data-fc-end]').forEach(b => b.addEventListener('click', () => {
+      if (b.dataset.fcEnd === 'hard') { FC.queue = shuffle(FC.missed.slice()); FC.missed = []; FC.total = FC.queue.length; FC.known = 0; }
+      else { FC.queue = shuffle(FC.all.slice()); FC.total = FC.all.length; FC.known = 0; FC.missed = []; }
+      FC.done = false; fcRender();
+    }));
+    return;
+  }
+  const c = FC.queue[0];
+  const pct = Math.round((FC.total - FC.queue.length) / FC.total * 100);
+  box.innerHTML =
+    '<div class="fc-card" id="fc-card" title="اضغط لقلب الكارت">' +
+    '<div class="fc-inner">' +
+    '<div class="fc-face rounded-2xl border-2 border-indigo-200 dark:border-indigo-800 bg-indigo-50/70 dark:bg-indigo-500/10 p-5 min-h-[150px]">' +
+    '<div class="flex items-center justify-between mb-2"><span class="chip bg-indigo-600 text-white">سؤال ' + (FC.total - FC.queue.length + 1) + ' / ' + FC.total + '</span><span class="text-[11px] text-slate-400 font-bold">👆 اضغط الكارت يقلب</span></div>' +
+    '<p class="text-[15px] font-black leading-loose">' + esc(c.q) + '</p>' +
+    '</div>' +
+    '<div class="fc-face fc-back rounded-2xl border-2 border-emerald-300 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-500/10 p-5 overflow-y-auto">' +
+    '<span class="chip bg-emerald-600 text-white mb-2">✅ الإجابة</span>' +
+    '<p class="text-[14.5px] font-bold leading-loose">' + esc(c.a) + '</p>' +
+    (c.hint ? '<p class="text-[11.5px] text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">من النص: ' + esc(trimWords(c.hint, 22)) + '</p>' : '') +
+    '</div></div></div>' +
+    '<div class="h-2.5 rounded-full bg-slate-200 dark:bg-slate-700 mt-4 overflow-hidden"><div class="h-full rounded-full bg-gradient-to-l from-indigo-600 to-violet-600 transition-all" style="width:' + pct + '%"></div></div>' +
+    '<div class="flex gap-2 mt-3">' +
+    '<button type="button" class="btn btn-rose flex-1 justify-center" data-fc="no">❌ راجعها تاني</button>' +
+    '<button type="button" class="btn btn-emerald flex-1 justify-center" data-fc="yes">✅ عرفتها</button>' +
+    '</div>';
+  const card = $('#fc-card');
+  card.addEventListener('click', () => card.classList.toggle('flipped'));
+  box.querySelectorAll('[data-fc]').forEach(b => b.addEventListener('click', () => {
+    const cur = FC.queue.shift();
+    if (b.dataset.fc === 'yes') FC.known++;
+    else { if (FC.missed.indexOf(cur) === -1) FC.missed.push(cur); FC.queue.push(cur); }
+    if (!FC.queue.length) FC.done = true;
+    fcRender();
+  }));
+}
+/* ورقة الكروت للطباعة/الـ PDF: صفحات A4 فيها الكروت مقسومة بخط قص */
+function buildFlashcardPages(cards) {
+  const W = PP.W, H = PP.H, PAD = 64;
+  const perPage = 8, cols = 2, rows = 4;
+  const gx = 34, gy = 28;
+  const top = 208, bottom = H - 118;
+  const cw = (W - PAD * 2 - gx) / cols;
+  const chh = (bottom - top - gy * (rows - 1)) / rows;
+  const dateStr = new Date().toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
+  const pages = [];
+  for (let pi = 0; pi * perPage < cards.length; pi++) {
+    const c = document.createElement('canvas'); c.width = W; c.height = H;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = '#e0e7ff'; ctx.lineWidth = 3;
+    icRoundRect(ctx, 26, 26, W - 52, H - 52, 24); ctx.stroke();
+    const g = ctx.createLinearGradient(0, 0, W, 150);
+    g.addColorStop(0, '#4f46e5'); g.addColorStop(1, '#7c3aed');
+    ctx.fillStyle = g; icRoundRect(ctx, 44, 44, W - 88, 106, 18); ctx.fill();
+    ctx.direction = 'rtl'; ctx.textAlign = 'right';
+    ctx.fillStyle = '#ffffff'; ctx.font = ppFont(30, 900);
+    ctx.fillText('🎯 فلاش كاردز — خُلاصة', W - 84, 90, W - 300);
+    ctx.font = ppFont(19, 700); ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx.fillText(cards.length + ' كارت مراجعة • ' + dateStr, W - 84, 124, W - 300);
+    ctx.textAlign = 'left'; ctx.direction = 'ltr';
+    ctx.font = ppFont(21, 800); ctx.fillStyle = '#ffffff';
+    ctx.fillText('Page ' + (pi + 1), 84, 106);
+    const slice = cards.slice(pi * perPage, (pi + 1) * perPage);
+    slice.forEach((card, i) => {
+      const col = i % cols, row = Math.floor(i / cols);
+      const x = PAD + (gx + cw) * (cols - 1 - col); /* RTL: أول كارت على اليمين */
+      const y = top + (chh + gy) * row;
+      ctx.fillStyle = '#ffffff'; icRoundRect(ctx, x, y, cw, chh, 16); ctx.fill();
+      ctx.strokeStyle = '#c7d2fe'; ctx.lineWidth = 2; icRoundRect(ctx, x, y, cw, chh, 16); ctx.stroke();
+      let qy = y + 36;
+      ctx.direction = 'rtl'; ctx.textAlign = 'right';
+      ctx.fillStyle = '#4338ca'; ctx.font = ppFont(19, 900);
+      ctx.fillText('س' + (pi * perPage + i + 1) + '.', x + cw - 18, qy, cw - 36);
+      ctx.fillStyle = '#0f172a'; ctx.font = ppFont(20, 700);
+      icWrap(ctx, card.q, cw - 44).slice(0, 3).forEach(ln => { qy += 29; ctx.fillText(ln, x + cw - 18, qy, cw - 36); });
+      const dy = y + chh / 2;
+      ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1.5; ctx.setLineDash([7, 6]);
+      ctx.beginPath(); ctx.moveTo(x + 12, dy); ctx.lineTo(x + cw - 12, dy); ctx.stroke();
+      ctx.setLineDash([]);
+      let ay = dy + 28;
+      ctx.fillStyle = '#059669'; ctx.font = ppFont(17, 900);
+      ctx.fillText('الإجابة:', x + cw - 18, ay, cw - 36);
+      ctx.fillStyle = '#1f2937'; ctx.font = ppFont(19, 400);
+      icWrap(ctx, card.a, cw - 44).slice(0, 3).forEach(ln => { ay += 27; ctx.fillText(ln, x + cw - 18, ay, cw - 36); });
+    });
+    ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(PAD, H - 84); ctx.lineTo(W - PAD, H - 84); ctx.stroke();
+    ctx.direction = 'rtl'; ctx.textAlign = 'right';
+    ctx.fillStyle = '#64748b'; ctx.font = ppFont(20, 700);
+    ctx.fillText('منصة خُلاصة (khulasa) — تطوير Ziad Ashraf', W - PAD, H - 46);
+    ctx.direction = 'ltr'; ctx.textAlign = 'left';
+    ctx.fillText('+20 109 971 3432', PAD, H - 46);
+    pages.push(c);
+  }
+  return pages;
+}
+function fcPrintHTML(cards) {
+  const cell = (c, i) =>
+    '<td style="width:50%;vertical-align:top;border:2px solid #c7d2fe;border-radius:12px;padding:12px">' +
+    '<div style="color:#4338ca;font-weight:900;font-size:12pt;margin-bottom:6px">س' + (i + 1) + '. ' + esc(c.q) + '</div>' +
+    '<div style="border-top:1px dashed #94a3b8;margin:8px 0"></div>' +
+    '<div style="color:#065f46;font-weight:700;font-size:11pt">الإجابة: ' + esc(c.a) + '</div></td>';
+  let rowsHtml = '';
+  for (let i = 0; i < cards.length; i += 2) rowsHtml += '<tr>' + cell(cards[i], i) + (cards[i + 1] ? cell(cards[i + 1], i + 1) : '<td></td>') + '</tr>';
+  return '<h1>🎯 فلاش كاردز — ' + cards.length + ' كارت</h1><table style="border-collapse:separate;border-spacing:6px;width:100%">' + rowsHtml + '</table>';
+}
+function setupFlashcards() {
+  if (!$('#s4-fc-gen')) return;
+  $('#s4-fc-gen').addEventListener('click', () => {
+    const raw = $('#s4-text').value.trim();
+    const out = $('#s4-output');
+    const src = raw || (out && out.dataset.done ? out.innerText : '');
+    if (countWords(src) < 12) { toast('أضف محتوى أولاً — ارفع ملفاً أو الصق نصاً (١٢ كلمة على الأقل)', 'warn'); return; }
+    fcGenerateFrom(src);
+  });
+  $('#s4-fc-dl').addEventListener('click', () => {
+    if (!FC || !FC.all.length) return toast('اعمل الكروت أولاً', 'warn');
+    toast('جارٍ تجهيز PDF الكروت...', 'info');
+    try { saveCanvasesAsPdf(buildFlashcardPages(FC.all), 'khulasa-فلاش-كاردز', true); }
+    catch (e) { console.error(e); toast('تعذر بناء PDF الكروت — حاول تاني', 'error'); }
+  });
+  $('#s4-fc-print').addEventListener('click', () => {
+    if (!FC || !FC.all.length) return toast('اعمل الكروت أولاً', 'warn');
+    printHTML('فلاش كاردز — منصة خلاصة', fcPrintHTML(FC.all));
+  });
 }
 
 /* =========================================================
@@ -3555,7 +4448,7 @@ function renderStorageList() {
     draft_sec1: 'مسودة التفريغ الصوتي', draft_sec2: 'مسودة نص PDF', draft_sec4: 'مسودة الملخص',
     draft_sec5: 'مسودة الاختبار', draft_sec6: 'مسودة المعالجة', last_section: 'آخر قسم مفتوح',
     last_summary: 'آخر ملخص', last_result: 'آخر نتيجة اختبار', last_magic: 'آخر معالجة سحرية',
-    theme: 'الوضع (ليلي/نهاري)'
+    theme: 'الوضع (ليلي/نهاري)', lectures: '📚 فهرس المحاضرات'
   };
   const rows = [];
   for (let i = 0; i < localStorage.length; i++) {
@@ -3564,7 +4457,7 @@ function renderStorageList() {
     const shortKey = k.slice(LS_PREFIX.length);
     const val = localStorage.getItem(k) || '';
     rows.push('<div class="file-chip justify-between">' +
-      '<span class="truncate">🗂️ <b>' + esc(names[shortKey] || shortKey) + '</b> <span class="text-slate-400 text-[10px]">(' + fmtSize(val.length) + ')</span></span>' +
+      '<span class="truncate">🗂️ <b>' + esc(names[shortKey] || (shortKey.startsWith('lec_') ? '📚 محاضرة محفوظة' : shortKey)) + '</b> <span class="text-slate-400 text-[10px]">(' + fmtSize(val.length) + ')</span></span>' +
       '<span class="flex items-center gap-1 shrink-0">' +
       '<button type="button" class="btn btn-slate !px-2 !py-1 !text-[11px]" data-ls-copy="' + esc(k) + '">📋</button>' +
       '<button type="button" class="btn btn-slate !px-2 !py-1 !text-[11px]" data-ls-dl="' + esc(k) + '">💾</button>' +
@@ -3579,6 +4472,230 @@ function renderStorageList() {
     const del = e.target.closest('[data-ls-del]');
     if (del) { localStorage.removeItem(del.dataset.lsDel); renderStorageList(); toast('تم الحذف', 'info'); }
   };
+}
+
+/* =========================================================
+   قسم المحاضرات: مكتبة تحفظ كل المحاضرات المرفوعة في أي قسم
+   ========================================================= */
+function lecIndex() { const v = lsGet('lectures'); return Array.isArray(v) ? v : []; }
+function lecSaveIndex(ix) { lsSet('lectures', ix.slice(0, 40)); }
+function saveLectureContent(id, obj) {
+  let t = String(obj.text || '');
+  const attempt = s => { lsSet('lec_' + id, JSON.stringify({ text: s })); const back = lsGet('lec_' + id); return !!(back && back.text === s); };
+  if (attempt(t)) return;
+  /* لو الذاكرة اتملت: قلّل النص تدريجياً ثم اشطب الأقدم */
+  let cut = t;
+  while (cut.length > 20000 && !attempt(cut)) cut = cut.slice(0, Math.floor(cut.length / 2));
+  if (!attempt(cut)) { pruneOldLectures(3); attempt(cut); }
+}
+function pruneOldLectures(n) {
+  const ix = lecIndex();
+  const gone = ix.splice(Math.max(0, ix.length - n), n);
+  gone.forEach(l => { lsDel('lec_' + l.id); idbDel('file_' + l.id); });
+  lecSaveIndex(ix);
+}
+function getLectureText(id) {
+  const o = lsGet('lec_' + id);
+  return (o && typeof o.text === 'string') ? o.text : '';
+}
+function registerLecture(data) {
+  try {
+    const ix = lecIndex();
+    const text = String(data.text || '');
+    /* حفظ الملف الأصلي نفسه في IndexedDB (لحد 40 م.ب) — عشان المحاضرة تفضل موجودة
+       بنصها وملفها حتى بعد قفل الصفحة، والتسجيلات الصوتية تشتغل من المكتبة */
+    const file = data.file && data.file.size <= 40 * 1024 * 1024 ? data.file : null;
+    const keepFile = lec => {
+      if (!file) return;
+      lec.hasFile = true; lec.ftype = file.type || '';
+      idbPut('file_' + lec.id, file).then(ok => {
+        if (!ok) {
+          const cur = lecIndex().find(x => x.id === lec.id);
+          if (cur) { cur.hasFile = false; lecSaveIndex(lecIndex()); renderLectures(); }
+        }
+      });
+    };
+    const found = ix.find(l => l.name === data.name && l.size === data.size);
+    if (found) {
+      found.date = new Date().toLocaleString('ar-EG');
+      found.words = countWords(text);
+      if (data.pages) found.pages = data.pages;
+      saveLectureContent(found.id, { text: text });
+      keepFile(found);
+      lecSaveIndex(ix); renderLectures();
+      return found.id;
+    }
+    const lec = {
+      id: uid(), name: data.name || 'محاضرة', kind: data.kind || 'other',
+      size: data.size || 0, pages: data.pages || 0, words: countWords(text),
+      date: new Date().toLocaleString('ar-EG')
+    };
+    ix.unshift(lec);
+    saveLectureContent(lec.id, { text: text });
+    keepFile(lec);
+    lecSaveIndex(ix);
+    renderLectures();
+    toast('📚 أُضيفت «' + lec.name + '» لمكتبة المحاضرات', 'info');
+    return lec.id;
+  } catch (e) { console.error('registerLecture', e); }
+}
+const LEC_KINDS = { pdf: { icon: '📕', label: 'PDF' }, image: { icon: '🖼️', label: 'صور/OCR' }, audio: { icon: '🎙️', label: 'صوت' }, text: { icon: '✍️', label: 'نص' }, other: { icon: '📄', label: 'ملف' } };
+function renderLectures() {
+  const grid = $('#lec-grid'); if (!grid) return;
+  const q = (($('#lec-search') || {}).value || '').trim();
+  const all = lecIndex();
+  const ix = all.filter(l => !q || String(l.name || '').includes(q));
+  $('#lec-count').textContent = all.length ? ('📚 ' + all.length + ' محاضرة محفوظة') : '';
+  if (!ix.length) {
+    grid.innerHTML = '<div class="md:col-span-2 xl:col-span-3 text-sm text-slate-400 dark:text-slate-500 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-10 text-center leading-loose">' +
+      (q ? 'لا توجد نتائج مطابقة لبحثك' : 'لا توجد محاضرات محفوظة بعد — ارفع PDF أو صوراً أو نصاً من الأداة أعلاه، وكل ملف ترفعه في أي قسم من المنصة هيُضاف هنا تلقائياً 📚') + '</div>';
+    return;
+  }
+  grid.innerHTML = ix.map(l => {
+    const k = LEC_KINDS[l.kind] || LEC_KINDS.other;
+    const meta = [];
+    if (l.pages) meta.push(l.pages + ' صفحة');
+    if (l.words) meta.push(l.words + ' كلمة');
+    if (l.size) meta.push(fmtSize(l.size));
+    const preview = getLectureText(l.id).replace(/\s+/g, ' ').trim();
+    return '<div class="card" data-lec="' + l.id + '">' +
+      '<div class="flex items-start justify-between gap-2 mb-2"><span class="text-3xl">' + k.icon + '</span>' +
+      '<span class="chip bg-slate-100 dark:bg-slate-800 text-slate-500">' + k.label + '</span></div>' +
+      '<h4 class="font-black text-[14px] leading-snug mb-1 break-words">' + esc(l.name) + '</h4>' +
+      '<p class="text-[11px] text-slate-400 mb-1">' + esc(l.date || '') + (meta.length ? ' • ' + esc(meta.join(' • ')) : '') + (l.hasFile ? ' • 💾 الملف محفوظ' : '') + '</p>' +
+      '<p class="text-[12px] text-slate-500 dark:text-slate-400 leading-relaxed mb-3 min-h-[20px]">' + esc(preview ? trimWords(preview, 18) : '— بدون نص مستخرج —') + '</p>' +
+      '<div data-lec-player></div>' +
+      '<div class="flex flex-wrap gap-1.5">' +
+      (l.hasFile && l.kind === 'audio' ? '<button type="button" class="btn btn-primary !py-1.5 !px-3 !text-[11px]" data-lec-act="play">▶️ تشغيل</button>' : '') +
+      (l.hasFile ? '<button type="button" class="btn btn-slate !py-1.5 !px-3 !text-[11px]" data-lec-act="file">⬇️ الملف الأصلي</button>' : '') +
+      (l.hasFile && !l.words && (l.kind === 'pdf' || l.kind === 'image') ? '<button type="button" class="btn btn-soft !py-1.5 !px-3 !text-[11px]" data-lec-act="reext">🔄 استخراج النص</button>' : '') +
+      '<button type="button" class="btn btn-primary !py-1.5 !px-3 !text-[11px]" data-lec-act="sum">📝 لخّص</button>' +
+      '<button type="button" class="btn btn-emerald !py-1.5 !px-3 !text-[11px]" data-lec-act="quiz">🎯 اختبار</button>' +
+      '<button type="button" class="btn btn-soft !py-1.5 !px-3 !text-[11px]" data-lec-act="map">🧠 خريطة</button>' +
+      '<button type="button" class="btn btn-soft !py-1.5 !px-3 !text-[11px]" data-lec-act="paper">📄 ورقة</button>' +
+      '<button type="button" class="btn btn-soft !py-1.5 !px-3 !text-[11px]" data-lec-act="cards">🗂️ كروت</button>' +
+      '<button type="button" class="btn btn-slate !py-1.5 !px-3 !text-[11px]" data-lec-act="view">📖 النص</button>' +
+      '<button type="button" class="btn btn-rose !py-1.5 !px-3 !text-[11px]" data-lec-act="del">🗑</button>' +
+      '</div></div>';
+  }).join('');
+}
+function openLecText(id) {
+  const l = lecIndex().find(x => x.id === id);
+  if (!l) return;
+  $('#lt-title').textContent = '📖 ' + l.name;
+  $('#lt-meta').textContent = (l.date || '') + (l.words ? ' • ' + l.words + ' كلمة' : '');
+  $('#lt-text').textContent = getLectureText(id) || 'لا يوجد نص مستخرج محفوظ لهذه المحاضرة.';
+  $('#lec-text-modal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+function closeLecText() { const m = $('#lec-text-modal'); if (!m) return; m.classList.add('hidden'); document.body.style.overflow = ''; }
+function setupLectures() {
+  if (!$('#lec-grid')) return;
+  $('#lec-search').addEventListener('input', debounce(renderLectures, 200));
+  $('#lec-refresh').addEventListener('click', () => { renderLectures(); toast('تم تحديث المكتبة ✓', 'info'); });
+  $('#lec-grid').addEventListener('click', async e => {
+    const b = e.target.closest('[data-lec-act]'); if (!b) return;
+    const card = b.closest('[data-lec]'); if (!card) return;
+    const id = card.dataset.lec;
+    const act = b.dataset.lecAct;
+    if (act === 'del') {
+      const l = lecIndex().find(x => x.id === id);
+      if (!confirm('حذف المحاضرة «' + (l ? l.name : '') + '» نهائياً؟')) return;
+      lsDel('lec_' + id);
+      idbDel('file_' + id);
+      lecSaveIndex(lecIndex().filter(x => x.id !== id));
+      renderLectures(); toast('تم حذف المحاضرة', 'info');
+      return;
+    }
+    if (act === 'view') return openLecText(id);
+    if (act === 'play') {
+      const zone = card.querySelector('[data-lec-player]');
+      if (!zone) return;
+      if (zone.innerHTML) { zone.innerHTML = ''; return; }
+      toast('جارٍ تحميل الصوت...', 'info');
+      const blob = await idbGet('file_' + id);
+      if (!blob) { toast('الملف الصوتي غير محفوظ — أعد رفع الملف', 'warn'); return; }
+      zone.innerHTML = '<audio controls autoplay class="w-full mt-1 mb-2" src="' + URL.createObjectURL(blob) + '"></audio>';
+      return;
+    }
+    if (act === 'file') {
+      const blob = await idbGet('file_' + id);
+      if (!blob) { toast('الملف الأصلي غير محفوظ — أعد رفع الملف', 'warn'); return; }
+      const l = lecIndex().find(x => x.id === id);
+      downloadBlob(blob, (l && l.name) || 'khulasa-ملف-محاضرة');
+      return;
+    }
+    if (act === 'reext') {
+      const l = lecIndex().find(x => x.id === id);
+      if (!l) return;
+      toast('جارٍ استخراج النص من «' + l.name + '»...', 'info');
+      try {
+        const blob = await idbGet('file_' + id);
+        if (!blob) { toast('الملف الأصلي غير محفوظ — أعد رفع الملف', 'warn'); return; }
+        const f = new File([blob], l.name || 'file', { type: blob.type || l.ftype || '' });
+        const kind = fileKind(f);
+        let text = '';
+        if (kind === 'pdf') {
+          if (!(await ensurePdfJs())) { toast('محرك PDF غير متاح — افتح الصفحة مرة واحدة مع اتصال إنترنت', 'error'); return; }
+          if (window.pdfjsLib && !pdfjsLib.GlobalWorkerOptions.workerSrc) setupPdfWorker();
+          const r = await extractPdfText(f, null);
+          text = r.text;
+        } else if (kind === 'image') {
+          text = await ocrImage(f, null);
+        }
+        if (!text || countWords(text) < 5) { toast('لم أستطع قراءة نص من الملف — لو كان ممسوحاً ضوئياً ارفع صفحاته كصور مع اتصال بالإنترنت', 'warn', 7000); return; }
+        saveLectureContent(id, { text: text });
+        const ix = lecIndex(); const l2 = ix.find(x => x.id === id);
+        if (l2) { l2.words = countWords(text); lecSaveIndex(ix); }
+        renderLectures();
+        toast('تم استخراج النص وحفظه في المكتبة ✓ (' + countWords(text) + ' كلمة)', 'success');
+      } catch (err) { console.error(err); toast('تعذر استخراج النص: ' + (err && err.message ? err.message : ''), 'error'); }
+      return;
+    }
+    const text = getLectureText(id);
+    if (!text || countWords(text) < 10) return toast('لا يوجد نص كافٍ محفوظ لهذه المحاضرة — أعد رفع الملف أو اضغط «استخراج النص»', 'warn');
+    if (act === 'quiz') {
+      $('#s5-text').value = text; $('#s5-text').dispatchEvent(new Event('input', { bubbles: true }));
+      switchSection('sec5'); toast('جهّزت النص — اضبط الإعدادات واضغط «توليد الاختبار» 🎯', 'success');
+    } else {
+      $('#s4-text').value = text; $('#s4-text').dispatchEvent(new Event('input', { bubbles: true }));
+      switchSection('sec4');
+      if (act === 'sum') generateSummary(true);
+      else if (act === 'map') {
+        generateSummary(false);
+        setTimeout(() => { const m = $('#s4-map'); if (m) m.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 400);
+      } else if (act === 'paper') setTimeout(openPaperSheet, 80);
+      else if (act === 'cards') {
+        generateSummary(false);
+        setTimeout(() => {
+          if (fcGenerateFrom($('#s4-text').value)) {
+            const m = $('#s4-fc'); if (m) m.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 120);
+      }
+    }
+  });
+  $('#lt-close').addEventListener('click', closeLecText);
+  $('#lec-text-modal').addEventListener('click', e => { if (e.target === $('#lec-text-modal')) closeLecText(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#lec-text-modal').classList.contains('hidden')) closeLecText(); });
+  $('#lt-copy').addEventListener('click', () => copyText($('#lt-text').textContent));
+  $('#lt-txt').addEventListener('click', () => saveTXT('khulasa-محاضرة', $('#lt-text').textContent));
+  $('#lt-word').addEventListener('click', () => saveWordDoc('khulasa-محاضرة', 'نص محاضرة — منصة خلاصة', textToPrintHtml('نص المحاضرة', $('#lt-text').textContent)));
+  $('#lt-pdf').addEventListener('click', async () => {
+    const d = document.createElement('div');
+    d.className = 'card bg-white text-slate-800 p-6';
+    d.innerHTML = textToPrintHtml('نص المحاضرة', $('#lt-text').textContent);
+    document.body.appendChild(d);
+    await saveElementAsPDF(d, 'khulasa-محاضرة');
+    d.remove();
+  });
+  $('#lt-sum').addEventListener('click', () => {
+    const t = $('#lt-text').textContent.trim();
+    if (!t) return;
+    $('#s4-text').value = t; $('#s4-text').dispatchEvent(new Event('input', { bubbles: true }));
+    closeLecText(); switchSection('sec4'); generateSummary(true);
+  });
+  renderLectures();
 }
 
 /* =========================================================
@@ -3597,12 +4714,14 @@ function init() {
   setupSection2();
   setupTools();
   setupSummary();
+  setupFlashcards();
   setupQuiz();
   setupMagic();
   setupExport();
   setupDrafts();
   setupImageSummarize();
   setupImageCards();
+  setupLectures();
   setTimeout(() => toast('أهلاً بك في منصة خلاصة 🌟 — تطوير Ziad Ashraf', 'success'), 600);
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
@@ -3642,16 +4761,40 @@ else init();
   <div class="max-w-4xl mx-auto my-6">
     <div class="card !bg-white dark:!bg-[#0f1830] flex items-center justify-between flex-wrap gap-3 mb-4">
       <div>
-        <h3 class="font-black text-lg flex items-center gap-2">🖼️ الملخص كصور جاهزة</h3>
+        <h3 id="ic-title" class="font-black text-lg flex items-center gap-2">🖼️ الملخص كصور جاهزة</h3>
         <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">احفظ كل صورة أو شاركها على واتساب/تليجرام — <span id="ic-count" class="font-bold text-indigo-600 dark:text-indigo-300"></span></p>
         <p class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 mt-1">💡 طريقة مضمونة على أي جهاز: لمس طويل على الصورة ← «حفظ الصورة» (كمبيوتر: كليك يمين)</p>
       </div>
       <div class="flex items-center gap-2">
+        <button type="button" id="ic-pdf" class="btn btn-slate">📕 PDF</button>
         <button type="button" id="ic-save-all" class="btn btn-primary">💾 حفظ الكل</button>
         <button type="button" id="ic-close" class="btn btn-slate">✕ إغلاق</button>
       </div>
     </div>
     <div id="ic-grid" class="grid sm:grid-cols-2 gap-4 pb-10"></div>
+  </div>
+</div>
+
+<!-- نافذة عرض نص محاضرة من المكتبة -->
+<div id="lec-text-modal" class="hidden fixed inset-0 z-[92] bg-slate-900/70 backdrop-blur-sm overflow-y-auto p-4">
+  <div class="max-w-3xl mx-auto my-6">
+    <div class="card !bg-white dark:!bg-[#0f1830] flex items-center justify-between gap-3 mb-4">
+      <div class="min-w-0">
+        <h3 id="lt-title" class="font-black text-lg truncate">📖 نص المحاضرة</h3>
+        <p id="lt-meta" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5"></p>
+      </div>
+      <button type="button" id="lt-close" class="btn btn-slate shrink-0">✕ إغلاق</button>
+    </div>
+    <div class="card !bg-white dark:!bg-[#0f1830]">
+      <div id="lt-text" class="whitespace-pre-wrap text-[13.5px] leading-loose max-h-[55vh] overflow-y-auto pe-1 text-slate-700 dark:text-slate-200"></div>
+      <div class="flex flex-wrap gap-2 mt-4">
+        <button type="button" id="lt-copy" class="btn btn-slate">📋 نسخ</button>
+        <button type="button" id="lt-txt" class="btn btn-slate">💾 حفظ TXT</button>
+        <button type="button" id="lt-word" class="btn btn-slate">📄 حفظ Word</button>
+        <button type="button" id="lt-pdf" class="btn btn-slate">📕 حفظ PDF</button>
+        <button type="button" id="lt-sum" class="btn btn-primary">📝 لخّص الآن</button>
+      </div>
+    </div>
   </div>
 </div>
 </body>
