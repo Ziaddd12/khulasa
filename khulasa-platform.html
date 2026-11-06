@@ -1,0 +1,2743 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خُلاصة | منصة الملخصات الذكية والامتحانات التفاعلية</title>
+<meta name="description" content="منصة خُلاصة التعليمية الشاملة من إعداد زياد أشرف: تفريغ صوتي، أدوات PDF، ملخصات ذكية، خرائط ذهنية، بنك أسئلة وامتحانات تفاعلية — كل ذلك على جهازك مباشرة">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%D8%AE%3C/text%3E%3C/svg%3E">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: { extend: {
+    fontFamily: { cairo: ['Cairo','Tajawal','ui-sans-serif','system-ui','sans-serif'] },
+    keyframes: {
+      floaty: {'0%,100%':{transform:'translateY(0)'},'50%':{transform:'translateY(-14px)'}},
+      fadeUp: {from:{opacity:'0',transform:'translateY(14px)'},to:{opacity:'1',transform:'translateY(0)'}},
+      pop: {'0%':{transform:'scale(.88)',opacity:'0'},'100%':{transform:'scale(1)',opacity:'1'}},
+      ringPulse: {'0%':{transform:'scale(.85)',opacity:'.75'},'100%':{transform:'scale(1.55)',opacity:'0'}},
+      blink: {'0%,100%':{opacity:'1'},'50%':{opacity:'.3'}},
+      spinSlow: {to:{transform:'rotate(360deg)'}}
+    },
+    animation: {
+      floaty:'floaty 6s ease-in-out infinite',
+      fadeUp:'fadeUp .45s ease both',
+      pop:'pop .22s ease both',
+      ringPulse:'ringPulse 1.7s ease-out infinite',
+      blink:'blink 1.1s ease-in-out infinite',
+      spinSlow:'spinSlow 9s linear infinite'
+    }
+  }}
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style type="text/tailwindcss">
+@layer components {
+  .card { @apply bg-white/85 dark:bg-slate-900/70 backdrop-blur-xl rounded-3xl border border-slate-200/70 dark:border-slate-700/60 shadow-xl shadow-slate-200/40 dark:shadow-black/40; }
+  .soft { @apply bg-slate-100/80 dark:bg-slate-800/60 rounded-2xl border border-slate-200/70 dark:border-slate-700/50; }
+  .btn { @apply inline-flex items-center justify-center gap-2 font-bold rounded-2xl px-5 py-3 text-sm transition-all duration-200 cursor-pointer select-none active:scale-[.97]; }
+  .btn-primary { @apply inline-flex items-center justify-center gap-2 font-bold rounded-2xl px-5 py-3 text-sm transition-all duration-200 cursor-pointer select-none active:scale-[.97] text-white bg-gradient-to-l from-violet-600 via-indigo-600 to-sky-500 shadow-lg shadow-violet-500/25 hover:shadow-xl hover:shadow-violet-500/40 hover:-translate-y-0.5; }
+  .btn-ghost { @apply inline-flex items-center justify-center gap-2 font-bold rounded-2xl px-5 py-3 text-sm transition-all duration-200 cursor-pointer select-none active:scale-[.97] bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 hover:-translate-y-0.5; }
+  .btn-danger { @apply inline-flex items-center justify-center gap-2 font-bold rounded-2xl px-5 py-3 text-sm transition-all duration-200 cursor-pointer select-none active:scale-[.97] bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-100 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/30; }
+  .btn-wa { @apply inline-flex items-center justify-center gap-2 font-bold rounded-2xl px-5 py-3 text-sm transition-all duration-200 cursor-pointer select-none active:scale-[.97] text-white bg-[#25D366] shadow-lg shadow-emerald-500/25 hover:bg-[#1fb857] hover:-translate-y-0.5; }
+  .btn-sm { @apply inline-flex items-center justify-center gap-1.5 font-bold rounded-xl px-3.5 py-2 text-xs transition-all duration-200 cursor-pointer select-none active:scale-95 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-200 border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700; }
+  .btn-primary-sm { @apply inline-flex items-center justify-center gap-1.5 font-bold rounded-xl px-3.5 py-2 text-xs transition-all duration-200 cursor-pointer select-none active:scale-95 text-white bg-gradient-to-l from-violet-600 to-sky-500 shadow-md shadow-violet-500/20 hover:shadow-lg hover:shadow-violet-500/30; }
+  .btn-danger-sm { @apply inline-flex items-center justify-center gap-1.5 font-bold rounded-xl px-3.5 py-2 text-xs transition-all duration-200 cursor-pointer select-none active:scale-95 bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-100 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/30; }
+  .btn-icon { @apply inline-flex items-center justify-center w-10 h-10 rounded-xl cursor-pointer transition text-slate-500 dark:text-slate-300 hover:bg-slate-200/70 dark:hover:bg-slate-700/70 shrink-0; }
+  .input { @apply w-full px-4 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none focus:ring-4 focus:ring-violet-500/20 focus:border-violet-500 transition text-sm; }
+  .label { @apply block text-sm font-bold text-slate-600 dark:text-slate-300 mb-2; }
+  .chip { @apply px-4 py-2 rounded-xl text-sm font-bold cursor-pointer transition border bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 hover:border-violet-400 hover:text-violet-600; }
+  .chip-on { @apply px-4 py-2 rounded-xl text-sm font-bold cursor-pointer transition border shadow-lg shadow-violet-500/25 text-white bg-gradient-to-l from-violet-600 to-sky-500 border-transparent; }
+  .tabbtn { @apply px-4 py-2.5 rounded-xl text-sm font-bold cursor-pointer transition whitespace-nowrap text-slate-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-300 hover:bg-violet-50 dark:hover:bg-violet-500/10; }
+  .tabbtn-on { @apply px-4 py-2.5 rounded-xl text-sm font-bold cursor-pointer transition whitespace-nowrap text-white bg-gradient-to-l from-violet-600 to-sky-500 shadow-md shadow-violet-500/25; }
+  .navbtn { @apply px-3.5 py-2 rounded-xl text-sm font-bold cursor-pointer transition text-slate-500 dark:text-slate-300 hover:text-violet-600 dark:hover:text-white hover:bg-violet-50 dark:hover:bg-slate-700/60 whitespace-nowrap; }
+  .navbtn-on { @apply px-3.5 py-2 rounded-xl text-sm font-bold cursor-pointer transition whitespace-nowrap text-white bg-gradient-to-l from-violet-600 to-sky-500 shadow-md shadow-violet-500/25; }
+  .dropzone { @apply flex flex-col items-center justify-center gap-2 py-8 px-4 text-center rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-600 bg-slate-50/60 dark:bg-slate-800/40 cursor-pointer transition hover:border-violet-500 hover:bg-violet-50/60 dark:hover:bg-violet-500/10; }
+  .badge { @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold; }
+  .kicker { @apply text-xs font-extrabold tracking-widest text-violet-600 dark:text-violet-400; }
+  .sec-title { @apply text-2xl md:text-3xl font-black text-slate-800 dark:text-white; }
+  .mm-node { @apply rounded-2xl px-4 py-2.5 text-sm font-bold bg-white dark:bg-slate-800 border-2 shadow-lg text-center; }
+  .tool-card { @apply text-start p-5 rounded-3xl border border-slate-200/80 dark:border-slate-700/60 bg-white/80 dark:bg-slate-900/60 cursor-pointer transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-violet-500/10 hover:border-violet-400/60; }
+  .pt-nav-btn { @apply w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-start font-bold text-sm cursor-pointer transition text-slate-500 dark:text-slate-300 hover:bg-violet-50 dark:hover:bg-slate-700/50 border border-transparent; }
+  .pt-nav-on { @apply w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-start font-bold text-sm cursor-pointer transition text-white bg-gradient-to-l from-violet-600 to-sky-500 shadow-lg shadow-violet-500/25 border border-transparent; }
+}
+</style>
+<style>
+html { scroll-behavior: auto; }
+body { font-family:'Cairo','Tajawal',sans-serif; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+::selection { background:#7c3aed33; }
+::-webkit-scrollbar { width:10px; height:10px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:linear-gradient(180deg,#8b5cf6,#0ea5e9); border-radius:99px; border:2px solid transparent; background-clip:padding-box; }
+.grad-text { background:linear-gradient(270deg,#7c3aed,#0ea5e9); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.bg-dots { background-image:radial-gradient(#94a3b83a 1px,transparent 1px); background-size:24px 24px; }
+.hero-glow { background:radial-gradient(55% 55% at 78% 15%,#8b5cf622,transparent 65%),radial-gradient(50% 50% at 15% 85%,#0ea5e922,transparent 65%); }
+.tabnum { font-variant-numeric:tabular-nums; }
+.drop-hot { border-color:#8b5cf6 !important; background:#8b5cf61c !important; transform:scale(1.01); }
+#mainNav .navbtn { padding-left:.7rem; padding-right:.7rem; }
+#recBtn { position:relative; }
+.rec-ring { position:absolute; inset:0; border-radius:9999px; border:3px solid #f43f5e; opacity:0; pointer-events:none; }
+#recBtn.rec-on { background:linear-gradient(135deg,#f43f5e,#e11d48) !important; box-shadow:0 0 0 10px #f43f5e1f !important; }
+#recBtn.rec-on .rec-ring { animation:ringPulse 1.7s ease-out infinite; }
+#recBtn.rec-on .rec-ring:nth-of-type(2) { animation-delay:.55s; }
+.vbar { width:4px; border-radius:99px; background:linear-gradient(180deg,#8b5cf6,#0ea5e9); height:8px; }
+.rec-on-bars .vbar { animation:vbeq 1s ease-in-out infinite; }
+@keyframes vbeq { 0%,100%{height:8px} 50%{height:26px} }
+.mm-wrap { position:relative; }
+.mm-edges { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; overflow:visible; }
+.mm-edges path { fill:none; }
+.tts-sent { padding:2px 4px; border-radius:8px; transition:background .3s; }
+.tts-on { background:#7c3aed2e; }
+.step-dot { transition:all .3s; }
+.toast-item { animation:toastIn .35s cubic-bezier(.2,.9,.3,1.2) both; }
+@keyframes toastIn { from{opacity:0;transform:translateY(16px) scale(.94)} to{opacity:1;transform:none} }
+.app-section { min-height:60vh; }
+details summary::-webkit-details-marker { display:none; }
+input[type=range] { accent-color:#7c3aed; width:100%; }
+.thumb-img { max-height:150px; width:auto; border-radius:12px; box-shadow:0 4px 14px #0002; }
+@media print { header, footer, #fabs, #toasts, #drawer { display:none !important; } }
+</style>
+</head>
+<body class="font-cairo bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen antialiased">
+<noscript><div class="bg-amber-100 text-amber-800 p-4 text-center font-bold">هذه المنصة تحتاج تشغيل JavaScript للعمل — من فضلك فعّلها من إعدادات المتصفح.</div></noscript>
+
+<!-- خلفية زخرفية -->
+<div class="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
+  <div class="absolute -top-32 -left-32 w-[480px] h-[480px] rounded-full bg-violet-400/15 dark:bg-violet-600/10 blur-3xl"></div>
+  <div class="absolute top-1/3 -right-40 w-[520px] h-[520px] rounded-full bg-sky-400/15 dark:bg-sky-600/10 blur-3xl"></div>
+  <div class="absolute bottom-0 left-1/3 w-[400px] h-[400px] rounded-full bg-fuchsia-400/10 dark:bg-fuchsia-600/10 blur-3xl"></div>
+</div>
+
+<!-- التنبيهات -->
+<div id="toasts" class="fixed bottom-5 inset-x-0 z-[90] flex flex-col items-center gap-2 pointer-events-none px-4"></div>
+
+<!-- أزرار عائمة -->
+<div id="fabs">
+  <a href="https://wa.me/201099713432" target="_blank" rel="noopener" title="تواصل معنا واتساب — زياد أشرف"
+     class="fixed bottom-5 left-5 z-50 w-14 h-14 rounded-full bg-[#25D366] text-white grid place-items-center shadow-2xl shadow-emerald-500/40 hover:scale-110 transition-transform">
+    <span class="absolute inset-0 rounded-full border-2 border-[#25D366] animate-ringPulse"></span>
+    <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 01-9 8.4 9.9 9.9 0 01-3.8-.8L3 21l1.9-5.2A8.4 8.4 0 013 11.5a8.4 8.4 0 019-8.4 8.4 8.4 0 019 8.4z"/><path d="M8.5 10.5c.5 2 3 4.5 5 5l1.5-1.5 2.5 1c-.5 1.5-1.5 2-3 1.5-3-1-6.5-4.5-7.5-7.5-.5-1.5 0-2.5 1.5-3l1 2.5z" fill="currentColor" stroke="none"/></svg>
+  </a>
+  <button type="button" id="topBtn" title="العودة للأعلى"
+    class="fixed bottom-5 right-5 z-50 w-12 h-12 rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur text-violet-600 dark:text-violet-400 border border-slate-200 dark:border-slate-700 shadow-xl grid place-items-center hover:-translate-y-1 transition hidden opacity-0">
+    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+</div>
+
+<!-- الهيدر -->
+<header class="sticky top-0 z-40 border-b border-slate-200/70 dark:border-slate-700/60 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl">
+  <div class="max-w-7xl mx-auto px-4 h-16 flex items-center gap-2">
+    <button type="button" id="drawerBtn" class="btn-icon xl:hidden" title="القائمة" aria-label="فتح القائمة">
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <div data-nav="home" role="button" tabindex="0" class="flex items-center gap-3 cursor-pointer select-none shrink-0">
+      <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-violet-600 to-sky-500 grid place-items-center text-white shadow-lg shadow-violet-500/30 text-2xl font-black">خ</div>
+      <div class="leading-tight hidden sm:block">
+        <div class="font-black text-slate-800 dark:text-white">خُلاصة <span class="text-[10px] font-bold text-slate-400">Khulasa</span></div>
+        <div class="text-[11px] font-bold text-violet-600 dark:text-violet-400">منصة الملخصات الذكية — بإعداد زياد أشرف</div>
+      </div>
+    </div>
+    <nav class="hidden xl:flex items-center gap-0.5 mx-auto text-[13px]" id="mainNav">
+      <button type="button" class="navbtn navbtn-on" data-nav="home">الرئيسية</button>
+      <button type="button" class="navbtn" data-nav="recorder">🎙️ تفريغ صوتي</button>
+      <button type="button" class="navbtn" data-nav="pdftools">🧰 أدوات PDF</button>
+      <button type="button" class="navbtn" data-nav="summary">🧠 ملخصات وخرائط</button>
+      <button type="button" class="navbtn" data-nav="quiz">📝 أسئلة وامتحان</button>
+      <button type="button" class="navbtn" data-nav="magic">✨ زر سحري</button>
+      <button type="button" class="navbtn" data-nav="export">🔊 تصدير ونطق</button>
+      <button type="button" class="navbtn" data-nav="library">💾 محفوظاتي</button>
+    </nav>
+    <div class="flex items-center gap-2 ms-auto lg:ms-0">
+      <a href="https://wa.me/201099713432" target="_blank" rel="noopener" class="hidden md:inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 font-bold rounded-xl px-3.5 py-2 text-xs text-white bg-[#25D366] hover:bg-[#1fb857] transition shadow-md shadow-emerald-500/20">
+        <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 11.5a8.4 8.4 0 01-9 8.4 9.9 9.9 0 01-3.8-.8L3 21l1.9-5.2A8.4 8.4 0 013 11.5a8.4 8.4 0 019-8.4 8.4 8.4 0 019 8.4z"/></svg>
+        <span class="hidden 2xl:inline" dir="ltr">+20 109 971 3432</span>
+      </a>
+      <button type="button" id="themeBtn" class="btn-icon" title="تبديل الوضع الليلي / النهاري" aria-label="تبديل الوضع"></button>
+    </div>
+  </div>
+</header>
+
+<!-- قائمة الجوال -->
+<div id="drawerBg" class="fixed inset-0 z-40 bg-slate-950/50 backdrop-blur-sm hidden"></div>
+<aside id="drawer" class="fixed top-0 right-0 z-50 h-full w-72 bg-white dark:bg-slate-900 shadow-2xl translate-x-full transition-transform duration-300 flex flex-col">
+  <div class="p-4 flex items-center justify-between border-b border-slate-200 dark:border-slate-700">
+    <div class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-600 to-sky-500 grid place-items-center text-white font-black">خ</div>
+      <span class="font-black">خُلاصة</span>
+    </div>
+    <button type="button" id="drawerClose" class="btn-icon" aria-label="إغلاق القائمة">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <nav class="flex-1 overflow-y-auto p-3 space-y-1" id="drawerNav">
+    <button type="button" class="navbtn w-full navbtn-on" data-nav="home">🏠 الرئيسية</button>
+    <button type="button" class="navbtn w-full" data-nav="recorder">🎙️ تفريغ صوتي</button>
+    <button type="button" class="navbtn w-full" data-nav="pdftools">🧰 أدوات PDF</button>
+    <button type="button" class="navbtn w-full" data-nav="summary">🧠 ملخصات وخرائط</button>
+    <button type="button" class="navbtn w-full" data-nav="quiz">📝 أسئلة وامتحان</button>
+    <button type="button" class="navbtn w-full" data-nav="magic">✨ زر سحري</button>
+    <button type="button" class="navbtn w-full" data-nav="export">🔊 تصدير ونطق</button>
+    <button type="button" class="navbtn w-full" data-nav="library">💾 محفوظاتي</button>
+  </nav>
+  <div class="p-4 border-t border-slate-200 dark:border-slate-700 space-y-2">
+    <a href="https://wa.me/201099713432" target="_blank" rel="noopener" class="btn-wa w-full !py-2.5 text-xs">💬 واتساب: <span dir="ltr">+20 109 971 3432</span></a>
+    <a href="tel:+201099713432" class="btn-ghost w-full !py-2.5 text-xs">📞 اتصال مباشر</a>
+  </div>
+</aside>
+
+<main class="max-w-7xl mx-auto px-4 py-8">
+
+<!-- ============ الرئيسية ============ -->
+<section id="sec-home" class="app-section space-y-10">
+  <div class="relative overflow-hidden rounded-[2.5rem] border border-slate-200/70 dark:border-slate-700/60 hero-glow bg-dots p-8 md:p-14">
+    <div class="relative z-10 max-w-2xl">
+      <span class="kicker">✦ خُلاصة — منصة تعليمية متكاملة من إعداد زياد أشرف</span>
+      <h1 class="mt-3 text-4xl md:text-6xl font-black leading-[1.15] text-slate-900 dark:text-white">
+        ذاكر أذكى… <span class="grad-text">وليس أطول</span>
+      </h1>
+      <p class="mt-5 text-base md:text-lg leading-8 text-slate-500 dark:text-slate-300">
+        سجّل المحاضرة أو ارفع ملف <b>PDF</b> أو صورة أو الصق نصًا — وستتولى المنصة الباقي:
+        تفريغ صوتي، ملخص متدرج، خريطة ذهنية، وبنك أسئلة مع امتحان تفاعلي… كل ذلك على جهازك مباشرة.
+      </p>
+      <div class="mt-7 flex flex-wrap gap-3">
+        <button type="button" class="btn-primary text-base" data-nav="magic">✨ ابدأ المعالجة السحرية</button>
+        <button type="button" class="btn-ghost text-base" data-nav="pdftools">🧰 استكشف أدوات PDF</button>
+      </div>
+      <div class="mt-7 flex flex-wrap gap-2">
+        <span class="badge bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300">🔒 خصوصية 100% — لا يغادر ملفك جهازك</span>
+        <span class="badge bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300">🆓 مجاني بالكامل</span>
+        <span class="badge bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">🌙 وضع ليلي مريح</span>
+        <span class="badge bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300">📱 يعمل على الجوال</span>
+      </div>
+    </div>
+    <div class="hidden lg:block absolute top-10 left-10 w-52 card p-4 animate-floaty">
+      <div class="text-2xl">🎙️</div>
+      <div class="font-black mt-1 text-sm">تفريغ المحاضرة</div>
+      <div class="h-2 rounded-full bg-slate-200 dark:bg-slate-700 mt-3 overflow-hidden"><div class="h-full w-2/3 bg-gradient-to-l from-violet-600 to-sky-500"></div></div>
+      <div class="text-[10px] text-slate-400 mt-2">تم التحويل إلى نص ✓</div>
+    </div>
+    <div class="hidden lg:block absolute bottom-12 left-40 w-52 card p-4 animate-floaty" style="animation-delay:1.2s">
+      <div class="text-2xl">🧠</div>
+      <div class="font-black mt-1 text-sm">خريطة ذهنية</div>
+      <div class="flex gap-1.5 mt-3"><span class="w-8 h-8 rounded-lg bg-violet-500/80"></span><span class="w-8 h-8 rounded-lg bg-sky-500/80"></span><span class="w-8 h-8 rounded-lg bg-emerald-500/80"></span><span class="w-8 h-8 rounded-lg bg-amber-500/80"></span></div>
+      <div class="text-[10px] text-slate-400 mt-2">6 أفكار رئيسية متصلة</div>
+    </div>
+    <div class="hidden lg:block absolute top-24 left-72 w-48 card p-4 animate-floaty" style="animation-delay:2.2s">
+      <div class="text-2xl">✅</div>
+      <div class="font-black mt-1 text-sm">امتحان تفاعلي</div>
+      <div class="font-black text-2xl mt-2 grad-text tabnum">92%</div>
+      <div class="text-[10px] text-slate-400">ممتاز! استمر 💪</div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="card p-5 text-center"><div class="text-3xl font-black grad-text">7</div><div class="text-xs font-bold text-slate-500 mt-1">أقسام وأدوات متكاملة</div></div>
+    <div class="card p-5 text-center"><div class="text-3xl font-black grad-text">+11</div><div class="text-xs font-bold text-slate-500 mt-1">تحويل بين PDF والصور</div></div>
+    <div class="card p-5 text-center"><div class="text-3xl font-black grad-text">3</div><div class="text-xs font-bold text-slate-500 mt-1">مستويات للملخص الذكي</div></div>
+    <div class="card p-5 text-center"><div class="text-3xl font-black grad-text">∞</div><div class="text-xs font-bold text-slate-500 mt-1">استخدام بلا حدود أو حسابات</div></div>
+  </div>
+
+  <div>
+    <div class="flex items-end justify-between mb-5 flex-wrap gap-3">
+      <div><span class="kicker">كل الأدوات في مكان واحد</span><h2 class="sec-title mt-1">ماذا تريد أن تفعل اليوم؟</h2></div>
+      <p class="text-sm text-slate-400 font-bold">في كل قسم ستجد: رفع PDF 📄 / نص ✍️ / صور OCR 🖼️ / تفريغ صوتي 🎙️ + خيارات حفظ 💾</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="tool-card" data-nav="recorder"><div class="text-3xl">🎙️</div><h3 class="font-black mt-3 text-slate-800 dark:text-white">التسجيل والتفريغ الصوتي</h3><p class="text-xs text-slate-500 leading-6 mt-2">سجّل المحاضرة مباشرة أو ارفع ملف صوتي (MP3/WAV/M4A) وحوّله لنص جاهز للملخصة.</p><span class="btn-primary-sm mt-4">افتح الأداة ←</span></div>
+      <div class="tool-card" data-nav="pdftools"><div class="text-3xl">🧰</div><h3 class="font-black mt-3 text-slate-800 dark:text-white">أدوات PDF الشاملة</h3><p class="text-xs text-slate-500 leading-6 mt-2">دمج، تقسيم، ضغط، تدوير، ترقيم، PDF↔صور، صور→PDF، PDF→Word، نص→PDF.</p><span class="btn-primary-sm mt-4">افتح الأداة ←</span></div>
+      <div class="tool-card" data-nav="summary"><div class="text-3xl">🧠</div><h3 class="font-black mt-3 text-slate-800 dark:text-white">محرك الملخصات والخرائط</h3><p class="text-xs text-slate-500 leading-6 mt-2">ثلاثة مستويات (سريع / نقاط / تفصيلي) + خريطة ذهنية شجرة أو شبكة مربعات.</p><span class="btn-primary-sm mt-4">افتح الأداة ←</span></div>
+      <div class="tool-card" data-nav="quiz"><div class="text-3xl">📝</div><h3 class="font-black mt-3 text-slate-800 dark:text-white">بنك الأسئلة والامتحان</h3><p class="text-xs text-slate-500 leading-6 mt-2">اختيار متعدد، صح وخطأ، مقالي — مع مؤقت ونتيجة فورية ومراجعة الأخطاء.</p><span class="btn-primary-sm mt-4">افتح الأداة ←</span></div>
+      <div class="tool-card" data-nav="magic"><div class="text-3xl">✨</div><h3 class="font-black mt-3 text-slate-800 dark:text-white">المعالجة السحرية بضغطة واحدة</h3><p class="text-xs text-slate-500 leading-6 mt-2">نص واحد → تنسيق + ملخص + خريطة ذهنية + بنك أسئلة… في ثوانٍ.</p><span class="btn-primary-sm mt-4">جرّبها الآن ←</span></div>
+      <div class="tool-card" data-nav="export"><div class="text-3xl">🔊</div><h3 class="font-black mt-3 text-slate-800 dark:text-white">النطق والتصدير الأنيق</h3><p class="text-xs text-slate-500 leading-6 mt-2">استمع لملخصك بصوت عالٍ، اطبعه PDF بغلاف رسمي، أو صدّره Word.</p><span class="btn-primary-sm mt-4">افتح الأداة ←</span></div>
+      <div class="tool-card" data-nav="library"><div class="text-3xl">💾</div><h3 class="font-black mt-3 text-slate-800 dark:text-white">مكتبة المحفوظات</h3><p class="text-xs text-slate-500 leading-6 mt-2">كل قسم له خيارات حفظ مميزة، وكل شيء موسوم ومنظم قابل للاسترجاع.</p><span class="btn-primary-sm mt-4">افتح المكتبة ←</span></div>
+      <div class="tool-card" data-nav="recorder"><div class="text-3xl">⚡</div><h3 class="font-black mt-3 text-slate-800 dark:text-white">حفظ تلقائي ذكي</h3><p class="text-xs text-slate-500 leading-6 mt-2">مسودتك محفوظة لحظة بلحظة — أغلق الصفحة وارجع تجد كل شيء مكانه.</p><span class="btn-primary-sm mt-4">اعرف المزيد ←</span></div>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-3 gap-4">
+    <div class="card p-6"><div class="w-12 h-12 rounded-2xl bg-violet-100 dark:bg-violet-500/15 grid place-items-center text-2xl">1️⃣</div><h3 class="font-black mt-4">أدخل المحتوى</h3><p class="text-sm text-slate-500 leading-7 mt-2">سجّل صوتك، ارفع PDF أو صورة، أو الصق النص — المدخل متاح داخل كل قسم.</p></div>
+    <div class="card p-6"><div class="w-12 h-12 rounded-2xl bg-sky-100 dark:bg-sky-500/15 grid place-items-center text-2xl">2️⃣</div><h3 class="font-black mt-4">اختر أداتك</h3><p class="text-sm text-slate-500 leading-7 mt-2">ملخص متدرج؟ خريطة ذهنية؟ بنك أسئلة؟ أو اضغط الزر السحري واترك كل شيء لنا.</p></div>
+    <div class="card p-6"><div class="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-500/15 grid place-items-center text-2xl">3️⃣</div><h3 class="font-black mt-4">احفظ وصدّر</h3><p class="text-sm text-slate-500 leading-7 mt-2">حفظ في المكتبة، نسخ، تنزيل TXT/Word/PDF، نطق صوتي، وطباعة بغلاف رسمي.</p></div>
+  </div>
+
+  <div class="card p-6 md:p-8">
+    <span class="kicker">ابدأ بسرعة</span>
+    <h3 class="text-xl font-black mt-2 mb-4">🚀 معالجة سريعة من الصفحة الرئيسية</h3>
+    <textarea id="homeQuickText" rows="4" class="input" placeholder="الصق أي نص دراسي هنا… (فقرة من الكتاب، محاضرة، بحث) ثم اضغط الزر وسنأخدك للمعالجة السحرية مباشرة"></textarea>
+    <div class="flex flex-wrap gap-2 mt-4">
+      <button type="button" id="homeQuickBtn" class="btn-primary">✨ معالجة سحرية لهذا النص</button>
+      <button type="button" class="btn-ghost" data-nav="summary">🧠 أرسله للملخصات</button>
+    </div>
+  </div>
+
+  <div class="card p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 bg-gradient-to-l from-violet-500/5 via-transparent to-sky-500/5">
+    <div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-violet-600 to-sky-500 grid place-items-center text-white font-black text-2xl shadow-xl shadow-violet-500/30 shrink-0">ZA</div>
+    <div class="flex-1 text-center md:text-start">
+      <span class="kicker">للدعم الفني والاستفسارات والاقتراحات</span>
+      <h3 class="text-2xl font-black mt-1">زياد أشرف — Ziad Ashraf</h3>
+      <p class="text-sm text-slate-500 dark:text-slate-400 mt-2 leading-7">مطوّر المنصة ومؤسس فريق الملخصات — راسلني على واتساب لأي مشكلة أو فكرة تطوير، وسأرد عليك بأسرع وقت 😊</p>
+    </div>
+    <div class="flex flex-col sm:flex-row gap-3 shrink-0">
+      <a href="https://wa.me/201099713432" target="_blank" rel="noopener" class="btn-wa">💬 واتساب <span dir="ltr">+20 109 971 3432</span></a>
+      <a href="tel:+201099713432" class="btn-ghost">📞 اتصال مباشر</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ التفريغ الصوتي ============ -->
+<section id="sec-recorder" class="app-section hidden space-y-6">
+  <div class="text-center max-w-2xl mx-auto">
+    <span class="kicker">الأداة الأولى</span>
+    <h1 class="sec-title mt-2">🎙️ التسجيل والتفريغ الصوتي</h1>
+    <p class="text-slate-500 dark:text-slate-400 mt-3 leading-7 text-sm">سجّل المحاضرة مباشرة من المتصفح أو ارفع ملفًا صوتيًا، وسيُحوَّل الصوت إلى نص تلقائيًا — ثم أرسله بنقرة إلى الملخصات أو الأسئلة أو المعالجة السحرية.</p>
+  </div>
+
+  <div class="grid lg:grid-cols-2 gap-6">
+    <div class="card p-6 md:p-8">
+      <h3 class="font-black text-lg flex items-center gap-2"><span class="w-9 h-9 rounded-xl bg-rose-100 dark:bg-rose-500/15 grid place-items-center">⏺️</span> التسجيل المباشر مع التفريغ الفوري</h3>
+      <div id="recSupport" class="hidden mt-3 text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300 rounded-xl px-4 py-3 leading-6">⚠️ متصفحك لا يدعم التفريغ المباشر (Web Speech API). استخدم Google Chrome للحصول على أفضل نتيجة، أو ارفع ملفًا صوتيًا واستخدم زر التشغيل مع التفريغ.</div>
+      <div class="mt-6 flex items-center justify-center gap-8 flex-wrap">
+        <button type="button" id="recBtn" class="w-24 h-24 rounded-full bg-gradient-to-br from-violet-600 to-sky-500 text-white grid place-items-center shadow-2xl shadow-violet-500/40 hover:scale-105 active:scale-95 transition" aria-label="بدء أو إيقاف التسجيل">
+          <span class="rec-ring"></span><span class="rec-ring"></span>
+          <svg id="recIconMic" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0"/><path d="M12 19v3"/></svg>
+          <svg id="recIconStop" class="w-8 h-8 hidden" fill="currentColor" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+        </button>
+        <div class="text-center">
+          <div id="recTimer" class="text-4xl font-black tabnum text-slate-800 dark:text-white">00:00</div>
+          <div id="recStatus" class="text-xs font-bold text-slate-400 mt-2">جاهز للتسجيل — اضغط زر الميكروفون</div>
+          <div id="recBars" class="flex items-end justify-center gap-1 h-8 mt-3">
+            <span class="vbar"></span><span class="vbar" style="animation-delay:.12s"></span><span class="vbar" style="animation-delay:.24s"></span><span class="vbar" style="animation-delay:.06s"></span><span class="vbar" style="animation-delay:.3s"></span><span class="vbar" style="animation-delay:.18s"></span><span class="vbar" style="animation-delay:.42s"></span><span class="vbar" style="animation-delay:.1s"></span><span class="vbar" style="animation-delay:.36s"></span>
+          </div>
+        </div>
+      </div>
+      <div class="mt-6 grid sm:grid-cols-2 gap-4">
+        <div><label class="label">لغة التفريغ</label>
+          <select id="recLang" class="input"><option value="ar-EG">العربية — مصر (ar-EG)</option><option value="ar-SA">العربية — الفصحى (ar-SA)</option><option value="ar-AE">العربية — الإمارات (ar-AE)</option><option value="en-US">English (US)</option><option value="en-GB">English (UK)</option></select>
+        </div>
+        <div class="soft p-4 text-xs leading-6 text-slate-500 dark:text-slate-400 self-end">💡 النص يتراكم تلقائيًا في المحرر بالأسفل حتى لو توقف التعرف مؤقتًا — المنصة تعيد تشغيله بنفسها.</div>
+      </div>
+    </div>
+
+    <div class="card p-6 md:p-8">
+      <h3 class="font-black text-lg flex items-center gap-2"><span class="w-9 h-9 rounded-xl bg-sky-100 dark:bg-sky-500/15 grid place-items-center">📁</span> رفع ملف صوتي</h3>
+      <label class="dropzone mt-5" for="audioFile">
+        <input type="file" id="audioFile" accept="audio/*,.mp3,.wav,.m4a,.ogg,.webm" class="hidden">
+        <svg class="w-10 h-10 text-violet-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+        <span class="font-bold text-sm">اسحب الملف الصوتي هنا أو اضغط للاختيار</span>
+        <span class="text-[11px] text-slate-400">MP3 • WAV • M4A • OGG • WEBM</span>
+      </label>
+      <div id="audioInfo" class="hidden mt-4 soft p-4 text-sm font-bold text-slate-600 dark:text-slate-300 flex items-center gap-2 flex-wrap">📄 <span id="audioName"></span><span class="text-xs text-slate-400 font-normal" id="audioSize"></span></div>
+      <audio id="audioPlayer" controls class="hidden w-full mt-4 rounded-xl"></audio>
+      <div class="mt-4 flex flex-wrap gap-2">
+        <button type="button" id="playTranscribeBtn" class="btn-primary-sm">▶ تشغيل مع التفريغ المباشر</button>
+        <a id="audioDownload" download="recording.webm" class="btn-sm hidden cursor-pointer">⬇️ تنزيل التسجيل</a>
+      </div>
+      <div class="mt-4 soft p-4 text-xs leading-6 text-slate-500 dark:text-slate-400">ℹ️ التقنية تعمل عبر ميكروفون الجهاز: عند اختيار «تشغيل مع التفريغ» سيُشغَّل الملف عبر مكبر الصوت ويُلتقط بالميكروفون في آن واحد. للحصول على دقة أعلى، شغّل التسجيل على مستوى صوت واضح في مكان هادئ.</div>
+    </div>
+  </div>
+
+  <div class="card p-6 md:p-8">
+    <div class="flex items-center justify-between flex-wrap gap-3">
+      <h3 class="font-black text-lg">📄 النص المفرَّغ</h3>
+      <div id="recLive" class="hidden text-xs font-bold text-violet-500 animate-blink">● يستمع الآن… (الكلام المؤقت يظهر برمادي)</div>
+    </div>
+    <textarea id="sttText" rows="8" class="input mt-4 leading-8" placeholder="سيظهر النص المفرَّغ هنا تلقائيًا… يمكنك التعديل عليه قبل إرساله لأي أداة."></textarea>
+    <div class="flex items-center justify-between flex-wrap gap-2 mt-2">
+      <span id="sttCount" class="text-xs text-slate-400 font-bold">0 كلمة • 0 حرف</span>
+      <div class="flex flex-wrap gap-2">
+        <button type="button" class="stt-to btn-sm" data-to="summary">🧠 أرسل للملخصات</button>
+        <button type="button" class="stt-to btn-sm" data-to="quiz">📝 أرسل لبنك الأسئلة</button>
+        <button type="button" class="stt-to btn-sm" data-to="magic">✨ أرسل للمعالجة السحرية</button>
+      </div>
+    </div>
+    <div data-savebar="recorder"></div>
+  </div>
+</section>
+
+<!-- ============ أدوات PDF ============ -->
+<section id="sec-pdftools" class="app-section hidden space-y-6">
+  <div class="text-center max-w-2xl mx-auto">
+    <span class="kicker">الأداة الثانية</span>
+    <h1 class="sec-title mt-2">🧰 صندوق أدوات PDF والصور</h1>
+    <p class="text-slate-500 dark:text-slate-400 mt-3 leading-7 text-sm">كل ما تحتاجه للتعامل مع ملفات PDF والصور في مكان واحد — 11 أداة تحويل، وكل شيء يعمل داخل متصفحك دون رفع الملفات لأي سيرفر.</p>
+  </div>
+
+  <div class="grid lg:grid-cols-[280px,1fr] gap-6 items-start">
+    <!-- قائمة الأدوات -->
+    <div class="card p-3 lg:sticky lg:top-20">
+      <div class="lg:hidden flex gap-2 overflow-x-auto pb-2" id="ptNavMobile"></div>
+      <div class="hidden lg:block space-y-1" id="ptNavDesktop"></div>
+    </div>
+
+    <!-- الألواح -->
+    <div class="space-y-6">
+      <div class="pt-panel hidden card p-6 md:p-8" id="pt-merge">
+        <h3 class="font-black text-lg">🔗 دمج ملفات PDF</h3>
+        <p class="text-sm text-slate-500 mt-1">اجمع عدة ملفات PDF في ملف واحد — رتّبها بالأسهم قبل الدمج.</p>
+        <label class="dropzone mt-5" for="pt-merge-file"><input type="file" id="pt-merge-file" accept="application/pdf,.pdf" multiple class="hidden"><span class="text-3xl">📂</span><span class="font-bold text-sm">اسحب ملفات PDF هنا أو اضغط للاختيار (عدة ملفات)</span></label>
+        <div id="pt-merge-list" class="space-y-2 mt-4"></div>
+        <button type="button" id="pt-merge-go" class="btn-primary mt-4">🔗 دمج الآن</button>
+        <div id="pt-merge-out" class="mt-4"></div>
+      </div>
+
+      <div class="pt-panel hidden card p-6 md:p-8" id="pt-split">
+        <h3 class="font-black text-lg">✂️ تقسيم PDF واستخراج صفحات</h3>
+        <p class="text-sm text-slate-500 mt-1">اكتب نطاقات الصفحات التي تريدها مثل <b dir="ltr">1-3,5,8-10</b> أو قسّم كل صفحة في ملف منفصل.</p>
+        <label class="dropzone mt-5" for="pt-split-file"><input type="file" id="pt-split-file" accept="application/pdf,.pdf" class="hidden"><span class="text-3xl">📄</span><span class="font-bold text-sm">اختر ملف PDF</span></label>
+        <div id="pt-split-info" class="hidden mt-3 text-xs font-bold text-emerald-600 dark:text-emerald-400"></div>
+        <div class="mt-4 grid sm:grid-cols-2 gap-4">
+          <div><label class="label">نطاق الصفحات المطلوبة</label><input id="pt-split-ranges" class="input" dir="ltr" placeholder="1-3,5,8-10"></div>
+          <div class="flex items-end"><label class="flex items-center gap-2 text-sm font-bold cursor-pointer select-none"><input type="checkbox" id="pt-split-each" class="w-4 h-4 rounded"> صفحة واحدة لكل ملف منفصل</label></div>
+        </div>
+        <button type="button" id="pt-split-go" class="btn-primary mt-4">✂️ تقسيم الآن</button>
+        <div id="pt-split-out" class="mt-4"></div>
+      </div>
+
+      <div class="pt-panel hidden card p-6 md:p-8" id="pt-comp">
+        <h3 class="font-black text-lg">📦 ضغط ملف PDF</h3>
+        <p class="text-sm text-slate-500 mt-1">إعادة بناء الملف بترميز مضغوط (Object Streams) مع تنظيف البيانات — النتيجة تعتمد على محتوى الملف.</p>
+        <label class="dropzone mt-5" for="pt-comp-file"><input type="file" id="pt-comp-file" accept="application/pdf,.pdf" class="hidden"><span class="text-3xl">🗜️</span><span class="font-bold text-sm">اختر ملف PDF لضغطه</span></label>
+        <div id="pt-comp-info" class="hidden mt-3 text-xs font-bold text-emerald-600 dark:text-emerald-400"></div>
+        <button type="button" id="pt-comp-go" class="btn-primary mt-4">📦 اضغط الملف</button>
+        <div id="pt-comp-out" class="mt-4"></div>
+      </div>
+
+      <div class="pt-panel hidden card p-6 md:p-8" id="pt-p2i">
+        <h3 class="font-black text-lg">🖼️ تحويل PDF إلى صور</h3>
+        <p class="text-sm text-slate-500 mt-1">حوّل كل صفحة إلى صورة JPG أو PNG بجودة عالية، مع معاينة وتنزيل فردي أو ZIP شامل.</p>
+        <label class="dropzone mt-5" for="pt-p2i-file"><input type="file" id="pt-p2i-file" accept="application/pdf,.pdf" class="hidden"><span class="text-3xl">📑</span><span class="font-bold text-sm">اختر ملف PDF</span></label>
+        <div id="pt-p2i-info" class="hidden mt-3 text-xs font-bold text-emerald-600 dark:text-emerald-400"></div>
+        <div class="mt-4 grid sm:grid-cols-3 gap-4">
+          <div><label class="label">صيغة الصور</label><select id="pt-p2i-fmt" class="input"><option value="jpeg">JPG — حجم أصغر</option><option value="png">PNG — جودة أعلى</option></select></div>
+          <div><label class="label">الدقة</label><select id="pt-p2i-scale" class="input"><option value="1.5">عادية (1.5x)</option><option value="2" selected>عالية (2x)</option><option value="3">فائقة (3x)</option></select></div>
+          <div><label class="label">صفحات معينة (اختياري)</label><input id="pt-p2i-pages" class="input" dir="ltr" placeholder="مثال: 1-5,8"></div>
+        </div>
+        <button type="button" id="pt-p2i-go" class="btn-primary mt-4">🖼️ حوّل إلى صور</button>
+        <div id="pt-p2i-out" class="mt-4"></div>
+      </div>
+
+      <div class="pt-panel hidden card p-6 md:p-8" id="pt-i2p">
+        <h3 class="font-black text-lg">📚 تحويل الصور إلى PDF</h3>
+        <p class="text-sm text-slate-500 mt-1">اجمع عدة صور (JPG/PNG/WEBP) في ملف PDF واحد — كل صورة صفحة مستقلة.</p>
+        <label class="dropzone mt-5" for="pt-i2p-file"><input type="file" id="pt-i2p-file" accept="image/*" multiple class="hidden"><span class="text-3xl">🏞️</span><span class="font-bold text-sm">اسحب الصور هنا أو اضغط للاختيار (عدة صور)</span></label>
+        <div id="pt-i2p-list" class="space-y-2 mt-4"></div>
+        <div class="mt-4 grid sm:grid-cols-2 gap-4">
+          <div><label class="label">حجم الصفحة</label><select id="pt-i2p-mode" class="input"><option value="fit">بنفس أبعاد الصورة</option><option value="a4">A4 مع ملاءمة الصورة</option></select></div>
+          <div><label class="label">هامش (لوصفة A4)</label><select id="pt-i2p-margin" class="input"><option value="0">بدون هامش</option><option value="24">هامش عادي</option><option value="48">هامش واسع</option></select></div>
+        </div>
+        <button type="button" id="pt-i2p-go" class="btn-primary mt-4">📚 أنشئ الـ PDF</button>
+        <div id="pt-i2p-out" class="mt-4"></div>
+      </div>
+
+      <div class="pt-panel hidden card p-6 md:p-8" id="pt-p2w">
+        <h3 class="font-black text-lg">📘 تحويل PDF إلى Word</h3>
+        <p class="text-sm text-slate-500 mt-1">استخراج نص الملف كاملًا وتحويله إلى ملف <b dir="ltr">.doc</b> يفتح في Microsoft Word — مع فصل الصفحات.</p>
+        <label class="dropzone mt-5" for="pt-p2w-file"><input type="file" id="pt-p2w-file" accept="application/pdf,.pdf" class="hidden"><span class="text-3xl">📗</span><span class="font-bold text-sm">اختر ملف PDF</span></label>
+        <div id="pt-p2w-info" class="hidden mt-3 text-xs font-bold text-emerald-600 dark:text-emerald-400"></div>
+        <button type="button" id="pt-p2w-go" class="btn-primary mt-4">📘 حوّل إلى Word</button>
+        <div id="pt-p2w-out" class="mt-4"></div>
+      </div>
+
+      <div class="pt-panel hidden card p-6 md:p-8" id="pt-t2p">
+        <h3 class="font-black text-lg">📝 تحويل النص إلى PDF أو Word</h3>
+        <p class="text-sm text-slate-500 mt-1">اكتب أو الصق نصًا عربيًا، وسنفتحه لك في صفحة A4 منسقة بغلاف رسمي — احفظه PDF من نافذة الطباعة، أو نزّله Word.</p>
+        <div class="mt-4"><label class="label">عنوان المستند</label><input id="pt-t2p-title" class="input" placeholder="مثال: ملخص فصل التركيبات العضوية"></div>
+        <div class="mt-4"><label class="label">النص</label><textarea id="pt-t2p-text" rows="7" class="input leading-8" placeholder="اكتب أو الصق النص هنا…"></textarea></div>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <button type="button" id="pt-t2p-pdf" class="btn-primary">🖨️ معاينة وحفظ PDF</button>
+          <button type="button" id="pt-t2p-word" class="btn-ghost">📘 تنزيل Word</button>
+        </div>
+        <div id="pt-t2p-out" class="mt-4"></div>
+      </div>
+
+      <div class="pt-panel hidden card p-6 md:p-8" id="pt-ocr">
+        <h3 class="font-black text-lg">🔎 صورة → نص (تعرف ضوئي OCR)</h3>
+        <p class="text-sm text-slate-500 mt-1">ارفع صورة أو أكثر (حتى صور من كتب أو محاضرات) وسيُستخرج النص العربي والإنجليزي منها — يدعم عدة صفحات معًا.</p>
+        <label class="dropzone mt-5" for="pt-ocr-file"><input type="file" id="pt-ocr-file" accept="image/*" multiple class="hidden"><span class="text-3xl">🖼️</span><span class="font-bold text-sm">اسحب الصور هنا أو اضغط للاختيار</span></label>
+        <div id="pt-ocr-status" class="hidden mt-3 text-xs font-bold text-violet-600 dark:text-violet-400"></div>
+        <div class="mt-4"><label class="label">النص المستخرج (قابل للتعديل)</label><textarea id="pt-ocr-text" rows="7" class="input leading-8" placeholder="سيظهر النص المستخرج من الصور هنا…"></textarea></div>
+        <div class="flex flex-wrap gap-2 mt-3">
+          <button type="button" id="pt-ocr-copy" class="btn-sm">📋 نسخ</button>
+          <button type="button" id="pt-ocr-dl" class="btn-sm">⬇️ تنزيل TXT</button>
+          <button type="button" id="pt-ocr-save" class="btn-primary-sm">💾 حفظ في المحفوظات</button>
+          <button type="button" id="pt-ocr-tosum" class="btn-sm">🧠 أرسل للملخصات</button>
+        </div>
+        <div id="pt-ocr-out" class="mt-4"></div>
+      </div>
+
+      <div class="pt-panel hidden card p-6 md:p-8" id="pt-rot">
+        <h3 class="font-black text-lg">🔄 تدوير صفحات PDF</h3>
+        <p class="text-sm text-slate-500 mt-1">صحّح اتجاه الصفحات المقلوبة — تدوير 90 أو 180 أو 270 درجة لكل الصفحات أو نطاق محدد.</p>
+        <label class="dropzone mt-5" for="pt-rot-file"><input type="file" id="pt-rot-file" accept="application/pdf,.pdf" class="hidden"><span class="text-3xl">🔄</span><span class="font-bold text-sm">اختر ملف PDF</span></label>
+        <div id="pt-rot-info" class="hidden mt-3 text-xs font-bold text-emerald-600 dark:text-emerald-400"></div>
+        <div class="mt-4 grid sm:grid-cols-3 gap-4">
+          <div><label class="label">الزاوية</label><select id="pt-rot-angle" class="input"><option value="90">90° يمين</option><option value="180">180° مقلوب</option><option value="270">90° يسار (270°)</option></select></div>
+          <div><label class="label">النطاق</label><select id="pt-rot-mode" class="input"><option value="all">كل الصفحات</option><option value="range">نطاق محدد</option></select></div>
+          <div><label class="label">الصفحات (لو نطاق)</label><input id="pt-rot-ranges" class="input" dir="ltr" placeholder="1-3,7"></div>
+        </div>
+        <button type="button" id="pt-rot-go" class="btn-primary mt-4">🔄 تدوير وحفظ</button>
+        <div id="pt-rot-out" class="mt-4"></div>
+      </div>
+
+      <div class="pt-panel hidden card p-6 md:p-8" id="pt-num">
+        <h3 class="font-black text-lg">#️⃣ إضافة أرقام للصفحات</h3>
+        <p class="text-sm text-slate-500 mt-1">رقّم صفحات ملف PDF تلقائيًا: رقم فقط أو «صفحة X من Y»، وبالموضع الذي تختاره.</p>
+        <label class="dropzone mt-5" for="pt-num-file"><input type="file" id="pt-num-file" accept="application/pdf,.pdf" class="hidden"><span class="text-3xl">🔢</span><span class="font-bold text-sm">اختر ملف PDF</span></label>
+        <div id="pt-num-info" class="hidden mt-3 text-xs font-bold text-emerald-600 dark:text-emerald-400"></div>
+        <div class="mt-4 grid sm:grid-cols-4 gap-4">
+          <div><label class="label">الموضع</label><select id="pt-num-pos" class="input"><option value="bc">أسفل الوسط</option><option value="br">أسفل يمين</option><option value="bl">أسفل يسار</option><option value="tc">أعلى الوسط</option></select></div>
+          <div><label class="label">التنسيق</label><select id="pt-num-fmt" class="input"><option value="n">رقم فقط</option><option value="xy">صفحة X من Y</option></select></div>
+          <div><label class="label">يبدأ من</label><input id="pt-num-start" type="number" min="1" value="1" class="input"></div>
+          <div><label class="label">حجم الخط</label><input id="pt-num-size" type="number" min="8" max="36" value="12" class="input"></div>
+        </div>
+        <button type="button" id="pt-num-go" class="btn-primary mt-4">#️⃣ ترقيم وحفظ</button>
+        <div id="pt-num-out" class="mt-4"></div>
+      </div>
+
+      <div class="pt-panel hidden card p-6 md:p-8" id="pt-img">
+        <h3 class="font-black text-lg">🎨 أدوات الصور (تحويل / ضغط / تصغير)</h3>
+        <p class="text-sm text-slate-500 mt-1">حوّل صيغ الصور (PNG ↔ JPG ↔ WEBP)، اضغطها بجودة محددة، أو صغّر مقاسها — لعدة صور معًا مع تنزيل ZIP.</p>
+        <label class="dropzone mt-5" for="pt-img-file"><input type="file" id="pt-img-file" accept="image/*" multiple class="hidden"><span class="text-3xl">🖼️</span><span class="font-bold text-sm">اسحب الصور هنا أو اضغط للاختيار</span></label>
+        <div id="pt-img-info" class="hidden mt-3 text-xs font-bold text-emerald-600 dark:text-emerald-400"></div>
+        <div class="mt-4 grid sm:grid-cols-3 gap-4">
+          <div><label class="label">العملية</label><select id="pt-img-op" class="input"><option value="convert">تحويل الصيغة</option><option value="compress">ضغط بجودة محددة</option><option value="resize">تصغير العرض</option></select></div>
+          <div><label class="label">الصيغة الجديدة</label><select id="pt-img-fmt" class="input"><option value="jpeg">JPG</option><option value="png">PNG</option><option value="webp">WEBP</option></select></div>
+          <div><label class="label">الجودة / العرض الأقصى</label><input id="pt-img-q" type="range" min="10" max="100" value="80"><div class="text-xs text-slate-400 font-bold mt-1" id="pt-img-qv">الجودة: 80%</div></div>
+        </div>
+        <button type="button" id="pt-img-go" class="btn-primary mt-4">🎨 نفّذ العملية</button>
+        <div id="pt-img-out" class="mt-4"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ الملخصات والخرائط الذهنية ============ -->
+<section id="sec-summary" class="app-section hidden space-y-6">
+  <div class="text-center max-w-2xl mx-auto">
+    <span class="kicker">الأداة الثالثة</span>
+    <h1 class="sec-title mt-2">🧠 محرك الملخصات والخرائط الذهنية</h1>
+    <p class="text-slate-500 dark:text-slate-400 mt-3 leading-7 text-sm">أدخل النص بالطريقة التي تناسبك (نص / PDF / صورة / تفريغ صوتي) واحصل على ملخص بثلاثة مستويات + خريطة ذهنية بالألوان قابلة للتصدير.</p>
+  </div>
+
+  <div class="card p-6 md:p-8 space-y-5">
+    <div><label class="label">📥 مصدر النص — ارفع PDF أو صورة أو الصق نصًا أو استخدم التفريغ الصوتي</label>
+      <div data-picker="summary"></div>
+    </div>
+    <div class="grid md:grid-cols-3 gap-5">
+      <div><label class="label">🎚️ مستوى الملخص</label>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" class="chip sum-level" data-lvl="quick">⚡ سريع جدًا</button>
+          <button type="button" class="chip sum-level" data-lvl="points">📋 نقاط أساسية</button>
+          <button type="button" class="chip sum-level chip-on" data-lvl="detailed">📖 شرح تفصيلي</button>
+        </div>
+      </div>
+      <div><label class="label">📏 طول الملخص</label>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" class="chip sum-len" data-len="short">مختصر</button>
+          <button type="button" class="chip sum-len chip-on" data-len="med">متوسط</button>
+          <button type="button" class="chip sum-len" data-len="long">موسّع</button>
+        </div>
+      </div>
+      <div><label class="label">✨ إبراز الكلمات المفتاحية</label>
+        <label class="flex items-center gap-3 cursor-pointer select-none w-fit">
+          <input type="checkbox" id="sum-hl" checked class="peer sr-only">
+          <span class="w-11 h-6 rounded-full bg-slate-300 dark:bg-slate-600 relative transition peer-checked:bg-violet-600 after:content-[''] after:absolute after:top-0.5 after:right-0.5 after:w-5 after:h-5 after:rounded-full after:bg-white after:transition peer-checked:after:-translate-x-5"></span>
+          <span class="text-sm font-bold">تلوين المصطلحات المهمة</span>
+        </label>
+      </div>
+    </div>
+    <div class="flex flex-wrap items-center gap-3">
+      <button type="button" id="sum-go" class="btn-primary text-base">🧠 ولّد الملخص والخريطة</button>
+      <span id="sum-status" class="text-xs font-bold text-violet-500"></span>
+    </div>
+  </div>
+
+  <div id="sum-result" class="hidden space-y-6">
+    <div class="card p-6 md:p-8">
+      <div class="flex items-center justify-between flex-wrap gap-3">
+        <h3 class="font-black text-lg">✅ الملخص جاهز</h3>
+        <div id="sumArtBar"></div>
+      </div>
+      <div class="flex gap-1 overflow-x-auto mt-5 p-1.5 soft w-fit max-w-full">
+        <button type="button" class="tabbtn tabbtn-on" data-stab="text">📄 الملخص</button>
+        <button type="button" class="tabbtn" data-stab="kw">🔑 الكلمات المفتاحية</button>
+        <button type="button" class="tabbtn" data-stab="stats">📊 الإحصائيات</button>
+        <button type="button" class="tabbtn" data-stab="map">🗺️ الخريطة الذهنية</button>
+      </div>
+      <div class="mt-5">
+        <div id="sum-pane-text" class="prose-sm max-w-none leading-loose text-slate-700 dark:text-slate-200 space-y-4" style="font-size:.95rem"></div>
+        <div id="sum-pane-kw" class="hidden"></div>
+        <div id="sum-pane-stats" class="hidden"></div>
+        <div id="sum-pane-map" class="hidden">
+          <div class="flex flex-wrap items-center gap-2 mb-4">
+            <button type="button" class="chip chip-on map-layout" data-ml="tree">🌳 شجرة متصلة</button>
+            <button type="button" class="chip map-layout" data-ml="grid">🔲 شبكة مربعات</button>
+            <span class="w-px h-6 bg-slate-300 dark:bg-slate-600 mx-1"></span>
+            <button type="button" id="map-png" class="btn-sm">🖼️ تنزيل PNG</button>
+            <button type="button" id="map-print" class="btn-sm">🖨️ طباعة</button>
+            <button type="button" id="map-txt" class="btn-sm">📄 تنزيل نص متفرع</button>
+          </div>
+          <div class="soft p-4 md:p-6 overflow-x-auto" data-mmhost><div id="map-wrap"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ بنك الأسئلة والامتحان ============ -->
+<section id="sec-quiz" class="app-section hidden space-y-6">
+  <div class="text-center max-w-2xl mx-auto">
+    <span class="kicker">الأداة الرابعة</span>
+    <h1 class="sec-title mt-2">📝 بنك الأسئلة والامتحان التفاعلي</h1>
+    <p class="text-slate-500 dark:text-slate-400 mt-3 leading-7 text-sm">ولّد أسئلة تلقائيًا من أي نص (اختيار متعدد + صح وخطأ + مقالي)، ثم ادخل وضع الامتحان بمؤقت ونتيجة ومراجعة كاملة.</p>
+  </div>
+
+  <div id="quiz-workarea" class="space-y-6">
+    <div class="card p-6 md:p-8 space-y-5">
+      <div><label class="label">📥 مصدر الأسئلة — نص أو PDF أو صورة أو تفريغ صوتي</label>
+        <div data-picker="quiz"></div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-5">
+        <div><label class="label">🔢 عدد الأسئلة</label>
+          <select id="q-count" class="input"><option value="5">5 أسئلة</option><option value="10" selected>10 أسئلة</option><option value="15">15 سؤالًا</option><option value="20">20 سؤالًا</option></select>
+        </div>
+        <div><label class="label">🧩 أنواع الأسئلة (اختر واحدًا أو أكثر)</label>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" class="chip q-type chip-on" data-qt="mcq">✅ اختيار متعدد</button>
+            <button type="button" class="chip q-type chip-on" data-qt="tf">⚖️ صح وخطأ</button>
+            <button type="button" class="chip q-type chip-on" data-qt="essay">✍️ مقالي قصير</button>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center gap-3">
+        <button type="button" id="q-go" class="btn-primary text-base">⚡ ولّد بنك الأسئلة</button>
+        <button type="button" id="q-add" class="btn-ghost">➕ أضف سؤالًا يدويًا</button>
+        <span id="q-status" class="text-xs font-bold text-violet-500"></span>
+      </div>
+    </div>
+
+    <div id="q-bank" class="hidden card p-6 md:p-8">
+      <div class="flex items-center justify-between flex-wrap gap-3">
+        <h3 class="font-black text-lg">🗃️ البنك جاهز — <span id="q-meta" class="text-sm font-bold text-slate-400"></span></h3>
+        <div id="qArtBar"></div>
+      </div>
+      <div id="q-list" class="space-y-3 mt-5"></div>
+      <div class="flex flex-wrap gap-2 mt-6 pt-5 border-t border-slate-200/70 dark:border-slate-700/60">
+        <button type="button" id="q-start" class="btn-primary text-base">🎯 ابدأ الامتحان</button>
+        <button type="button" id="q-regen" class="btn-ghost">♻️ توليد بنك جديد</button>
+      </div>
+
+      <!-- إعدادات الامتحان -->
+      <div id="exam-cfg" class="hidden mt-6 soft p-5 md:p-6">
+        <h4 class="font-black mb-4">⚙️ إعدادات الامتحان</h4>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div><label class="label">عدد أسئلة الامتحان</label><input id="ex-count" type="number" min="1" max="50" value="10" class="input"></div>
+          <div><label class="label">الوقت (دقائق)</label><select id="ex-min" class="input"><option value="5">5 دقائق</option><option value="10" selected>10 دقائق</option><option value="15">15 دقيقة</option><option value="20">20 دقيقة</option><option value="0">بلا وقت ⏳</option></select></div>
+          <div><label class="label">الترتيب</label>
+            <label class="flex items-center gap-2 text-sm font-bold cursor-pointer select-none"><input type="checkbox" id="ex-shuffle" checked class="w-4 h-4 rounded"> خلط عشوائي للأسئلة</label>
+          </div>
+          <div><label class="label">التصحيح</label>
+            <label class="flex items-center gap-2 text-sm font-bold cursor-pointer select-none"><input type="checkbox" id="ex-instant" class="w-4 h-4 rounded"> إظهار الصح والخطأ فورًا أثناء الحل</label>
+          </div>
+        </div>
+        <div class="flex gap-2 mt-5">
+          <button type="button" id="ex-go" class="btn-primary">🚀 ابدأ الامتحان الآن</button>
+          <button type="button" id="ex-cancel" class="btn-ghost">إلغاء</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- شاشة الامتحان -->
+  <div id="exam-area" class="hidden space-y-5">
+    <div class="card p-4 md:p-5 flex items-center gap-3 flex-wrap">
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-600 to-sky-500 text-white grid place-items-center font-black tabnum" id="ex-timer">10:00</div>
+      <div class="flex-1 min-w-[160px]">
+        <div class="flex justify-between text-xs font-bold text-slate-400 mb-1"><span id="ex-prog">السؤال 1 من 10</span><span id="ex-answered">0 مُجاب</span></div>
+        <div class="h-2.5 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden"><div id="ex-bar" class="h-full w-0 bg-gradient-to-l from-violet-600 to-sky-500 transition-all duration-300"></div></div>
+      </div>
+      <button type="button" id="ex-exit" class="btn-danger-sm">✕ خروج</button>
+    </div>
+    <div class="card p-6 md:p-8">
+      <div id="ex-qcard"></div>
+      <div class="flex items-center justify-between mt-6 pt-5 border-t border-slate-200/70 dark:border-slate-700/60 flex-wrap gap-2">
+        <button type="button" id="ex-prev" class="btn-ghost">→ السابق</button>
+        <div id="ex-nav" class="flex flex-wrap gap-1.5 justify-center"></div>
+        <button type="button" id="ex-next" class="btn-ghost">التالي ←</button>
+      </div>
+      <button type="button" id="ex-submit" class="btn-primary w-full mt-5 text-base">🏁 تسليم الامتحان وعرض النتيجة</button>
+    </div>
+  </div>
+
+  <!-- شاشة النتيجة -->
+  <div id="ex-results" class="hidden space-y-5">
+    <div class="card p-6 md:p-10 text-center">
+      <span class="kicker">انتهى الامتحان</span>
+      <div class="mt-4 flex justify-center">
+        <svg viewBox="0 0 120 120" class="w-44 h-44 -rotate-90">
+          <circle cx="60" cy="60" r="52" fill="none" stroke-width="12" class="stroke-slate-200 dark:stroke-slate-700"/>
+          <circle id="ex-ring" cx="60" cy="60" r="52" fill="none" stroke-width="12" stroke-linecap="round" class="stroke-violet-600 transition-all duration-1000" stroke-dasharray="326.7" stroke-dashoffset="326.7"/>
+        </svg>
+      </div>
+      <div class="-mt-32 mb-20"><div id="ex-score-num" class="text-5xl font-black tabnum text-slate-800 dark:text-white">0%</div><div class="text-xs font-bold text-slate-400 mt-1">النتيجة النهائية</div></div>
+      <div id="ex-grade" class="text-2xl font-black">—</div>
+      <div id="ex-stats" class="grid grid-cols-3 gap-3 mt-6 max-w-md mx-auto"></div>
+      <div class="flex flex-wrap justify-center gap-2 mt-8">
+        <button type="button" id="ex-save" class="btn-primary-sm">💾 حفظ النتيجة في المحفوظات</button>
+        <button type="button" id="ex-retry" class="btn-sm">🔄 إعادة الامتحان</button>
+        <button type="button" id="ex-back" class="btn-sm">← رجوع لبنك الأسئلة</button>
+      </div>
+    </div>
+    <div class="card p-6 md:p-8">
+      <h3 class="font-black text-lg mb-4">🔍 مراجعة الأسئلة</h3>
+      <div id="ex-review" class="space-y-3"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ المعالجة السحرية ============ -->
+<section id="sec-magic" class="app-section hidden space-y-6">
+  <div class="text-center max-w-2xl mx-auto">
+    <span class="kicker">الأداة الخامسة — المفضلة للجميع</span>
+    <h1 class="sec-title mt-2">✨ المعالجة السحرية بضغطة واحدة</h1>
+    <p class="text-slate-500 dark:text-slate-400 mt-3 leading-7 text-sm">أدخل النص مرة واحدة (نص / PDF / صورة / تفريغ صوتي) واضغط الزر — وستحصل دفعة واحدة على: نص منسق + ملخص شامل + خريطة ذهنية + بنك أسئلة جاهز.</p>
+  </div>
+
+  <div class="card p-6 md:p-8 space-y-5 relative overflow-hidden">
+    <div class="absolute -top-20 -left-20 w-64 h-64 rounded-full bg-violet-500/10 blur-3xl pointer-events-none"></div>
+    <div><label class="label">📥 أدخل المحتوى</label><div data-picker="magic"></div></div>
+    <button type="button" id="magic-run" class="btn-primary w-full !py-5 !text-lg !rounded-3xl relative overflow-hidden">
+      ✨ اضغط مرة واحدة… ودع الباقي علينا ✨
+    </button>
+    <div id="magic-steps" class="hidden grid sm:grid-cols-4 gap-3">
+      <div class="soft p-4 text-center" data-step="0"><div class="step-dot w-3 h-3 rounded-full bg-slate-300 mx-auto"></div><div class="text-xs font-bold mt-2">تنسيق النص</div></div>
+      <div class="soft p-4 text-center" data-step="1"><div class="step-dot w-3 h-3 rounded-full bg-slate-300 mx-auto"></div><div class="text-xs font-bold mt-2">بناء الملخص</div></div>
+      <div class="soft p-4 text-center" data-step="2"><div class="step-dot w-3 h-3 rounded-full bg-slate-300 mx-auto"></div><div class="text-xs font-bold mt-2">رسم الخريطة الذهنية</div></div>
+      <div class="soft p-4 text-center" data-step="3"><div class="step-dot w-3 h-3 rounded-full bg-slate-300 mx-auto"></div><div class="text-xs font-bold mt-2">توليد بنك الأسئلة</div></div>
+    </div>
+  </div>
+
+  <div id="magic-out" class="hidden card p-6 md:p-8">
+    <div class="flex items-center justify-between flex-wrap gap-3">
+      <h3 class="font-black text-lg">🎉 كل شيء جاهز!</h3>
+      <div class="flex gap-2">
+        <button type="button" id="mg-opensum" class="btn-sm">🧠 افتح في الملخصات</button>
+        <button type="button" id="mg-openquiz" class="btn-sm">📝 افتح في بنك الأسئلة</button>
+      </div>
+    </div>
+    <div class="flex gap-1 overflow-x-auto mt-5 p-1.5 soft w-fit max-w-full">
+      <button type="button" class="tabbtn tabbtn-on" data-mtab="fmt">📄 النص المنسق</button>
+      <button type="button" class="tabbtn" data-mtab="sum">🧠 الملخص الشامل</button>
+      <button type="button" class="tabbtn" data-mtab="map">🗺️ الخريطة الذهنية</button>
+      <button type="button" class="tabbtn" data-mtab="quiz">📝 بنك الأسئلة</button>
+      <button type="button" class="tabbtn" data-mtab="dl">⬇️ التحميلات والحفظ</button>
+    </div>
+    <div class="mt-5">
+      <div id="mg-fmt" class="leading-loose text-slate-700 dark:text-slate-200 space-y-3" style="font-size:.95rem"></div>
+      <div id="mg-sum" class="hidden leading-loose text-slate-700 dark:text-slate-200" style="font-size:.95rem"></div>
+      <div id="mg-map" class="hidden"><div class="soft p-4 md:p-6 overflow-x-auto" data-mmhost><div id="mg-map-wrap"></div></div></div>
+      <div id="mg-quiz" class="hidden space-y-3"></div>
+      <div id="mg-dl" class="hidden grid sm:grid-cols-2 gap-4"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ التصدير والإنتاجية ============ -->
+<section id="sec-export" class="app-section hidden space-y-6">
+  <div class="text-center max-w-2xl mx-auto">
+    <span class="kicker">الأداة السادسة</span>
+    <h1 class="sec-title mt-2">🔊 التصدير والقراءة الصوتية</h1>
+    <p class="text-slate-500 dark:text-slate-400 mt-3 leading-7 text-sm">استمع لملخصاتك أثناء المراجعة، اطبعها PDF بغلاف رسمي يحمل اسمك، وانسخ أي ناتج بنقرة.</p>
+  </div>
+
+  <div class="grid lg:grid-cols-2 gap-6">
+    <div class="card p-6 md:p-8 space-y-4">
+      <h3 class="font-black text-lg flex items-center gap-2"><span class="w-9 h-9 rounded-xl bg-cyan-100 dark:bg-cyan-500/15 grid place-items-center">🎧</span> القراءة الصوتية (TTS)</h3>
+      <div><label class="label">اختر ما سيُقرأ</label>
+        <select id="tts-src" class="input"><option value="summary">آخر ملخص ذكي</option><option value="formatted">آخر نص منسق</option><option value="custom">نص مخصص</option></select>
+      </div>
+      <div id="tts-custom-wrap" class="hidden"><label class="label">النص المخصص</label><textarea id="tts-custom" rows="4" class="input" placeholder="اكتب النص الذي تريد سماعه…"></textarea></div>
+      <div><label class="label">الصوت المتاح</label><select id="tts-voice" class="input"><option value="">الصوت العربي الافتراضي</option></select></div>
+      <div class="grid grid-cols-2 gap-4">
+        <div><label class="label">السرعة: <span id="tts-ratev" class="text-violet-500">1</span></label><input id="tts-rate" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+        <div><label class="label">النبرة: <span id="tts-pitchv" class="text-violet-500">1</span></label><input id="tts-pitch" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <button type="button" id="tts-play" class="btn-primary-sm">▶ تشغيل</button>
+        <button type="button" id="tts-pause" class="btn-sm">⏸ إيقاف مؤقت</button>
+        <button type="button" id="tts-stop" class="btn-sm">⏹ إيقاف</button>
+      </div>
+      <div id="tts-view" class="soft p-4 max-h-64 overflow-y-auto leading-loose text-sm text-slate-600 dark:text-slate-300">سيظهر النص هنا مع تظليل الجملة أثناء نطقها…</div>
+    </div>
+
+    <div class="space-y-6">
+      <div class="card p-6 md:p-8 space-y-4">
+        <h3 class="font-black text-lg flex items-center gap-2"><span class="w-9 h-9 rounded-xl bg-violet-100 dark:bg-violet-500/15 grid place-items-center">🖨️</span> طباعة أنيقة / حفظ PDF</h3>
+        <div><label class="label">اختر ما سيُطبع</label>
+          <select id="print-src" class="input"><option value="summary">آخر ملخص ذكي</option><option value="map">آخر خريطة ذهنية (نصية)</option><option value="formatted">آخر نص منسق</option><option value="quiz">بنك الأسئلة الحالي</option><option value="custom">نص مخصص</option></select>
+        </div>
+        <div id="print-custom-wrap" class="hidden"><label class="label">النص المخصص</label><textarea id="print-custom" rows="4" class="input"></textarea></div>
+        <label class="flex items-center gap-2 text-sm font-bold cursor-pointer select-none"><input type="checkbox" id="print-cover" checked class="w-4 h-4 rounded"> إضافة غلاف رسمي (اسم المنصة + التاريخ + بيانات التواصل)</label>
+        <button type="button" id="print-go" class="btn-primary">🖨️ معاينة وطباعة</button>
+        <p class="text-xs text-slate-400 leading-6">💡 في نافذة الطباعة اختر «حفظ كـ PDF» من قائمة الطابعات للحصول على ملف PDF أنيق.</p>
+      </div>
+
+      <div class="card p-6 md:p-8 space-y-4">
+        <h3 class="font-black text-lg flex items-center gap-2"><span class="w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-500/15 grid place-items-center">🗄️</span> النسخ الاحتياطي</h3>
+        <div id="bk-stats" class="text-xs font-bold text-slate-400"></div>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" id="bk-export" class="btn-primary-sm">⬇️ تصدير نسخة احتياطية (JSON)</button>
+          <button type="button" id="bk-import" class="btn-sm">📥 استيراد نسخة</button>
+          <input type="file" id="bk-file" accept=".json,application/json" class="hidden">
+          <button type="button" id="bk-clear" class="btn-danger-sm">🗑️ مسح كل المحفوظات</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card p-6 md:p-8">
+    <h3 class="font-black text-lg mb-4">📋 مركز النسخ السريع</h3>
+    <div id="copy-center" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3"></div>
+  </div>
+</section>
+
+<!-- ============ المحفوظات ============ -->
+<section id="sec-library" class="app-section hidden space-y-6">
+  <div class="text-center max-w-2xl mx-auto">
+    <span class="kicker">الأداة السابعة</span>
+    <h1 class="sec-title mt-2">💾 مكتبة المحفوظات</h1>
+    <p class="text-slate-500 dark:text-slate-400 mt-3 leading-7 text-sm">كل ما حفظته من أي قسم يظهر هنا موسومًا بلون وقسم واضح — ابحث، رجّع أي عنصر لأداته، نزّله، أو احذفه.</p>
+  </div>
+
+  <div class="card p-5 md:p-6 space-y-4">
+    <div class="flex flex-wrap items-center gap-2">
+      <div class="relative flex-1 min-w-[220px]">
+        <input id="lib-q" class="input pe-10" placeholder="🔍 ابحث في المحفوظات…">
+      </div>
+      <span id="lib-count" class="text-xs font-bold text-slate-400"></span>
+    </div>
+    <div class="flex flex-wrap gap-2" id="lib-filters"></div>
+    <div class="flex flex-wrap gap-2 pt-3 border-t border-slate-200/70 dark:border-slate-700/60">
+      <button type="button" id="lib-export" class="btn-primary-sm">⬇️ تصدير كل شيء (JSON)</button>
+      <button type="button" id="lib-import" class="btn-sm">📥 استيراد</button>
+      <input type="file" id="lib-file" accept=".json,application/json" class="hidden">
+      <button type="button" id="lib-clear" class="btn-danger-sm">🗑️ مسح الكل</button>
+    </div>
+  </div>
+  <div id="lib-list" class="grid md:grid-cols-2 gap-4"></div>
+  <div id="lib-empty" class="hidden card p-14 text-center">
+    <div class="text-6xl mb-4">🗂️</div>
+    <h3 class="font-black text-xl">المكتبة فارغة حتى الآن</h3>
+    <p class="text-sm text-slate-400 mt-2 leading-7">ابدأ بأي أداة ثم اضغط «💾 حفظ» — كل قسم له زر حفظ مميز بعلامة القسم التي حفظت منها.</p>
+    <button type="button" class="btn-primary mt-6" data-nav="magic">✨ جرّب المعالجة السحرية</button>
+  </div>
+</section>
+
+</main>
+
+<!-- الفوتر -->
+<footer class="mt-16 border-t border-slate-200/70 dark:border-slate-700/60 bg-white/60 dark:bg-slate-900/40 backdrop-blur">
+  <div class="max-w-7xl mx-auto px-4 py-12 grid md:grid-cols-3 gap-10">
+    <div>
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-600 to-sky-500 grid place-items-center text-white text-2xl shadow-lg shadow-violet-500/30 font-black">خ</div>
+        <div><div class="font-black text-lg">خُلاصة</div><div class="text-xs font-bold text-violet-500">Khulasa • Smart Study Platform</div></div>
+      </div>
+      <p class="text-sm text-slate-500 dark:text-slate-400 leading-7 mt-4">منصة تعليمية شاملة لفريق الملخصات وطلاب العلم: تفريغ صوتي، أدوات PDF كاملة، ملخصات ذكية بثلاثة مستويات، خرائط ذهنية، بنك أسئلة وامتحانات تفاعلية — كل ذلك يعمل داخل متصفحك مع احترام كامل لخصوصية ملفاتك.</p>
+    </div>
+    <div>
+      <h4 class="font-black mb-4">🧭 أقسام المنصة</h4>
+      <div class="grid grid-cols-2 gap-1">
+        <button type="button" class="navbtn !justify-start" data-nav="recorder">🎙️ تفريغ صوتي</button>
+        <button type="button" class="navbtn !justify-start" data-nav="pdftools">🧰 أدوات PDF</button>
+        <button type="button" class="navbtn !justify-start" data-nav="summary">🧠 ملخصات وخرائط</button>
+        <button type="button" class="navbtn !justify-start" data-nav="quiz">📝 أسئلة وامتحان</button>
+        <button type="button" class="navbtn !justify-start" data-nav="magic">✨ زر سحري</button>
+        <button type="button" class="navbtn !justify-start" data-nav="export">🔊 تصدير ونطق</button>
+        <button type="button" class="navbtn !justify-start" data-nav="library">💾 محفوظاتي</button>
+        <button type="button" class="navbtn !justify-start" data-nav="home">🏠 الرئيسية</button>
+      </div>
+    </div>
+    <div>
+      <h4 class="font-black mb-4">📞 تواصل مع المطوّر</h4>
+      <div class="soft p-5 space-y-3">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-600 to-sky-500 grid place-items-center text-white font-black">ZA</div>
+          <div><div class="font-black">زياد أشرف</div><div class="text-xs text-slate-400 font-bold">Ziad Ashraf • مطوّر ومؤسس المنصة</div></div>
+        </div>
+        <a href="https://wa.me/201099713432" target="_blank" rel="noopener" class="btn-wa w-full !py-2.5 text-xs">💬 واتساب <span dir="ltr">+20 109 971 3432</span></a>
+        <a href="tel:+201099713432" class="btn-ghost w-full !py-2.5 text-xs">📞 <span dir="ltr">+20 109 971 3432</span></a>
+        <p class="text-[11px] text-slate-400 text-center">متاح للدعم الفني والاستفسارات — الرد خلال ساعات 💜</p>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-slate-200/70 dark:border-slate-700/60 py-5 text-center text-xs text-slate-400 font-bold">
+    © <span id="year">2026</span> خُلاصة — بإعداد زياد أشرف — جميع الحقوق محفوظة • صُنعت هذه المنصة بحب لطلاب العلم 💜
+  </div>
+</footer>
+
+<!-- نافذة منبثقة عامة -->
+<div id="modal" class="hidden"></div>
+
+<script>
+'use strict';
+/* ================= النواة الأساسية ================= */
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const esc = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const escapeRe = s => String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+const wordCount = t => String(t||'').split(/\s+/).filter(Boolean).length;
+const val = id => { const e = document.getElementById(id); return e ? e.value.trim() : ''; };
+const setVal = (id, v) => { const e = document.getElementById(id); if (e) e.value = v; };
+function fmtBytes(n){ if(!n&&n!==0) return ''; if(n<1024) return n+' B'; if(n<1048576) return (n/1024).toFixed(1)+' KB'; return (n/1048576).toFixed(2)+' MB'; }
+function trimWords(s,n){ const w=String(s).trim().split(/\s+/); return w.slice(0,n).join(' ')+(w.length>n?'…':''); }
+function shuffle(a){ const x=[...a]; for(let i=x.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [x[i],x[j]]=[x[j],x[i]]; } return x; }
+function pickOne(a){ return a[Math.floor(Math.random()*a.length)]; }
+function pickDistinct(arr,n){ const out=[]; for(const x of shuffle(arr)){ if(!out.includes(x)) out.push(x); if(out.length>=n) break; } return out; }
+function dateStr(iso){ const d=iso?new Date(iso):new Date(); return d.toLocaleDateString('ar-EG',{day:'numeric',month:'long',year:'numeric'})+' • '+d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'}); }
+
+function download(data, name, type='application/octet-stream'){
+  try{
+    const blob = data instanceof Blob ? data : new Blob([data], {type});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click();
+    setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 900);
+  }catch(e){ toast('تعذر بدء التنزيل','error'); }
+}
+async function copyText(t){
+  if(!t){ toast('لا يوجد نص للنسخ','warn'); return; }
+  try{ await navigator.clipboard.writeText(t); toast('تم النسخ إلى الحافظة ✔','success'); }
+  catch(e){
+    const ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); toast('تم النسخ إلى الحافظة ✔','success'); }catch(_){ toast('تعذر النسخ — انسخ يدويًا','error'); }
+    ta.remove();
+  }
+}
+
+/* --- التنبيهات --- */
+const TOAST_STYLES = {
+  success:'bg-emerald-500', error:'bg-rose-500', warn:'bg-amber-500', info:'bg-violet-600'
+};
+function toast(msg, type='info'){
+  const box = $('#toasts'); if(!box) return;
+  const el = document.createElement('div');
+  el.className = `toast-item pointer-events-auto max-w-md w-fit px-5 py-3 rounded-2xl shadow-2xl text-white text-sm font-bold flex items-center gap-2 ${TOAST_STYLES[type]||TOAST_STYLES.info}`;
+  el.textContent = msg;
+  box.appendChild(el);
+  setTimeout(()=>{ el.style.transition='all .4s'; el.style.opacity='0'; el.style.transform='translateY(10px)'; setTimeout(()=>el.remove(),420); }, 3400);
+}
+
+/* --- إصلاح القفز لأعلى الصفحة: تثبيت موضع التمرير حول أي تغيير في الواجهة --- */
+function keepScroll(fn){
+  const x = window.scrollX, y = window.scrollY;
+  fn();
+  window.scrollTo(x, y);
+}
+
+/* --- مكتبات خارجية --- */
+function loadScript(src){ return new Promise((res,rej)=>{ const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=()=>rej(new Error('load '+src)); document.head.appendChild(s); }); }
+function needLib(global, name){
+  if(!window[global]){ toast('تعذر تحميل مكتبة '+name+' — تأكد من اتصالك بالإنترنت ثم أعد المحاولة','error'); return false; }
+  return true;
+}
+
+/* --- أيقونات --- */
+const ICONS = {
+  save:'<path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/>',
+  copy:'<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>',
+  trash:'<path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>',
+  down:'<path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/>',
+  eye:'<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
+  x:'<path d="M18 6L6 18M6 6l12 12"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  moon:'<path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/>',
+  play:'<path d="M6 4l14 8-14 8z"/>',
+  refresh:'<path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.5 9a9 9 0 0114.9-3.4L23 10M1 14l4.6 4.4A9 9 0 0020.5 15"/>'
+};
+function icon(name, cls='w-4 h-4'){ return `<svg class="${cls}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]||''}</svg>`; }
+
+/* ================= الوضع الليلي ================= */
+function applyTheme(dark){
+  document.documentElement.classList.toggle('dark', dark);
+  try{ localStorage.setItem('ziadEduTheme', dark?'dark':'light'); }catch(e){}
+  const b = $('#themeBtn'); if(b) b.innerHTML = icon(dark?'sun':'moon','w-5 h-5');
+}
+function initTheme(){
+  let saved=null; try{ saved=localStorage.getItem('ziadEduTheme'); }catch(e){}
+  const dark = saved ? saved==='dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(dark);
+  $('#themeBtn')?.addEventListener('click', ()=> applyTheme(!document.documentElement.classList.contains('dark')));
+}
+
+/* ================= التنقل بين الأقسام (بدون أي قفز) ================= */
+const ORDER = ['home','recorder','pdftools','summary','quiz','magic','export','library'];
+function switchTab(id, opts={}){
+  if(!ORDER.includes(id)) return;
+  $$('.app-section').forEach(s=>s.classList.add('hidden'));
+  const sec = $('#sec-'+id);
+  if(sec){
+    sec.classList.remove('hidden');
+    sec.classList.add('animate-fadeUp');
+    setTimeout(()=>sec.classList.remove('animate-fadeUp'), 500);
+  }
+  $$('[data-nav]').forEach(b=>b.classList.toggle('navbtn-on', b.dataset.nav===id && b.classList.contains('navbtn')));
+  closeDrawer();
+  if(opts.scroll !== false){
+    window.scrollTo({top:0, behavior: opts.instant ? 'auto' : 'smooth'});
+  }
+  if(id==='library') renderLibrary();
+}
+function bindNav(){
+  document.addEventListener('click', e=>{
+    const t = e.target.closest('[data-nav]');
+    if(t && t.tagName!=='A'){ e.preventDefault(); switchTab(t.dataset.nav); }
+  });
+}
+function openDrawer(){ $('#drawer').classList.remove('translate-x-full'); $('#drawerBg').classList.remove('hidden'); }
+function closeDrawer(){ $('#drawer')?.classList.add('translate-x-full'); $('#drawerBg')?.classList.add('hidden'); }
+function initDrawer(){
+  $('#drawerBtn')?.addEventListener('click', openDrawer);
+  $('#drawerClose')?.addEventListener('click', closeDrawer);
+  $('#drawerBg')?.addEventListener('click', closeDrawer);
+}
+
+/* ================= زر العودة للأعلى ================= */
+function initFabs(){
+  const btn = $('#topBtn');
+  window.addEventListener('scroll', ()=>{
+    if(window.scrollY > 500){ btn.classList.remove('hidden'); requestAnimationFrame(()=>btn.classList.remove('opacity-0')); }
+    else { btn.classList.add('opacity-0'); setTimeout(()=>{ if(window.scrollY<=500) btn.classList.add('hidden'); }, 300); }
+  }, {passive:true});
+  btn.addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
+}
+
+/* ================= النوافذ المنبثقة ================= */
+function showModal(title, bodyHtml, actions=[{label:'حسنًا', primary:true}]){
+  const r = $('#modal');
+  r.innerHTML = `<div class="fixed inset-0 z-[80] flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm" data-mclose></div>
+    <div class="card relative w-full max-w-lg p-6 animate-pop max-h-[85vh] overflow-y-auto">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-xl font-black text-slate-800 dark:text-white">${esc(title)}</h3>
+        <button type="button" class="btn-icon" data-mclose aria-label="إغلاق">${icon('x','w-5 h-5')}</button>
+      </div>
+      <div class="space-y-4">${bodyHtml}</div>
+      <div class="flex gap-2 mt-6 flex-wrap">${actions.map((a,i)=>`<button type="button" class="${a.danger?'btn-danger':(a.primary?'btn-primary':'btn-ghost')}" data-mact="${i}">${a.label}</button>`).join('')}</div>
+    </div></div>`;
+  r.classList.remove('hidden');
+  r.querySelectorAll('[data-mclose]').forEach(x=>x.addEventListener('click', closeModal));
+  r.querySelectorAll('[data-mact]').forEach(b=>b.addEventListener('click', ()=>{
+    const a = actions[+b.dataset.mact];
+    if(a && a.onClick){ const keep = a.onClick(); if(!keep) closeModal(); }
+    else closeModal();
+  }));
+}
+function closeModal(){ const r=$('#modal'); r.classList.add('hidden'); r.innerHTML=''; }
+function confirmDlg(msg, onYes, yesLabel='تأكيد'){
+  showModal('تأكيد العملية', `<p class="text-slate-600 dark:text-slate-300 leading-7 text-sm">${msg}</p>`,
+    [{label:'إلغاء'},{label:yesLabel, primary:true, onClick:()=>{ onYes(); }}]);
+}
+
+/* ================= نظام المحفوظات (مميز لكل قسم) ================= */
+const SECTIONS = {
+  home:{l:'الرئيسية', c:'sky'}, recorder:{l:'التفريغ الصوتي', c:'rose'}, pdftools:{l:'أدوات PDF', c:'orange'},
+  summary:{l:'الملخصات والخرائط', c:'violet'}, quiz:{l:'الأسئلة والامتحانات', c:'emerald'},
+  magic:{l:'المعالجة السحرية', c:'fuchsia'}, export:{l:'التصدير والنطق', c:'cyan'}, library:{l:'المحفوظات', c:'amber'}
+};
+const Store = {
+  key:'ziadEduSaves_v2', items:[],
+  load(){ try{ this.items = JSON.parse(localStorage.getItem(this.key)) || []; }catch(e){ this.items=[]; } },
+  persist(){ try{ localStorage.setItem(this.key, JSON.stringify(this.items)); }catch(e){ toast('مساحة التخزين ممتلئة — احذف بعض المحفوظات','warn'); } },
+  add(section, kind, title, content){
+    if(!content || !String(content).trim()){ toast('لا يوجد محتوى للحفظ بعد','warn'); return false; }
+    this.items.unshift({ id:Date.now()+'-'+Math.random().toString(36).slice(2,6), section, kind, title, content:String(content), date:new Date().toISOString() });
+    this.persist(); renderLibrary(); refreshBackupStats();
+    toast('💾 تم الحفظ في المحفوظات — قسم: '+SECTIONS[section].l, 'success');
+    return true;
+  },
+  del(id){ this.items = this.items.filter(i=>i.id!==id); this.persist(); renderLibrary(); refreshBackupStats(); },
+  clear(){ this.items=[]; this.persist(); renderLibrary(); refreshBackupStats(); }
+};
+const Drafts = {
+  key:'ziadEduDrafts_v1', d:{},
+  load(){ try{ this.d = JSON.parse(localStorage.getItem(this.key)) || {}; }catch(e){ this.d={}; } },
+  persist(){ try{ localStorage.setItem(this.key, JSON.stringify(this.d)); }catch(e){} },
+  set(k,v){ this.d[k]={v, t:Date.now()}; this.persist(); },
+  get(k){ return this.d[k]; },
+  del(k){ delete this.d[k]; this.persist(); }
+};
+const Settings = {
+  key:'ziadEduSettings_v1',
+  data:{ autosave:{} },
+  load(){ try{ this.data = Object.assign({autosave:{}}, JSON.parse(localStorage.getItem(this.key))||{}); }catch(e){ this.data={autosave:{}}; } },
+  persist(){ try{ localStorage.setItem(this.key, JSON.stringify(this.data)); }catch(e){} }
+};
+
+/* ================= أشرطة الحفظ لكل قسم ================= */
+const SAVEBARS = {
+  recorder:{ title:'التفريغ الصوتي', kind:'نص مفرَّغ', get:()=>val('sttText'), set:v=>setVal('sttText',v) },
+  magic:{ title:'مدخل المعالجة السحرية', kind:'نص', get:()=>getPickerText('magic'), set:v=>setPickerText('magic',v) },
+  summary:{ title:'مدخل الملخصات', kind:'نص', get:()=>getPickerText('summary'), set:v=>setPickerText('summary',v) },
+  quiz:{ title:'مدخل بنك الأسئلة', kind:'نص', get:()=>getPickerText('quiz'), set:v=>setPickerText('quiz',v) }
+};
+const debounces = {};
+function debouncedDraft(k){
+  clearTimeout(debounces[k]);
+  debounces[k] = setTimeout(()=>{
+    const c = SAVEBARS[k]; if(!c || !Settings.data.autosave[k]) return;
+    const t = c.get(); if(!t) return;
+    Drafts.set(k, t);
+    const meta = $(`[data-savebar="${k}"] [data-sb="meta"]`);
+    if(meta) meta.textContent = '✓ حفظ تلقائي ' + new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'});
+  }, 900);
+}
+function initSaveBars(){
+  $$('[data-savebar]').forEach(h=>{
+    const k = h.dataset.savebar, c = SAVEBARS[k]; if(!c) return;
+    const auto = !!Settings.data.autosave[k];
+    h.innerHTML = `<div class="flex flex-wrap items-center gap-2 pt-4 mt-4 border-t border-slate-200/70 dark:border-slate-700/60">
+      <span class="badge bg-slate-100 text-slate-500 dark:bg-slate-700/60 dark:text-slate-300">قسم: ${c.title}</span>
+      <button type="button" class="btn-primary-sm" data-sb="save">${icon('save','w-3.5 h-3.5')} حفظ في المحفوظات</button>
+      <button type="button" class="btn-sm" data-sb="copy">${icon('copy','w-3.5 h-3.5')} نسخ</button>
+      <button type="button" class="btn-sm" data-sb="dl">${icon('down','w-3.5 h-3.5')} تنزيل TXT</button>
+      ${c.set?`<button type="button" class="btn-danger-sm" data-sb="clear">🧹 تفريغ</button>`:''}
+      ${c.set?`<label class="flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-300 cursor-pointer select-none ms-auto">
+        <input type="checkbox" class="peer sr-only" data-sb="auto" ${auto?'checked':''}>
+        <span class="w-9 h-5 rounded-full bg-slate-300 dark:bg-slate-600 relative transition peer-checked:bg-violet-600 after:content-[''] after:absolute after:top-0.5 after:right-0.5 after:w-4 after:h-4 after:rounded-full after:bg-white after:transition peer-checked:after:-translate-x-4"></span>
+        حفظ تلقائي لهذا القسم</label>`:''}
+      <span class="text-[11px] text-slate-400 font-bold" data-sb="meta"></span>
+    </div>`;
+    h.querySelector('[data-sb="save"]')?.addEventListener('click', ()=>{ if(Store.add(k, c.kind, c.title, c.get())){ const m=h.querySelector('[data-sb="meta"]'); m.textContent='✓ محفوظ '+dateStr(); } });
+    h.querySelector('[data-sb="copy"]')?.addEventListener('click', ()=>copyText(c.get()));
+    h.querySelector('[data-sb="dl"]')?.addEventListener('click', ()=>{ const t=c.get(); if(!t){toast('لا يوجد نص للتنزيل','warn');return;} download(t, c.title.replace(/\s+/g,'-')+'.txt','text/plain;charset=utf-8'); });
+    h.querySelector('[data-sb="clear"]')?.addEventListener('click', ()=>confirmDlg('هل تريد تفريغ محتوى «'+c.title+'»؟', ()=>{ c.set(''); Drafts.del(k); const m=h.querySelector('[data-sb="meta"]'); if(m)m.textContent=''; }));
+    h.querySelector('[data-sb="auto"]')?.addEventListener('change', e=>{ Settings.data.autosave[k]=e.target.checked; Settings.persist(); toast(e.target.checked?'✓ تم تشغيل الحفظ التلقائي لهذا القسم':'تم إيقاف الحفظ التلقائي','info'); if(e.target.checked) debouncedDraft(k); });
+  });
+  // استعادة المسودات
+  Object.keys(SAVEBARS).forEach(k=>{
+    const c = SAVEBARS[k], d = Drafts.get(k);
+    if(c.set && d && d.v && String(d.v).trim()){
+      c.set(d.v);
+      const meta = $(`[data-savebar="${k}"] [data-sb="meta"]`);
+      if(meta) meta.textContent = '↩︎ استُعيدت مسودتك المحفوظة تلقائيًا';
+    }
+  });
+}
+
+/* ================= مخططات اختيار المصدر (في كل قسم) ================= */
+const PickerState = {};
+function pickerHtml(id){
+  const srcBtn = (key, emo, label) => `<button type="button" class="tabbtn" data-src-tab="${key}">${emo} ${label}</button>`;
+  return `
+  <div class="rounded-3xl border-2 border-dashed border-slate-300 dark:border-slate-600 overflow-hidden bg-slate-50/40 dark:bg-slate-800/20">
+    <div class="flex flex-wrap gap-1.5 p-3 bg-slate-100/70 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-700">
+      ${srcBtn('text','✍️','نص مكتوب')}${srcBtn('pdf','📄','ملف PDF')}${srcBtn('image','🖼️','صورة (OCR)')}${srcBtn('audio','🎙️','تفريغ صوتي')}
+    </div>
+    <div class="p-4">
+      <div data-pane="text">
+        <textarea data-role="text" rows="7" class="input leading-8" placeholder="الصق أو اكتب النص هنا…"></textarea>
+        <div data-role="textcount" class="text-xs text-slate-400 font-bold mt-2">0 كلمة • 0 حرف</div>
+      </div>
+      <div data-pane="pdf" class="hidden">
+        <label class="dropzone" data-role="pdfdrop">
+          <input type="file" accept="application/pdf,.pdf" class="hidden" data-role="pdffile">
+          <span class="text-3xl">📄</span>
+          <span class="font-bold text-sm">اسحب ملف PDF هنا أو اضغط للاختيار</span>
+          <span class="text-[11px] text-slate-400">سيتم استخراج النص تلقائيًا — لو كان الملف ممسوحًا ضوئيًا استخدم تبويب الصورة (OCR)</span>
+        </label>
+        <div data-role="pdfstatus" class="hidden mt-3 text-xs font-bold text-violet-600 dark:text-violet-300"></div>
+      </div>
+      <div data-pane="image" class="hidden">
+        <label class="dropzone" data-role="imgdrop">
+          <input type="file" accept="image/*" multiple class="hidden" data-role="imgfile">
+          <span class="text-3xl">🖼️</span>
+          <span class="font-bold text-sm">اسحب صورة أو أكثر (فصول، شرائح، ملاحظات)</span>
+          <span class="text-[11px] text-slate-400">سيتم التعرف على النص العربي والإنجليزي تلقائيًا (OCR)</span>
+        </label>
+        <div data-role="ocrstatus" class="hidden mt-3 text-xs font-bold text-violet-600 dark:text-violet-300"></div>
+      </div>
+      <div data-pane="audio" class="hidden">
+        <div class="soft p-5 text-center">
+          <div class="text-3xl mb-2">🎙️</div>
+          <p class="text-sm font-bold text-slate-600 dark:text-slate-300">استخدم آخر تفريغ صوتي تم إنشاؤه في قسم «تفريغ صوتي»</p>
+          <button type="button" class="btn-primary-sm mt-4" data-role="useaudio">⬇️ إحضار أحدث تفريغ صوتي</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+function initPicker(host){
+  const id = host.dataset.picker;
+  host.innerHTML = pickerHtml(id);
+  const q = s=>host.querySelector(s);
+  const ta = q('[data-role=text]'), cnt = q('[data-role=textcount]');
+  const pdfStatus = q('[data-role=pdfstatus]'), ocrStatus = q('[data-role=ocrstatus]');
+  const refresh = ()=>{
+    cnt.textContent = wordCount(ta.value)+' كلمة • '+ta.value.length+' حرف';
+    if(SAVEBARS[id]) debouncedDraft(id);
+  };
+  ta.addEventListener('input', refresh);
+  $$('[data-src-tab]', host).forEach(b=>b.addEventListener('click', ()=>keepScroll(()=>{
+    $$('[data-src-tab]', host).forEach(x=>x.classList.toggle('tabbtn-on', x===b));
+    $$('[data-pane]', host).forEach(p=>p.classList.toggle('hidden', p.dataset.pane!==b.dataset.srcTab));
+  })));
+  host.querySelector('[data-src-tab="text"]').classList.add('tabbtn-on');
+  // رفع PDF
+  bindDropFile(q('[data-role=pdfdrop]'), q('[data-role=pdffile]'), async file=>{
+    pdfStatus.classList.remove('hidden');
+    pdfStatus.textContent = '⏳ جارٍ استخراج النص من «'+file.name+'» …';
+    try{
+      const r = await readPdfText(file);
+      ta.value = r.text; refresh();
+      pdfStatus.textContent = '✓ تم استخراج '+wordCount(r.text)+' كلمة من '+r.pages+' صفحة — يمكنك تعديل النص قبل المعالجة';
+      toast('تم استخراج نص الـ PDF بنجاح ✔','success');
+    }catch(e){
+      pdfStatus.textContent = '✕ تعذر قراءة الملف — ربما يكون ممسوحًا ضوئيًا، جرّب تبويب الصورة (OCR) بعد تحويل صفحاته لصور';
+      toast('فشل استخراج النص من الـ PDF','error');
+    }
+  });
+  // رفع صور OCR
+  bindDropMulti(q('[data-role=imgdrop]'), q('[data-role=imgfile]'), async files=>{
+    ocrStatus.classList.remove('hidden');
+    try{
+      const t = await ocrFiles(files, p=>{ ocrStatus.textContent = '⏳ جارٍ التعرف الضوئي… '+Math.round(p*100)+'%'; });
+      ta.value = (ta.value?ta.value+'\n\n':'')+t; refresh();
+      ocrStatus.textContent = '✓ تم استخراج '+wordCount(t)+' كلمة من '+files.length+' صورة';
+      toast('تم استخراج النص من الصور ✔','success');
+    }catch(e){
+      ocrStatus.textContent = '✕ تعذر تشغيل التعرف الضوئي — تأكد من الاتصال بالإنترنت أو الصق النص يدويًا';
+      toast('فشل التعرف الضوئي على الصورة','error');
+    }
+  });
+  q('[data-role=useaudio]').addEventListener('click', ()=>{
+    const t = val('sttText');
+    if(!t){ toast('لا يوجد تفريغ صوتي بعد — سجّل أو ارفع ملفًا أولًا في قسم التفريغ الصوتي','warn'); switchTab('recorder'); return; }
+    ta.value = t; refresh();
+    toast('تم إحضار أحدث تفريغ صوتي ✔','success');
+  });
+  PickerState[id] = {
+    get:()=>ta.value.trim(),
+    set:v=>{ ta.value=v||''; refresh(); },
+    focus:()=>ta.focus()
+  };
+  refresh();
+}
+function initPickers(){ $$('[data-picker]').forEach(initPicker); }
+function getPickerText(id){ return PickerState[id] ? PickerState[id].get() : ''; }
+function setPickerText(id, v){ if(PickerState[id]) PickerState[id].set(v); }
+
+/* --- سحب وإفلات --- */
+function zoneHot(zone, on){
+  ['dragenter','dragover'].forEach(ev=>zone.addEventListener(ev, e=>{ e.preventDefault(); e.stopPropagation(); if(on!==false) zone.classList.add('drop-hot'); }));
+  ['dragleave','drop'].forEach(ev=>zone.addEventListener(ev, e=>{ e.preventDefault(); e.stopPropagation(); zone.classList.remove('drop-hot'); }));
+}
+function bindDropFile(zone, input, handler){
+  if(!zone||!input) return;
+  zoneHot(zone);
+  zone.addEventListener('drop', e=>{ const f=e.dataTransfer.files && e.dataTransfer.files[0]; if(f) handler(f); });
+  input.addEventListener('change', ()=>{ const f=input.files && input.files[0]; if(f) handler(f); input.value=''; });
+}
+function bindDropMulti(zone, input, handler){
+  if(!zone||!input) return;
+  zoneHot(zone);
+  zone.addEventListener('drop', e=>{ const fs=e.dataTransfer.files; if(fs && fs.length) handler(Array.from(fs)); });
+  input.addEventListener('change', ()=>{ const fs=input.files; if(fs && fs.length) handler(Array.from(fs)); input.value=''; });
+}
+window.addEventListener('dragover', e=>e.preventDefault());
+window.addEventListener('drop', e=>e.preventDefault());
+
+/* ================= قسم التفريغ الصوتي ================= */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const R = { rec:null, on:false, t0:0, int:null, want:false, media:null, chunks:[], url:null, finalText:'' };
+function updateSttCount(){
+  const t = val('sttText');
+  const el = $('#sttCount'); if(el) el.textContent = wordCount(t)+' كلمة • '+t.length+' حرف';
+  debouncedDraft('recorder');
+}
+function tickRec(){
+  const s = Math.floor((Date.now()-R.t0)/1000);
+  const el = $('#recTimer'); if(el) el.textContent = String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+}
+function setRecUI(on){
+  $('#recBtn').classList.toggle('rec-on', on);
+  $('#recIconMic')?.classList.toggle('hidden', on);
+  $('#recIconStop')?.classList.toggle('hidden', !on);
+  $('#recBars').classList.toggle('rec-on-bars', on);
+  $('#recLive').classList.toggle('hidden', !on);
+  $('#recStatus').textContent = on ? 'جارٍ التسجيل والتفريغ المباشر… تحدث بوضوح' : 'جاهز للتسجيل — اضغط زر الميكروفون';
+}
+function startRec(){
+  if(!SR){ toast('متصفحك لا يدعم التفريغ المباشر — استخدم Google Chrome أو ارفع ملفًا صوتيًا','error'); return; }
+  if(R.on) return;
+  R.finalText = val('sttText');
+  try{
+    R.rec = new SR();
+    R.rec.lang = $('#recLang').value;
+    R.rec.continuous = true; R.rec.interimResults = true;
+    R.rec.onresult = e=>{
+      let interim='';
+      for(let i=e.resultIndex;i<e.results.length;i++){
+        const r=e.results[i];
+        if(r.isFinal){ R.finalText += (R.finalText && !R.finalText.endsWith(' ') ? ' ' : '') + r[0].transcript.trim(); }
+        else interim += r[0].transcript;
+      }
+      setVal('sttText', R.finalText + (interim ? ' '+interim : ''));
+      updateSttCount();
+    };
+    R.rec.onerror = e=>{ if(e.error==='not-allowed'){ toast('لم يُسمح بالوصول للميكروفون — اسمح بالوصول من إعدادات المتصفح','error'); stopRec(); } };
+    R.rec.onend = ()=>{ if(R.want){ try{ R.rec.start(); }catch(_){}} };
+    R.want = true; R.rec.start();
+  }catch(e){ toast('تعذر بدء التعرف الصوتي','error'); return; }
+  // تسجيل ملف صوتي للتنزيل
+  if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+    navigator.mediaDevices.getUserMedia({audio:true}).then(st=>{
+      try{
+        R.media = new MediaRecorder(st); R.chunks=[];
+        R.media.ondataavailable = e=>R.chunks.push(e.data);
+        R.media.onstop = ()=>{
+          const b = new Blob(R.chunks, {type:'audio/webm'});
+          if(R.url) URL.revokeObjectURL(R.url);
+          R.url = URL.createObjectURL(b);
+          const p = $('#audioPlayer'); p.src = R.url; p.classList.remove('hidden');
+          const info = $('#audioInfo'); info.classList.remove('hidden');
+          $('#audioName').textContent = 'تسجيل الجلسة الحالية';
+          $('#audioSize').textContent = fmtBytes(b.size);
+          const dl = $('#audioDownload'); dl.href = R.url; dl.classList.remove('hidden');
+          st.getTracks().forEach(t=>t.stop());
+        };
+        R.media.start();
+      }catch(_){ st.getTracks().forEach(t=>t.stop()); }
+    }).catch(()=>{});
+  }
+  R.t0 = Date.now(); R.int = setInterval(tickRec, 250);
+  R.on = true; setRecUI(true);
+  toast('بدأ التسجيل والتفريغ المباشر 🎙️','success');
+}
+function stopRec(){
+  R.want = false;
+  try{ R.rec && R.rec.stop(); }catch(_){}
+  if(R.media && R.media.state!=='inactive'){ try{ R.media.stop(); }catch(_){} }
+  clearInterval(R.int);
+  setVal('sttText', R.finalText);
+  updateSttCount();
+  R.on = false; setRecUI(false);
+  toast('توقف التسجيل — يمكنك الآن إرسال النص لأي أداة ✅','info');
+}
+function onAudioFile(file){
+  if(!file.type.startsWith('audio') && !/\.(mp3|wav|m4a|ogg|webm)$/i.test(file.name)){ toast('الملف ليس صوتيًا','warn'); return; }
+  if(R.url) URL.revokeObjectURL(R.url);
+  R.url = URL.createObjectURL(file);
+  const p = $('#audioPlayer'); p.src = R.url; p.classList.remove('hidden');
+  $('#audioInfo').classList.remove('hidden');
+  $('#audioName').textContent = file.name;
+  $('#audioSize').textContent = fmtBytes(file.size);
+  const dl = $('#audioDownload'); dl.href = R.url; dl.download = file.name; dl.classList.remove('hidden');
+  $('#playTranscribeBtn').classList.remove('hidden');
+  toast('تم تحميل الملف الصوتي ✔ اضغط «تشغيل مع التفريغ المباشر»','success');
+}
+function playTranscribe(){
+  const p = $('#audioPlayer');
+  if(!p.src){ toast('ارفع ملفًا صوتيًا أولًا','warn'); return; }
+  if(!SR){ toast('متصفحك لا يدعم التفريغ — استخدم Chrome','error'); return; }
+  p.currentTime = 0;
+  p.play().catch(()=>{});
+  startRec();
+  p.onended = ()=>{ if(R.on){ stopRec(); toast('انتهى تشغيل الملف — تم إيقاف التفريغ','info'); } };
+}
+function sendTextTo(target, text){
+  if(!text || !text.trim()){ toast('لا يوجد نص لإرساله','warn'); return; }
+  setPickerText(target, text);
+  switchTab(target);
+  toast('تم النقل إلى '+SECTIONS[target].l+' ✔','success');
+}
+function initRecorder(){
+  if(!SR) $('#recSupport')?.classList.remove('hidden');
+  $('#recBtn')?.addEventListener('click', ()=> R.on ? stopRec() : startRec());
+  $('#sttText')?.addEventListener('input', updateSttCount);
+  bindDropFile($('#audioFile').parentElement, $('#audioFile'), onAudioFile);
+  $('#playTranscribeBtn')?.addEventListener('click', playTranscribe);
+  $$('.stt-to').forEach(b=>b.addEventListener('click', ()=>sendTextTo(b.dataset.to, val('sttText'))));
+}
+</script>
+<script>
+'use strict';
+/* ================= الحالة العامة ================= */
+const State = {
+  bank: [],
+  exam: null,
+  art: { formatted:'', formattedHtml:'', summary:null, analysis:null, map:null },
+  libFilter: 'all',
+  mmReg: []
+};
+
+/* ================= محرك التحليل اللغوي العربي ================= */
+const AR_STOP = new Set(('في من على الى الي عن ان إن كان كانت هذا هذه ذلك تلك التي الذي الذين ما لا لم لن قد ثم او أو ام أم بل حتى اذا إذا كما كل بعض غير بين حيث عند لان لانو لذلك لكن ايضا أيضا اي أي هناك هنالك كذلك نحو منذ لدى مع دون بدون سواء إما وهي وهو وهذا وهذه لها لهم بها به له عنده عندنا انا أنا نحن انت أنت انتم أنتم هو هي هم عند يمكن يجب أكثر اكثر أقل اقل جدا جدًا فقط مثل عبر ضمن خلال حول سوف ها التي الذي ولقد وقد لم لن أما اما إذ إذا كي لكي ثم أو او و ف ب ل ك ان إن ما لا ماذا لماذا كيف متى اين أين نعم ناحل إلخ بينما بين خلال أصبح أصار ظل بات زال فتئ ما دام ما دامت كلتا كلا كلاهما بعض جميع أغلب أكثر اكثر شيء أشياء').split(/\s+/));
+function normalizeAr(w){
+  return String(w)
+    .replace(/[\u064B-\u0652\u0670\u0640]/g,'')
+    .replace(/[أإآٱ]/g,'ا').replace(/ى/g,'ي').replace(/ؤ/g,'و').replace(/ئ/g,'ي')
+    .replace(/[^\u0621-\u064Aa-zA-Z0-9]/g,'');
+}
+function splitSentences(t){
+  return String(t||'')
+    .replace(/([.!؟?])\s+/g, '$1\n')
+    .split(/\n+/)
+    .map(s=>s.replace(/^[-•*\s\d.)]+/,'').trim())
+    .filter(s=>s.split(/\s+/).length>=3);
+}
+function analyzeText(raw){
+  raw = String(raw||'').trim();
+  const sentences = splitSentences(raw);
+  const freq = {}, surface = {};
+  raw.split(/\s+/).forEach(w=>{
+    const s = w.replace(/[^\u0621-\u064Aa-zA-Z0-9]/g,'');
+    if(s.length<2) return;
+    const n = normalizeAr(s);
+    if(n.length<2 || /^\d+$/.test(n) || AR_STOP.has(n)) return;
+    freq[n]=(freq[n]||0)+1;
+    if(!surface[n]) surface[n]=s;
+  });
+  const keywords = Object.keys(freq).sort((a,b)=>freq[b]-freq[a]).slice(0,15).map(n=>({norm:n, word:surface[n]||n, count:freq[n]}));
+  const kwSet = new Set(keywords.map(k=>k.norm));
+  const scored = sentences.map((s,i)=>{
+    const ws = s.split(/\s+/).map(normalizeAr);
+    let sc=0; ws.forEach(w=>{ if(freq[w]) sc+=freq[w]; });
+    sc = sc/Math.sqrt(Math.max(ws.length,3));
+    if(i===0) sc*=1.35; else if(i<3) sc*=1.12;
+    if(/\d/.test(s)) sc*=1.08;
+    const kws = ws.filter(w=>kwSet.has(w)).length;
+    return {text:s, i, score:sc, len:ws.length, kws};
+  }).filter(s=>s.len>=3);
+  return { raw, sentences, freq, surface, keywords, kwSet, scored, words: raw.split(/\s+/).filter(Boolean).length };
+}
+function topSentences(a, n){
+  return [...a.scored].sort((x,y)=>y.score-x.score).slice(0,n).sort((x,y)=>x.i-y.i);
+}
+function highlightKeywords(text, kws){
+  let h = esc(text);
+  kws.slice(0,8).forEach(k=>{
+    if(!k.word || k.word.length<3) return;
+    try{ h = h.replace(new RegExp(escapeRe(k.word),'g'), '<strong class="text-violet-600 dark:text-violet-300">$&</strong>'); }catch(_){}
+  });
+  return h;
+}
+const LENS = {short:.55, med:1, long:1.65};
+function topKeywordOfGroup(group, a){
+  const cnt = {};
+  group.forEach(x=>x.text.split(/\s+/).map(normalizeAr).forEach(w=>{ if(a.freq[w]) cnt[w]=(cnt[w]||0)+1; }));
+  const best = Object.keys(cnt).sort((x,y)=>cnt[y]-cnt[x])[0];
+  return best ? (a.surface[best]||best) : null;
+}
+function makeSummary(a, level, lenKey){
+  const f = LENS[lenKey]||1;
+  const hl = x => a.kwHighlight ? highlightKeywords(x.text, a.keywords) : esc(x.text);
+  if(level==='quick'){
+    const s = topSentences(a, Math.max(2, Math.round(3*f)));
+    return { plain: s.map(x=>x.text).join(' '), html: s.map(x=>`<p class="leading-loose">${hl(x)}</p>`).join('') };
+  }
+  if(level==='points'){
+    const n = Math.min(Math.max(Math.round(a.sentences.length*.2*f),4),10);
+    const s = topSentences(a, n);
+    return { plain: s.map(x=>'• '+x.text).join('\n'),
+      html: `<ul class="space-y-3">${s.map(x=>`<li class="flex gap-2 items-start"><span class="text-violet-500 mt-1 shrink-0">◆</span><span class="leading-loose">${hl(x)}</span></li>`).join('')}</ul>` };
+  }
+  const sorted = [...a.scored].sort((x,y)=>y.score-x.score);
+  const keep = Math.max(4, Math.min(sorted.length, Math.round(sorted.length*.55*f)));
+  const keepSet = new Set(sorted.slice(0,keep).map(x=>x.i));
+  const sel = a.sentences.map((t,i)=>({text:t,i})).filter(x=>keepSet.has(x.i));
+  const per = Math.max(3, Math.min(5, Math.round(sel.length/3)||3));
+  const paras = [];
+  for(let i=0;i<sel.length;i+=per) paras.push(sel.slice(i,i+per));
+  const html = paras.map(g=>{
+    const kw = topKeywordOfGroup(g, a);
+    return `<div class="mb-5 last:mb-0"><h4 class="font-black text-slate-800 dark:text-white mb-2 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-gradient-to-l from-violet-600 to-sky-500 inline-block shrink-0"></span>${esc(kw||'محور')}</h4><p class="leading-loose text-slate-600 dark:text-slate-300">${g.map(x=>hl(x)).join(' ')}</p></div>`;
+  }).join('');
+  return { plain: sel.map(x=>x.text).join(' '), html };
+}
+
+/* ================= الخريطة الذهنية ================= */
+const PAL = ['#7c3aed','#0ea5e9','#10b981','#f59e0b','#ef4444','#8b5cf6'];
+function buildMindmap(a){
+  const center = a.sentences[0] ? trimWords(a.sentences[0], 8) : (a.keywords[0] ? a.keywords[0].word : 'الموضوع');
+  const nodes = a.keywords.slice(0,6).map(k=>{
+    const rel = a.scored.filter(s=>s.text.split(/\s+/).map(normalizeAr).includes(k.norm));
+    const label = rel[0] ? trimWords(rel[0].text, 10) : k.word;
+    const children = rel.slice(1,3).map(s=>trimWords(s.text, 8));
+    return { key:k.norm, word:k.word, label, children };
+  });
+  return { center, nodes };
+}
+function renderMindmap(data, mode, host){
+  host.innerHTML = `<div class="mm-wrap"><svg class="mm-edges" data-edges></svg><div class="relative">
+    <div class="flex justify-center mb-10">
+      <div data-node="c" class="mm-node !text-white bg-gradient-to-l from-violet-600 to-sky-500 !border-transparent text-base !px-6 !py-3 shadow-violet-500/30">${esc(data.center)}</div>
+    </div>
+    <div class="${mode==='grid' ? 'grid sm:grid-cols-2 lg:grid-cols-3 gap-5' : 'flex flex-wrap justify-center gap-6'}">
+      ${data.nodes.map((n,i)=>`
+      <div class="${mode==='grid'?'':'flex flex-col items-center'} min-w-[200px] max-w-[280px]">
+        <div data-node="b${i}" class="mm-node w-full" style="border-color:${PAL[i%PAL.length]};color:${PAL[i%PAL.length]}">${esc(n.word)}</div>
+        <div class="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-5 text-center">${esc(n.label)}</div>
+        ${n.children.length?`<div class="mt-3 space-y-2 w-full flex flex-col items-center">
+          ${n.children.map((c,j)=>`<div data-node="c${i}_${j}" class="mm-node !py-1.5 !px-3 text-xs w-full" style="border-color:${PAL[i%PAL.length]}66">${esc(c)}</div>`).join('')}
+        </div>`:''}
+      </div>`).join('')}
+    </div>
+  </div></div>`;
+  State.mmReg = State.mmReg.filter(r=>r.host!==host);
+  State.mmReg.push({host, data, mode});
+  requestAnimationFrame(()=>drawEdges(host));
+  setTimeout(()=>drawEdges(host), 350);
+}
+function drawEdges(host){
+  const wrap = host.querySelector('.mm-wrap'), svg = host.querySelector('[data-edges]');
+  if(!wrap || !svg) return;
+  const wr = wrap.getBoundingClientRect();
+  if(wr.width===0) return;
+  svg.setAttribute('viewBox', `0 0 ${wrap.scrollWidth} ${wrap.scrollHeight}`);
+  svg.innerHTML = '';
+  const P = sel=>{
+    const el = host.querySelector(`[data-node="${sel}"]`);
+    if(!el) return null;
+    const r = el.getBoundingClientRect();
+    return { x:r.left-wr.left+r.width/2, top:r.top-wr.top, bottom:r.top-wr.top+r.height, cx:r.left-wr.left+r.width/2 };
+  };
+  const c = P('c');
+  if(!c) return;
+  let paths = '';
+  State.mmReg.filter(r=>r.host===host).forEach(reg=>{
+    reg.data.nodes.forEach((n,i)=>{
+      const b = P('b'+i); if(!b) return;
+      const col = PAL[i%PAL.length];
+      paths += `<path d="M ${c.cx} ${c.bottom} C ${c.cx} ${c.bottom+40}, ${b.cx} ${b.top-40}, ${b.cx} ${b.top}" stroke="${col}" stroke-width="2.5" opacity=".65"/>`;
+      (n.children||[]).forEach((_,j)=>{
+        const cc = P('c'+i+'_'+j); if(!cc) return;
+        paths += `<path d="M ${b.cx} ${b.bottom} C ${b.cx} ${b.bottom+24}, ${cc.cx} ${cc.top-24}, ${cc.cx} ${cc.top}" stroke="${col}" stroke-width="1.8" opacity=".45"/>`;
+      });
+    });
+  });
+  svg.innerHTML = paths;
+}
+let mmResizeTimer = null;
+window.addEventListener('resize', ()=>{
+  clearTimeout(mmResizeTimer);
+  mmResizeTimer = setTimeout(()=>{ State.mmReg.forEach(r=>{ if(r.host.offsetParent) drawEdges(r.host); }); }, 250);
+});
+function mapTreeText(data){
+  let out = data.center+'\n';
+  data.nodes.forEach(n=>{
+    out += '├── '+n.word+'\n';
+    (n.children||[]).forEach(c=>{ out += '│    ├── '+c+'\n'; });
+  });
+  return out;
+}
+async function mapDownloadPng(host){
+  if(!needLib('htmlToImage','تحويل الصور (html-to-image)')) return;
+  const node = host.querySelector('.mm-wrap');
+  if(!node){ toast('ولّد الخريطة أولًا','warn'); return; }
+  try{
+    toast('⏳ جارٍ تجهيز الصورة…','info');
+    const bg = getComputedStyle(document.body).backgroundColor || '#ffffff';
+    const url = await htmlToImage.toPng(node, {pixelRatio:2, backgroundColor:bg});
+    const a = document.createElement('a'); a.href=url; a.download='mindmap.png'; a.click();
+    toast('تم تنزيل الخريطة الذهنية PNG ✔','success');
+  }catch(e){ toast('تعذر تحويل الخريطة لصورة — جرّب الطباعة أو التنزيل النصي','error'); }
+}
+
+/* ================= استخراج نص PDF (pdf.js) ================= */
+async function ensurePdfJs(){
+  if(window.pdfjsLib) { if(!window.pdfjsLib.GlobalWorkerOptions.workerSrc) window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; return true; }
+  toast('⏳ جارٍ تحميل مكتبة PDF…','info');
+  try{
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    return true;
+  }catch(e){ return false; }
+}
+async function readPdfText(file){
+  if(!await ensurePdfJs()) throw new Error('pdf.js missing');
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({data:buf}).promise;
+  let out='';
+  for(let p=1;p<=pdf.numPages;p++){
+    const page = await pdf.getPage(p);
+    const tc = await page.getTextContent();
+    out += tc.items.map(i=>i.str).join(' ').replace(/\s+/g,' ').trim() + '\n\n';
+  }
+  return { text: out.trim(), pages: pdf.numPages };
+}
+async function getPdfDoc(file){
+  if(!await ensurePdfJs()) throw new Error('pdf.js missing');
+  const buf = await file.arrayBuffer();
+  return pdfjsLib.getDocument({data:buf}).promise;
+}
+
+/* ================= OCR (Tesseract.js) ================= */
+async function ensureTesseract(){
+  if(window.Tesseract) return true;
+  try{
+    await loadScript('https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js');
+    return true;
+  }catch(e){ return false; }
+}
+async function ocrFiles(files, onProgress){
+  if(!await ensureTesseract()) throw new Error('tesseract missing');
+  let out='';
+  for(let i=0;i<files.length;i++){
+    const {data} = await Tesseract.recognize(files[i], 'ara+eng', {
+      logger: m=>{ if(m.status==='recognizing text' && onProgress) onProgress((i+m.progress)/files.length); }
+    });
+    out += (out?'\n\n':'') + data.text.trim();
+  }
+  if(onProgress) onProgress(1);
+  return out.trim();
+}
+</script>
+<script>
+'use strict';
+/* ================= قسم الملخصات ================= */
+let sumLevel='detailed', sumLen='med', mapMode='tree';
+function initSummary(){
+  $$('.sum-level').forEach(b=>b.addEventListener('click', ()=>keepScroll(()=>{
+    $$('.sum-level').forEach(x=>x.classList.toggle('chip-on', x===b));
+    sumLevel=b.dataset.lvl;
+  })));
+  $$('.sum-len').forEach(b=>b.addEventListener('click', ()=>keepScroll(()=>{
+    $$('.sum-len').forEach(x=>x.classList.toggle('chip-on', x===b));
+    sumLen=b.dataset.len;
+  })));
+  $$('.sum-level').forEach(b=>b.classList.toggle('chip-on', b.dataset.lvl===sumLevel));
+  $$('.sum-len').forEach(b=>b.classList.toggle('chip-on', b.dataset.len===sumLen));
+  $('#sum-go').addEventListener('click', runSummary);
+  $$('.tabbtn[data-stab]').forEach(b=>b.addEventListener('click', ()=>keepScroll(()=>{
+    $$('.tabbtn[data-stab]').forEach(x=>x.classList.toggle('tabbtn-on', x===b));
+    ['text','kw','stats','map'].forEach(k=>$('#sum-pane-'+k).classList.toggle('hidden', k!==b.dataset.stab));
+    if(b.dataset.stab==='map') setTimeout(()=>drawEdges($('#map-wrap')), 60);
+  })));
+  $$('.map-layout').forEach(b=>b.addEventListener('click', ()=>keepScroll(()=>{
+    $$('.map-layout').forEach(x=>x.classList.toggle('chip-on', x===b));
+    mapMode=b.dataset.ml;
+    if(State.art.map){ renderMindmap(State.art.map, mapMode, $('#map-wrap')); }
+  })));
+  $('#map-png')?.addEventListener('click', ()=>mapDownloadPng($('[data-mmhost]')));
+  $('#map-print')?.addEventListener('click', ()=>{ if(State.art.map) openPrint('الخريطة الذهنية — '+State.art.map.center, mapTreeTextHtml(State.art.map)); else toast('ولّد الخريطة أولًا','warn'); });
+  $('#map-txt')?.addEventListener('click', ()=>{ if(State.art.map) download(mapTreeText(State.art.map),'mindmap.txt','text/plain;charset=utf-8'); else toast('ولّد الخريطة أولًا','warn'); });
+}
+function mapTreeTextHtml(data){
+  return `<div style="font-family:inherit">${data.nodes.map((n,i)=>`<div style="margin-bottom:14px"><div style="font-weight:800;color:#6d28d9">◆ ${esc(n.word)}</div><div style="color:#475569;font-size:13px;margin-top:2px">${esc(n.label)}</div>${(n.children||[]).map(c=>`<div style="color:#64748b;font-size:12px;margin-right:18px">◦ ${esc(c)}</div>`).join('')}</div>`).join('')}</div>`;
+}
+async function runSummary(){
+  const text = getPickerText('summary');
+  if(wordCount(text) < 15){ toast('النص قصير جدًا — أدخل 15 كلمة على الأقل للحصول على ملخص جيد','warn'); return; }
+  const btn = $('#sum-go'), st = $('#sum-status');
+  btn.disabled = true; btn.classList.add('opacity-60','pointer-events-none');
+  st.textContent = '⏳ جارٍ تحليل النص واستخراج الأفكار الرئيسية…';
+  await sleep(500);
+  try{
+    const a = analyzeText(text);
+    a.kwHighlight = $('#sum-hl').checked;
+    const sum = makeSummary(a, sumLevel, sumLen);
+    State.art.analysis = a;
+    State.art.summary = { ...sum, level:sumLevel, len:sumLen };
+    const summWords = wordCount(sum.plain);
+    const pct = Math.max(5, Math.round(100 - summWords/Math.max(a.words,1)*100));
+    $('#sum-pane-text').innerHTML = sum.html;
+    // الكلمات المفتاحية
+    const mx = Math.max(...a.keywords.map(k=>k.count),1);
+    $('#sum-pane-kw').innerHTML = `<div class="flex flex-wrap gap-2">${a.keywords.slice(0,12).map(k=>`
+      <span class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-violet-200 dark:border-violet-500/30 bg-violet-50/60 dark:bg-violet-500/10 text-sm font-bold text-violet-700 dark:text-violet-300">
+        ${esc(k.word)}<span class="inline-block h-1.5 rounded-full bg-violet-400" style="width:${Math.round(k.count/mx*38)+8}px"></span><span class="text-[10px] text-violet-400">×${k.count}</span>
+      </span>`).join('')}</div>`;
+    // الإحصائيات
+    const stats = [
+      ['📄','كلمات النص الأصلي', a.words], ['🧾','عدد الجمل', a.sentences.length],
+      ['✂️','كلمات الملخص', summWords], ['📉','نسبة الاختصار', pct+'%'],
+      ['⏱️','زمن قراءة النص', Math.max(1,Math.round(a.words/200))+' د'], ['🔑','كلمات مفتاحية', a.keywords.length]
+    ];
+    $('#sum-pane-stats').innerHTML = `<div class="grid grid-cols-2 lg:grid-cols-3 gap-3">${stats.map(s=>`<div class="soft p-4 text-center"><div class="text-2xl">${s[0]}</div><div class="text-xl font-black mt-1 text-slate-800 dark:text-white">${s[1]==='نسبة الاختصار'||typeof s[2]==='string'?s[2]:s[2]}</div><div class="text-[11px] font-bold text-slate-400 mt-1">${s[1]}</div></div>`).join('')}</div>`;
+    // الخريطة
+    State.art.map = buildMindmap(a);
+    renderMindmap(State.art.map, mapMode, $('#map-wrap'));
+    $('#sumArtBar').innerHTML = artBar('summary');
+    $('#sum-result').classList.remove('hidden');
+    st.textContent = '✓ اكتمل التحليل — استعرض النتائج بالتبويبات بالأعلى';
+    toast('الملخص والخريطة الذهنية جاهزان 🧠✨','success');
+  }catch(e){
+    console.error(e); toast('حدث خطأ أثناء التحليل — حاول مرة أخرى','error'); st.textContent='';
+  }finally{
+    btn.disabled=false; btn.classList.remove('opacity-60','pointer-events-none');
+  }
+}
+
+/* ================= توليد بنك الأسئلة ================= */
+function topKeywordIn(s, a){
+  const ws = s.text.split(/\s+/).map(normalizeAr);
+  let best=null;
+  ws.forEach(w=>{ if(a.kwSet.has(w) || (a.freq[w]&&a.freq[w]>=2)){ if(!best || a.freq[w]>a.freq[best]) best=w; } });
+  return best ? {norm:best, word:a.surface[best]||best} : null;
+}
+function surfaceIn(sentence, kw){
+  const found = sentence.split(/\s+/).find(w=>normalizeAr(w)===kw.norm);
+  return found || kw.word;
+}
+function makeMcq(s, kw, a){
+  const display = surfaceIn(s.text, kw);
+  if(!s.text.includes(display)) return null;
+  const qText = s.text.replace(display, '......');
+  const distract = a.keywords.filter(k=>k.norm!==kw.norm).map(k=>k.word);
+  const wrongs = pickDistinct(distract.length>=3?distract:distract.concat(['الظاهرة','العلاقة','العملية']), 3);
+  if(wrongs.length<3) return null;
+  return { type:'mcq', q:'أكمل الفراغ: '+qText, opts:shuffle([display,...wrongs]), answer:display, explain:s.text };
+}
+function makeTf(s, kw, a){
+  const display = surfaceIn(s.text, kw);
+  const swapPool = a.keywords.filter(k=>k.norm!==kw.norm).map(k=>k.word);
+  const doSwap = Math.random()<0.5 && swapPool.length>0 && s.text.includes(display);
+  let statement = s.text, answer = true;
+  if(doSwap){ statement = s.text.replace(display, pickOne(swapPool)); answer = false; }
+  return { type:'tf', q:statement, answer, explain:s.text };
+}
+function makeEssay(s, kw){
+  const keys = [...new Set(s.text.split(/\s+/).map(normalizeAr).filter(w=>w.length>=3 && !AR_STOP.has(w)))].slice(0,4);
+  return { type:'essay', q:'اشرح باختصار المقصود بـ: '+kw.word, answer:s.text, keys };
+}
+function genQuestions(text, count, types){
+  const a = analyzeText(text);
+  const pool = [...a.scored].filter(s=>s.len>=6 && s.kws>=1).sort((x,y)=>y.score-x.score);
+  const qs = []; const used = new Set();
+  const typesArr = types.length ? types : ['mcq','tf','essay'];
+  let ti = 0;
+  for(const s of pool){
+    if(qs.length>=count) break;
+    if(used.has(s.i)) continue;
+    const kw = topKeywordIn(s,a); if(!kw) continue;
+    const type = typesArr[ti++ % typesArr.length];
+    let q = null;
+    try{
+      if(type==='mcq') q = makeMcq(s,kw,a);
+      else if(type==='tf') q = makeTf(s,kw,a);
+      else q = makeEssay(s,kw);
+    }catch(_){ q=null; }
+    if(q){ qs.push(q); used.add(s.i); }
+  }
+  if(qs.length<count){
+    for(const s of [...a.scored].sort((x,y)=>y.score-x.score)){
+      if(qs.length>=count) break;
+      if(used.has(s.i)) continue;
+      const kw = topKeywordIn(s,a); if(!kw) continue;
+      qs.push(makeEssay(s,kw)); used.add(s.i);
+    }
+  }
+  return shuffle(qs);
+}
+const Q_LABEL = {mcq:'اختيار متعدد', tf:'صح وخطأ', essay:'مقالي'};
+const Q_BADGE = {mcq:'bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300', tf:'bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300', essay:'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300'};
+function renderBank(){
+  const l = $('#q-list'), meta = $('#q-meta');
+  if(!State.bank.length){ l.innerHTML=''; meta.textContent=''; $('#q-bank').classList.add('hidden'); return; }
+  const mcqN = State.bank.filter(q=>q.type==='mcq').length, tfN = State.bank.filter(q=>q.type==='tf').length, esN = State.bank.filter(q=>q.type==='essay').length;
+  meta.textContent = `${State.bank.length} سؤالًا — ${mcqN} اختيار متعدد • ${tfN} صح/خطأ • ${esN} مقالي`;
+  l.innerHTML = State.bank.map((q,i)=>`
+    <div class="soft p-4">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="badge ${Q_BADGE[q.type]}">${Q_LABEL[q.type]}</span>
+        <span class="text-xs font-black text-slate-400">سؤال ${i+1}</span>
+        <button type="button" class="btn-icon !w-8 !h-8 ms-auto text-rose-500 hover:!bg-rose-100 dark:hover:!bg-rose-500/20" data-qdel="${i}" title="حذف السؤال">${icon('trash','w-4 h-4')}</button>
+      </div>
+      <div class="font-bold text-slate-800 dark:text-slate-100 mb-2 leading-7">${esc(q.q)}</div>
+      ${q.type==='mcq'?`<div class="grid sm:grid-cols-2 gap-2">${q.opts.map((o,j)=>`<div class="px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">${['أ','ب','ج','د'][j]||''}. ${esc(o)} ${o===q.answer?'<span class="text-emerald-500 font-black">✓</span>':''}</div>`).join('')}</div>`:''}
+      ${q.type==='tf'?`<div class="text-sm font-bold">الإجابة: <span class="${q.answer?'text-emerald-500':'text-rose-500'}">${q.answer?'صح ✔':'خطأ ✘'}</span></div>`:''}
+      ${q.type==='essay'?`<details class="text-sm"><summary class="cursor-pointer text-violet-600 dark:text-violet-400 font-bold select-none">👁️ إظهار الإجابة النموذجية</summary><p class="mt-2 text-slate-500 dark:text-slate-400 leading-7">${esc(q.answer)}</p></details>`:''}
+    </div>`).join('');
+  $$('[data-qdel]', l).forEach(b=>b.addEventListener('click', ()=>{ State.bank.splice(+b.dataset.qdel,1); renderBank(); }));
+  $('#qArtBar').innerHTML = artBar('quizbank');
+  $('#q-bank').classList.remove('hidden');
+}
+function bankText(){
+  return State.bank.map((q,i)=>{
+    let s = `سؤال ${i+1} (${Q_LABEL[q.type]}): ${q.q}\n`;
+    if(q.type==='mcq') s += q.opts.map((o,j)=>`   ${['أ','ب','ج','د'][j]||''}. ${o}`).join('\n')+'\n';
+    if(q.type==='tf') s += '   (صح / خطأ)\n';
+    s += `الإجابة: ${q.type==='mcq'?q.answer:(q.type==='tf'?(q.answer?'صح':'خطأ'):q.answer)}\n`;
+    return s;
+  }).join('\n');
+}
+function initQuiz(){
+  $('#q-go').addEventListener('click', ()=>{
+    const text = getPickerText('quiz');
+    if(wordCount(text)<15){ toast('أدخل نصًا أطول (15 كلمة على الأقل) لتوليد أسئلة جيدة','warn'); return; }
+    const types = $$('.q-type.chip-on').map(b=>b.dataset.qt);
+    const st = $('#q-status');
+    st.textContent='⏳ جارٍ توليد الأسئلة…';
+    setTimeout(()=>{
+      State.bank = genQuestions(text, +$('#q-count').value, types);
+      renderBank();
+      st.textContent = State.bank.length? '✓ تم توليد '+State.bank.length+' سؤالًا — راجعها ثم ابدأ الامتحان' : 'تعذر توليد أسئلة من هذا النص — جرّب نصًا أوضح';
+      if(State.bank.length) toast('بنك الأسئلة جاهز 📝','success');
+    }, 400);
+  });
+  $$('.q-type').forEach(b=>b.addEventListener('click', ()=>keepScroll(()=>b.classList.toggle('chip-on'))));
+  $('#q-start').addEventListener('click', ()=>keepScroll(()=>$('#exam-cfg').classList.toggle('hidden')));
+  $('#ex-cancel').addEventListener('click', ()=>$('#exam-cfg').classList.add('hidden'));
+  $('#q-regen').addEventListener('click', ()=>$('#q-go').click());
+  $('#ex-go').addEventListener('click', startExam);
+  $('#ex-prev').addEventListener('click', ()=>examNav(-1));
+  $('#ex-next').addEventListener('click', ()=>examNav(1));
+  $('#ex-exit').addEventListener('click', ()=>confirmDlg('هل تريد الخروج من الامتحان؟ سيُفقد تقدمك الحالي.', ()=>{ endExamUI(); }));
+  $('#ex-submit').addEventListener('click', ()=>{
+    const un = State.exam.list.filter((_,i)=>!isAnswered(i)).length;
+    if(un>0) confirmDlg(`لديك <b>${un}</b> سؤال بدون إجابة — متأكد من التسليم؟`, ()=>gradeExam(false), 'تسليم الآن');
+    else gradeExam(false);
+  });
+  $('#ex-retry').addEventListener('click', ()=>{ $('#ex-results').classList.add('hidden'); startExam(); });
+  $('#ex-back').addEventListener('click', ()=>{ $('#ex-results').classList.add('hidden'); $('#quiz-workarea').classList.remove('hidden'); });
+  $('#ex-save').addEventListener('click', saveExamResult);
+  // سؤال يدوي
+  $('#q-add').addEventListener('click', openManualQuestion);
+}
+function isAnswered(i){
+  const a = State.exam.answers[i];
+  if(a===undefined || a===null) return false;
+  if(typeof a==='object' && 'text' in a) return !!a.text.trim();
+  return true;
+}
+function startExam(){
+  if(!State.bank.length){ toast('ولّد بنك الأسئلة أولًا','warn'); return; }
+  let list = [...State.bank];
+  if($('#ex-shuffle').checked) list = shuffle(list);
+  const n = Math.min(Math.max(+$('#ex-count').value||10,1), list.length);
+  list = list.slice(0,n);
+  const mins = +$('#ex-min').value;
+  State.exam = { list, answers:{}, locked:{}, idx:0, total:list.length, deadline: mins>0 ? Date.now()+mins*60000 : null, instant: $('#ex-instant').checked, timerInt:null, cfg:{count:$('#ex-count').value, mins:$('#ex-min').value} };
+  $('#exam-cfg').classList.add('hidden');
+  $('#quiz-workarea').classList.add('hidden');
+  $('#ex-results').classList.add('hidden');
+  $('#exam-area').classList.remove('hidden');
+  renderExamQ();
+  if(State.exam.deadline){
+    State.exam.timerInt = setInterval(()=>{
+      const left = State.exam.deadline - Date.now();
+      const t = $('#ex-timer');
+      if(left<=0){ clearInterval(State.exam.timerInt); toast('⏰ انتهى وقت الامتحان — تم التسليم تلقائيًا','warn'); gradeExam(true); return; }
+      const s = Math.floor(left/1000);
+      t.textContent = String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+      t.classList.toggle('!bg-rose-600', left<60000);
+      t.classList.toggle('animate-blink', left<60000);
+    }, 500);
+  } else {
+    $('#ex-timer').textContent='∞'; 
+  }
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function renderExamNav(){
+  const nav = $('#ex-nav');
+  nav.innerHTML = State.exam.list.map((_,i)=>{
+    const ans = isAnswered(i);
+    const cur = i===State.exam.idx;
+    return `<button type="button" data-exnav="${i}" class="w-8 h-8 rounded-lg text-xs font-black transition ${cur?'bg-gradient-to-l from-violet-600 to-sky-500 text-white shadow-md':(ans?'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300':'bg-slate-100 dark:bg-slate-700 text-slate-400')}">${i+1}</button>`;
+  }).join('');
+  $$('[data-exnav]', nav).forEach(b=>b.addEventListener('click', ()=>{ State.exam.idx=+b.dataset.exnav; renderExamQ(); }));
+}
+function renderExamQ(){
+  const ex = State.exam; if(!ex) return;
+  const i = ex.idx, q = ex.list[i];
+  $('#ex-prog').textContent = `السؤال ${i+1} من ${ex.list.length}`;
+  $('#ex-answered').textContent = ex.list.filter((_,j)=>isAnswered(j)).length+' مُجاب';
+  $('#ex-bar').style.width = Math.round(ex.list.filter((_,j)=>isAnswered(j)).length/ex.list.length*100)+'%';
+  $('#ex-prev').disabled = i===0; $('#ex-prev').classList.toggle('opacity-40', i===0);
+  $('#ex-next').disabled = i===ex.list.length-1; $('#ex-next').classList.toggle('opacity-40', i===ex.list.length-1);
+  const locked = ex.instant && ex.locked[i];
+  let body = '';
+  if(q.type==='mcq'){
+    body = `<div class="grid sm:grid-cols-2 gap-2 mt-4">${q.opts.map((o,j)=>{
+      let cls = 'opt-exam px-4 py-3 rounded-2xl border-2 text-sm font-bold cursor-pointer transition text-start bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-600 hover:border-violet-400';
+      const chosen = ex.answers[i]===o;
+      if(chosen) cls = 'opt-exam px-4 py-3 rounded-2xl border-2 text-sm font-bold cursor-pointer transition text-start !bg-violet-50 dark:!bg-violet-500/15 !border-violet-500 text-violet-700 dark:text-violet-200';
+      if(locked){
+        if(o===q.answer) cls = 'opt-exam px-4 py-3 rounded-2xl border-2 text-sm font-bold text-start !bg-emerald-50 dark:!bg-emerald-500/15 !border-emerald-500 text-emerald-700 dark:text-emerald-300';
+        else if(chosen) cls = 'opt-exam px-4 py-3 rounded-2xl border-2 text-sm font-bold text-start !bg-rose-50 dark:!bg-rose-500/15 !border-rose-500 text-rose-700 dark:text-rose-300';
+      }
+      return `<button type="button" data-exopt="${esc(o)}" ${locked?'disabled':''} class="${cls} ${locked?'cursor-default':''}"><span class="font-black text-violet-400 me-1">${['أ','ب','ج','د'][j]||''}.</span> ${esc(o)}</button>`;
+    }).join('')}</div>`;
+  } else if(q.type==='tf'){
+    const mk = (lbl,v)=>`<button type="button" data-extf="${v}" ${locked?'disabled':''} class="px-8 py-3.5 rounded-2xl border-2 font-black text-sm transition ${ex.answers[i]===v?'!bg-violet-600 !border-violet-600 text-white shadow-lg shadow-violet-500/25':'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-600 hover:border-violet-400'}">${lbl}</button>`;
+    body = `<div class="flex gap-3 mt-4 justify-center">${mk('✔ صح', true)}${mk('✘ خطأ', false)}</div>`;
+    if(locked) body += `<div class="text-center mt-3 text-sm font-black ${q.answer?'text-emerald-500':'text-rose-500'}">الصحيح: ${q.answer?'صح ✔':'خطأ ✘'}</div>`;
+  } else {
+    body = `<textarea data-exessay rows="4" class="input mt-4 leading-8" placeholder="اكتب إجابتك هنا…">${esc((ex.answers[i]&&ex.answers[i].text)||'')}</textarea>`;
+  }
+  $('#ex-qcard').innerHTML = `
+    <div class="flex items-center gap-2 mb-3"><span class="badge ${Q_BADGE[q.type]}">${Q_LABEL[q.type]}</span><span class="text-xs font-black text-slate-400">سؤال ${i+1}</span>${locked?'<span class="badge bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300 ms-auto">تم التصحيح فورًا</span>':''}</div>
+    <div class="text-lg font-bold leading-9 text-slate-800 dark:text-white">${esc(q.q)}</div>${body}
+    ${locked&&q.type==='mcq'?`<div class="mt-3 text-sm font-bold ${ex.answers[i]===q.answer?'text-emerald-500':'text-rose-500'}">${ex.answers[i]===q.answer?'إجابة صحيحة 🎉':'إجابة خاطئة — الصحيح: '+esc(q.answer)}</div>`:''}`;
+  $$('[data-exopt]').forEach(b=>b.addEventListener('click', ()=>{
+    ex.answers[i] = b.dataset.exopt;
+    if(ex.instant){ ex.locked[i]=true; }
+    renderExamQ(); renderExamNav();
+  }));
+  $$('[data-extf]').forEach(b=>b.addEventListener('click', ()=>{
+    ex.answers[i] = b.dataset.extf==='true';
+    if(ex.instant){ ex.locked[i]=true; }
+    renderExamQ(); renderExamNav();
+  }));
+  const ta = $('[data-exessay]');
+  if(ta) ta.addEventListener('input', ()=>{ ex.answers[i]={text:ta.value}; renderExamNav(); $('#ex-answered').textContent=ex.list.filter((_,j)=>isAnswered(j)).length+' مُجاب'; $('#ex-bar').style.width=Math.round(ex.list.filter((_,j)=>isAnswered(j)).length/ex.list.length*100)+'%'; });
+  renderExamNav();
+}
+function examNav(d){
+  const ex = State.exam; if(!ex) return;
+  const ni = ex.idx+d;
+  if(ni<0 || ni>=ex.list.length) return;
+  ex.idx = ni; renderExamQ();
+}
+function gradeEssayAns(ans, q){
+  const set = new Set(String(ans||'').split(/\s+/).map(normalizeAr).filter(Boolean));
+  const hits = (q.keys||[]).filter(k=>set.has(k)).length;
+  return (q.keys||[]).length>0 && hits/q.keys.length >= 0.5;
+}
+function gradeExam(auto){
+  const ex = State.exam; if(!ex) return;
+  clearInterval(ex.timerInt);
+  let correct=0, wrong=0, skip=0;
+  const results = ex.list.map((q,i)=>{
+    let ok=null, userAns='—';
+    if(q.type==='essay'){
+      const a = ex.answers[i] && ex.answers[i].text;
+      userAns = a||'';
+      ok = a && a.trim() ? gradeEssayAns(a,q) : null;
+    } else {
+      userAns = ex.answers[i];
+      if(userAns===undefined||userAns===null){ ok=null; }
+      else ok = (q.type==='tf') ? (userAns===q.answer) : (userAns===q.answer);
+    }
+    if(ok===true) correct++; else if(ok===false) wrong++; else skip++;
+    return {q, ok, userAns};
+  });
+  const total = ex.list.length;
+  const pct = Math.round(correct/total*100);
+  const grade = pct>=90?'ممتاز! 🎉🏆':pct>=80?'جيد جدًا 👏':pct>=70?'جيد 👍':pct>=60?'مقبول — راجع أكثر':'يحتاج مراجعة شاملة 💪';
+  State.art.examResult = {pct, correct, wrong, skip, total, grade, date:new Date().toISOString(), results};
+  // عرض النتيجة
+  $('#exam-area').classList.add('hidden');
+  $('#ex-results').classList.remove('hidden');
+  const ring = $('#ex-ring');
+  const C = 326.7;
+  ring.style.strokeDashoffset = C*(1-pct/100);
+  ring.className.baseVal = 'stroke-'+(pct>=80?'emerald':pct>=60?'amber':'rose')+'-500 transition-all duration-1000';
+  animateNum($('#ex-score-num'), pct, '%');
+  $('#ex-grade').textContent = grade;
+  const stat = (lbl,v,cls)=>`<div class="soft p-3"><div class="text-2xl font-black tabnum ${cls}">${v}</div><div class="text-[11px] font-bold text-slate-400 mt-1">${lbl}</div></div>`;
+  $('#ex-stats').innerHTML = stat('صحيحة ✔',correct,'text-emerald-500')+stat('خاطئة ✘',wrong,'text-rose-500')+stat('متروكة —',skip,'text-slate-400');
+  $('#ex-review').innerHTML = results.map((r,i)=>`
+    <div class="soft p-4">
+      <div class="flex items-center gap-2 flex-wrap mb-2">
+        <span class="badge ${Q_BADGE[r.q.type]}">${Q_LABEL[r.q.type]}</span>
+        <span class="text-xs font-black text-slate-400">سؤال ${i+1}</span>
+        <span class="badge ms-auto ${r.ok===true?'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300':r.ok===false?'bg-rose-100 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300':'bg-slate-100 text-slate-500 dark:bg-slate-700 dark:text-slate-300'}">${r.ok===true?'صحيحة ✔ '+esc(String(r.userAns)):r.ok===false?'خاطئة ✘':'بدون إجابة'}</span>
+      </div>
+      <div class="font-bold leading-7 text-slate-800 dark:text-slate-100">${esc(r.q.q)}</div>
+      ${r.q.type==='mcq'?`<div class="text-xs mt-2 text-slate-500">إجابتك: <b>${esc(String(r.userAns)==='undefined'?'—':r.userAns)}</b> • الصحيحة: <b class="text-emerald-500">${esc(r.q.answer)}</b></div>`:''}
+      ${r.q.type==='tf'?`<div class="text-xs mt-2 text-slate-500">إجابتك: <b>${r.userAns===true?'صح':r.userAns===false?'خطأ':'—'}</b> • الصحيحة: <b class="text-emerald-500">${r.q.answer?'صح':'خطأ'}</b></div>`:''}
+      ${r.q.type==='essay'?`<div class="text-xs mt-2 text-slate-500 leading-6">إجابتك: <b>${esc(String(r.userAns)||'—')}</b><br>النموذجية: <b class="text-emerald-500">${esc(r.q.answer)}</b></div>`:''}
+    </div>`).join('');
+  window.scrollTo({top:0, behavior:'smooth'});
+  toast(auto?'⏰ انتهى الوقت — هذه نتيجتك':'تم تسليم الامتحان — النتيجة جاهزة 🏁','info');
+}
+function animateNum(el, target, suffix){
+  let cur=0; const step=Math.max(1,Math.round(target/30));
+  const int=setInterval(()=>{ cur+=step; if(cur>=target){cur=target;clearInterval(int);} el.textContent=cur+suffix; }, 30);
+}
+function endExamUI(){
+  const ex=State.exam; if(ex) clearInterval(ex.timerInt);
+  State.exam=null;
+  $('#exam-area').classList.add('hidden');
+  $('#ex-results').classList.add('hidden');
+  $('#quiz-workarea').classList.remove('hidden');
+}
+function saveExamResult(){
+  const r = State.art.examResult; if(!r){ toast('لا توجد نتيجة بعد','warn'); return; }
+  const lines = [`نتيجة الامتحان: ${r.pct}% — ${r.grade}`,`صحيحة: ${r.correct} • خاطئة: ${r.wrong} • بدون إجابة: ${r.skip} من ${r.total}`, '', ...r.results.map((x,i)=>`س${i+1}: ${x.q.q}\nإجابتك: ${x.userAns===undefined||x.userAns===null?'—':(typeof x.userAns==='object'?x.userAns.text:x.userAns)} ${x.ok===true?'✔ صحيحة':x.ok===false?'✘ خاطئة':'(بدون إجابة)'}${x.ok===false?`\nالصحيحة: ${x.q.type==='mcq'?x.q.answer:(x.q.type==='tf'?(x.q.answer?'صح':'خطأ'):x.q.answer)}`:''}`)];
+  Store.add('quiz','نتيجة امتحان', `نتيجة امتحان — ${r.pct}%`, lines.join('\n'));
+}
+function openManualQuestion(){
+  showModal('➕ إضافة سؤال يدوي', `
+    <div><label class="label">نوع السؤال</label>
+      <select id="mq-type" class="input"><option value="mcq">اختيار متعدد</option><option value="tf">صح وخطأ</option><option value="essay">مقالي</option></select></div>
+    <div><label class="label">نص السؤال</label><textarea id="mq-q" rows="2" class="input" placeholder="اكتب السؤال…"></textarea></div>
+    <div id="mq-mcq-fields" class="space-y-2">
+      <div class="grid grid-cols-2 gap-2">
+        <input id="mq-o1" class="input" placeholder="الخيار أ (الصحيح غالبًا)"><input id="mq-o2" class="input" placeholder="الخيار ب">
+        <input id="mq-o3" class="input" placeholder="الخيار ج"><input id="mq-o4" class="input" placeholder="الخيار د">
+      </div>
+      <div><label class="label">الإجابة الصحيحة</label>
+        <select id="mq-ans" class="input"><option value="0">الخيار أ</option><option value="1">الخيار ب</option><option value="2">الخيار ج</option><option value="3">الخيار د</option></select></div>
+    </div>
+    <div id="mq-tf-fields" class="hidden"><label class="label">الإجابة الصحيحة</label><select id="mq-ans-tf" class="input"><option value="true">صح</option><option value="false">خطأ</option></select></div>
+    <div id="mq-essay-fields" class="hidden"><label class="label">الإجابة النموذجية</label><textarea id="mq-ans-es" rows="3" class="input"></textarea></div>
+  `, [
+    {label:'إلغاء'},
+    {label:'➕ إضافة للبنك', primary:true, onClick:()=>{
+      const type = $('#mq-type').value, q = $('#mq-q').value.trim();
+      if(!q){ toast('اكتب نص السؤال','warn'); return true; }
+      if(type==='mcq'){
+        const opts = [$('#mq-o1').value.trim(),$('#mq-o2').value.trim(),$('#mq-o3').value.trim(),$('#mq-o4').value.trim()].filter(Boolean);
+        if(opts.length<2){ toast('أدخل خيارين على الأقل','warn'); return true; }
+        const ans = opts[+$('#mq-ans').value] || opts[0];
+        State.bank.push({type:'mcq', q, opts, answer:ans, explain:''});
+      } else if(type==='tf'){
+        State.bank.push({type:'tf', q, answer:$('#mq-ans-tf').value==='true', explain:''});
+      } else {
+        State.bank.push({type:'essay', q, answer:$('#mq-ans-es').value.trim()||'', keys:[]});
+      }
+      renderBank();
+      toast('تمت إضافة السؤال للبنك ✔','success');
+    }}
+  ]);
+  $('#mq-type').addEventListener('change', e=>{
+    $('#mq-mcq-fields').classList.toggle('hidden', e.target.value!=='mcq');
+    $('#mq-tf-fields').classList.toggle('hidden', e.target.value!=='tf');
+    $('#mq-essay-fields').classList.toggle('hidden', e.target.value!=='essay');
+  });
+}
+</script>
+<script>
+'use strict';
+/* ================= أدوات PDF ================= */
+const PT = {
+  merge:{files:[]}, i2p:{files:[]}, img:{files:[]},
+  split:null, comp:null, p2i:null, p2w:null, rot:null, num:null
+};
+const PT_TOOLS = [
+  ['merge','🔗','دمج PDF','اجمع عدة ملفات في واحد'],
+  ['split','✂️','تقسيم واستخراج','نطاقات صفحات أو كل صفحة'],
+  ['comp','📦','ضغط','تصغير حجم الملف'],
+  ['p2i','🖼️','PDF ← صور','JPG أو PNG بجودة عالية'],
+  ['i2p','📚','صور ← PDF','عدة صور في ملف واحد'],
+  ['p2w','📘','PDF ← Word','نص قابل للتعديل'],
+  ['t2p','📝','نص ← PDF/Word','مستند A4 بغلاف رسمي'],
+  ['ocr','🔎','صورة ← نص','تعرف ضوئي عربي/إنجليزي'],
+  ['rot','🔄','تدوير الصفحات','تصحيح الاتجاه'],
+  ['num','#️⃣','ترقيم الصفحات','رقم أو صفحة X من Y'],
+  ['img','🎨','أدوات الصور','تحويل صيغة / ضغط / تصغير']
+];
+function ptFileRow(f, listKey, idx, extra=''){
+  return `<div class="soft p-3 flex items-center gap-2 flex-wrap">
+    <span class="text-lg">📄</span>
+    <span class="text-xs font-bold truncate max-w-[45%]">${esc(f.name)}</span>
+    <span class="text-[10px] text-slate-400">${fmtBytes(f.size)}</span>
+    <div class="flex gap-1 ms-auto">
+      <button type="button" class="btn-icon !w-7 !h-7" data-ptup="${listKey}:${idx}" title="لأعلى">↑</button>
+      <button type="button" class="btn-icon !w-7 !h-7" data-ptdown="${listKey}:${idx}" title="لأسفل">↓</button>
+      <button type="button" class="btn-icon !w-7 !h-7 text-rose-500" data-ptdel="${listKey}:${idx}" title="حذف">✕</button>
+    </div>${extra}</div>`;
+}
+function renderPtList(listKey, elId){
+  const el = $(elId); if(!el) return;
+  const arr = PT[listKey].files;
+  if(!arr.length){ el.innerHTML=''; return; }
+  el.innerHTML = arr.map((f,i)=>ptFileRow(f,listKey,i)).join('');
+  $$('[data-ptup]',el).forEach(b=>b.addEventListener('click',()=>keepScroll(()=>{ const [k,i]=b.dataset.ptup.split(':'); const a=PT[k].files; if(+i>0){[a[+i-1],a[+i]]=[a[+i],a[+i-1]]; renderPtList(k,elId);} })));
+  $$('[data-ptdown]',el).forEach(b=>b.addEventListener('click',()=>keepScroll(()=>{ const [k,i]=b.dataset.ptdown.split(':'); const a=PT[k].files; if(+i<a.length-1){[a[+i+1],a[+i]]=[a[+i],a[+i+1]]; renderPtList(k,elId);} })));
+  $$('[data-ptdel]',el).forEach(b=>b.addEventListener('click',()=>keepScroll(()=>{ const [k,i]=b.dataset.ptdel.split(':'); PT[k].files.splice(+i,1); renderPtList(k,elId);})));
+}
+function pdfInfo(file, elId, suffix=''){
+  getPdfDoc(file).then(pdf=>{
+    const el=$(elId); el.classList.remove('hidden');
+    el.textContent = `✓ «${file.name}» — ${pdf.numPages} صفحة — ${fmtBytes(file.size)}${suffix}`;
+  }).catch(()=>{ const el=$(elId); el.classList.remove('hidden'); el.textContent='⚠️ تعذر قراءة الملف'; });
+}
+function outMsg(elId, html){ const el=document.getElementById(elId); if(el) el.innerHTML = html; }
+function dlCard(title, sub, onclick, emoji='📄'){
+  return `<div class="soft p-4 flex items-center gap-3 flex-wrap"><span class="text-2xl">${emoji}</span><div class="flex-1 min-w-[140px]"><div class="text-sm font-black">${esc(title)}</div><div class="text-[11px] text-slate-400 font-bold">${sub}</div></div><button type="button" class="btn-primary-sm" data-dl>${icon('down','w-3.5 h-3.5')} تنزيل</button></div>`;
+}
+function parseRanges(str, max){
+  if(!str || !str.trim()) return null;
+  const pages = new Set();
+  str.split(',').forEach(part=>{
+    part = part.trim(); if(!part) return;
+    const m = part.match(/^(\d+)\s*-\s*(\d+)$/);
+    if(m){ for(let i=Math.min(+m[1],+m[2]);i<=Math.max(+m[1],+m[2]);i++) if(i>=1&&i<=max) pages.add(i); }
+    else { const n=parseInt(part); if(n>=1&&n<=max) pages.add(n); }
+  });
+  return [...pages].sort((a,b)=>a-b);
+}
+function initPdfTools(){
+  // شريط الأدوات الجانبي
+  const nav = t=>`<button type="button" class="pt-nav-btn" data-pt="${t[0]}"><span class="text-xl">${t[1]}</span><span class="min-w-0"><span class="block">${t[2]}</span><span class="block text-[10px] font-bold text-current opacity-60 truncate">${t[3]}</span></span></button>`;
+  $('#ptNavDesktop').innerHTML = PT_TOOLS.map(nav).join('');
+  $('#ptNavMobile').innerHTML = PT_TOOLS.map(t=>`<button type="button" class="chip shrink-0 whitespace-nowrap" data-pt="${t[0]}">${t[1]} ${t[2]}</button>`).join('');
+  $$('[data-pt]').forEach(b=>b.addEventListener('click', ()=>keepScroll(()=>{
+    const id = b.dataset.pt;
+    $$('.pt-panel').forEach(p=>p.classList.toggle('hidden', p.id!=='pt-'+id));
+    $$('#ptNavDesktop [data-pt]').forEach(x=>{ x.classList.toggle('pt-nav-on', x===b); x.classList.toggle('pt-nav-btn', x!==b); });
+    $$('#ptNavMobile [data-pt]').forEach(x=>x.classList.toggle('chip-on', x===b));
+    const mob = $('#ptNavMobile [data-pt="'+id+'"]');
+    if(mob) mob.scrollIntoView({block:'nearest', inline:'center', behavior:'smooth'});
+  })));
+  $('#ptNavDesktop [data-pt="merge"]')?.classList.add('pt-nav-on');
+  $('#ptNavDesktop [data-pt="merge"]')?.classList.remove('pt-nav-btn');
+  $('#ptNavMobile [data-pt="merge"]')?.classList.add('chip-on');
+  $('#pt-merge').classList.remove('hidden');
+
+  // 1) دمج
+  bindDropMulti($('#pt-merge-file').parentElement, $('#pt-merge-file'), files=>{
+    PT.merge.files.push(...files.filter(f=>f.name.toLowerCase().endsWith('.pdf')));
+    renderPtList('merge','#pt-merge-list');
+    toast('أضفت '+files.length+' ملف — رتّبها ثم ادمج','info');
+  });
+  $('#pt-merge-go').addEventListener('click', async ()=>{
+    if(!PT.merge.files.length){ toast('اختر ملفين على الأقل','warn'); return; }
+    if(!needLib('PDFLib','pdf-lib')) return;
+    try{
+      toast('⏳ جارٍ الدمج…','info');
+      const out = await PDFLib.PDFDocument.create();
+      for(const f of PT.merge.files){
+        const src = await PDFLib.PDFDocument.load(await f.arrayBuffer(), {ignoreEncryption:true});
+        (await out.copyPages(src, src.getPageIndices())).forEach(p=>out.addPage(p));
+      }
+      const bytes = await out.save();
+      const blob = new Blob([bytes],{type:'application/pdf'});
+      outMsg('pt-merge-out', `<div class="text-emerald-600 dark:text-emerald-400 text-sm font-bold mb-2">✓ تم الدمج: ${PT.merge.files.length} ملفات في مستند واحد (${fmtBytes(blob.size)})</div>`+dlCard('merged.pdf','الملف المدموج',null,'📑'));
+      $('[data-dl]',$('#pt-merge-out')).addEventListener('click', ()=>download(blob,'merged.pdf','application/pdf'));
+    }catch(e){ console.error(e); toast('فشل الدمج — تأكد أن الملفات PDF سليمة','error'); }
+  });
+
+  // 2) تقسيم
+  bindDropFile($('#pt-split-file').parentElement, $('#pt-split-file'), f=>{ PT.split=f; pdfInfo(f,'#pt-split-info'); });
+  $('#pt-split-go').addEventListener('click', async ()=>{
+    if(!PT.split){ toast('اختر ملف PDF أولًا','warn'); return; }
+    if(!needLib('PDFLib','pdf-lib')) return;
+    try{
+      const src = await PDFLib.PDFDocument.load(await PT.split.arrayBuffer(), {ignoreEncryption:true});
+      const total = src.getPageCount();
+      const each = $('#pt-split-each').checked;
+      let pages = parseRanges($('#pt-split-ranges').value, total) || Array.from({length:total},(_,i)=>i+1);
+      if(each){
+        toast('⏳ سيتم تنزيل '+pages.length+' ملف… وافق على التنزيلات المتعددة في المتصفح','info');
+        for(let idx=0;idx<pages.length;idx++){
+          const dst = await PDFLib.PDFDocument.create();
+          const [pg] = await dst.copyPages(src,[pages[idx]-1]); dst.addPage(pg);
+          download(new Blob([await dst.save()],{type:'application/pdf'}), 'page-'+pages[idx]+'.pdf','application/pdf');
+          await sleep(350);
+        }
+        outMsg('pt-split-out', `<div class="text-emerald-600 dark:text-emerald-400 text-sm font-bold">✓ تم تقسيم ${pages.length} صفحة — كل صفحة في ملف منفصل</div>`);
+      } else {
+        const dst = await PDFLib.PDFDocument.create();
+        (await dst.copyPages(src, pages.map(p=>p-1))).forEach(p=>dst.addPage(p));
+        const blob = new Blob([await dst.save()],{type:'application/pdf'});
+        outMsg('pt-split-out', `<div class="text-emerald-600 dark:text-emerald-400 text-sm font-bold mb-2">✓ تم استخراج ${pages.length} صفحة (${fmtBytes(blob.size)})</div>`+dlCard('extracted.pdf','صفحات: '+$('#pt-split-ranges').value||'الكل',null,'✂️'));
+        $('[data-dl]',$('#pt-split-out')).addEventListener('click', ()=>download(blob,'extracted.pdf','application/pdf'));
+      }
+    }catch(e){ console.error(e); toast('فشل التقسيم','error'); }
+  });
+
+  // 3) ضغط
+  bindDropFile($('#pt-comp-file').parentElement, $('#pt-comp-file'), f=>{ PT.comp=f; pdfInfo(f,'#pt-comp-info'); });
+  $('#pt-comp-go').addEventListener('click', async ()=>{
+    if(!PT.comp){ toast('اختر ملف PDF أولًا','warn'); return; }
+    if(!needLib('PDFLib','pdf-lib')) return;
+    try{
+      toast('⏳ جارٍ الضغط…','info');
+      const doc = await PDFLib.PDFDocument.load(await PT.comp.arrayBuffer(), {ignoreEncryption:true, updateMetadata:false});
+      doc.setTitle(''); doc.setAuthor(''); doc.setSubject(''); doc.setKeywords([]); doc.setProducer(''); doc.setCreator('');
+      const bytes = await doc.save({useObjectStreams:true});
+      const blob = new Blob([bytes],{type:'application/pdf'});
+      const before = PT.comp.size, after = blob.size;
+      const pct = before>0 ? Math.round((1-after/before)*100) : 0;
+      outMsg('pt-comp-out', `<div class="soft p-4 text-sm font-bold leading-7">✓ الحجم قبل: ${fmtBytes(before)} → بعد: ${fmtBytes(after)} ${pct>0?`(وفّرنا ${pct}%) 🎉`:'(الملف كان مضغوطًا بالفعل — الفرق طفيف)'}</div>`+dlCard('compressed.pdf','الملف بعد الضغط',null,'📦'));
+      $('[data-dl]',$('#pt-comp-out')).addEventListener('click', ()=>download(blob,'compressed.pdf','application/pdf'));
+    }catch(e){ console.error(e); toast('فشل الضغط','error'); }
+  });
+
+  // 4) PDF ← صور
+  let p2iDoc = null;
+  bindDropFile($('#pt-p2i-file').parentElement, $('#pt-p2i-file'), async f=>{
+    PT.p2i=f; pdfInfo(f,'#pt-p2i-info'); p2iDoc=null;
+  });
+  $('#pt-p2i-go').addEventListener('click', async ()=>{
+    if(!PT.p2i){ toast('اختر ملف PDF أولًا','warn'); return; }
+    try{
+      if(!p2iDoc) p2iDoc = await getPdfDoc(PT.p2i);
+      const total = p2iDoc.numPages;
+      const pages = parseRanges($('#pt-p2i-pages').value, total) || Array.from({length:total},(_,i)=>i+1);
+      const fmt = $('#pt-p2i-fmt').value, scale = +$('#pt-p2i-scale').value;
+      const out = $('#pt-p2i-out');
+      out.innerHTML = `<div class="text-sm font-bold text-violet-500">⏳ جارٍ تحويل ${pages.length} صفحة…</div>`;
+      const items = [];
+      for(const p of pages){
+        const page = await p2iDoc.getPage(p);
+        const vp = page.getViewport({scale});
+        const canvas = document.createElement('canvas');
+        canvas.width = vp.width; canvas.height = vp.height;
+        await page.render({canvasContext:canvas.getContext('2d'), viewport:vp}).promise;
+        const dataUrl = canvas.toDataURL(fmt==='png'?'image/png':'image/jpeg', 0.92);
+        items.push({p, dataUrl});
+        out.innerHTML = `<div class="text-sm font-bold text-violet-500">⏳ تم تحويل ${items.length} من ${pages.length}…</div>`;
+      }
+      out.innerHTML = `<div class="grid grid-cols-2 lg:grid-cols-3 gap-3">${items.map(it=>`
+        <div class="soft p-2 text-center"><img src="${it.dataUrl}" class="thumb-img mx-auto" alt="صفحة ${it.p}"><div class="text-xs font-bold mt-2">صفحة ${it.p}</div><button type="button" class="btn-sm mt-2 w-full" data-imgdl="${it.p}">⬇️ تنزيل</button></div>`).join('')}</div>
+        <button type="button" class="btn-primary mt-4" id="p2i-zip">🗂️ تنزيل الكل في ZIP</button>`;
+      $$('[data-imgdl]',out).forEach(b=>b.addEventListener('click',()=>{
+        const it = items.find(x=>x.p===+b.dataset.imgdl);
+        const a=document.createElement('a'); a.href=it.dataUrl; a.download=`page-${it.p}.${fmt==='png'?'png':'jpg'}`; a.click();
+      }));
+      $('#p2i-zip').addEventListener('click', async ()=>{
+        if(!needLib('JSZip','JSZip')) return;
+        toast('⏳ جارٍ تجهيز الـ ZIP…','info');
+        const zip = new JSZip();
+        items.forEach(it=>zip.file(`page-${it.p}.${fmt==='png'?'png':'jpg'}`, it.dataUrl.split(',')[1], {base64:true}));
+        const blob = await zip.generateAsync({type:'blob'});
+        download(blob,'pdf-images.zip','application/zip');
+      });
+      toast('تم تحويل الصفحات إلى صور ✔','success');
+    }catch(e){ console.error(e); toast('فشل التحويل','error'); }
+  });
+
+  // 5) صور ← PDF
+  bindDropMulti($('#pt-i2p-file').parentElement, $('#pt-i2p-file'), files=>{
+    PT.i2p.files.push(...files);
+    renderPtList('i2p','#pt-i2p-list');
+  });
+  $('#pt-i2p-go').addEventListener('click', async ()=>{
+    if(!PT.i2p.files.length){ toast('اختر صورة واحدة على الأقل','warn'); return; }
+    if(!needLib('PDFLib','pdf-lib')) return;
+    try{
+      toast('⏳ جارٍ إنشاء الـ PDF…','info');
+      const doc = await PDFLib.PDFDocument.create();
+      const mode = $('#pt-i2p-mode').value, margin = +$('#pt-i2p-margin').value;
+      for(const f of PT.i2p.files){
+        let bytes = await f.arrayBuffer();
+        let emb = null;
+        try{ emb = await doc.embedJpg(bytes); }catch(_){}
+        if(!emb){ try{ emb = await doc.embedPng(bytes); }catch(_){} }
+        if(!emb){
+          const img = await new Promise(res=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=()=>res(null); im.src=URL.createObjectURL(f); });
+          if(!img) continue;
+          const c=document.createElement('canvas'); c.width=img.naturalWidth; c.height=img.naturalHeight;
+          c.getContext('2d').drawImage(img,0,0);
+          emb = await doc.embedPng(await new Promise(res=>c.toBlob(b=>res(b),'image/png')));
+        }
+        if(mode==='fit'){
+          const page = doc.addPage([emb.width, emb.height]);
+          page.drawImage(emb,{x:0,y:0,width:emb.width,height:emb.height});
+        } else {
+          const W=595.28, H=841.89;
+          const landscape = emb.width>emb.height;
+          const pw = landscape?H:W, ph = landscape?W:H;
+          const page = doc.addPage([pw,ph]);
+          const aw = pw-margin*2, ah = ph-margin*2;
+          const s = Math.min(aw/emb.width, ah/emb.height);
+          const w = emb.width*s, h = emb.height*s;
+          page.drawImage(emb,{x:(pw-w)/2,y:(ph-h)/2,width:w,height:h});
+        }
+      }
+      const blob = new Blob([await doc.save()],{type:'application/pdf'});
+      outMsg('pt-i2p-out', `<div class="text-emerald-600 dark:text-emerald-400 text-sm font-bold mb-2">✓ تم إنشاء PDF من ${PT.i2p.files.length} صورة (${fmtBytes(blob.size)})</div>`+dlCard('images.pdf','صور → PDF',null,'📚'));
+      $('[data-dl]',$('#pt-i2p-out')).addEventListener('click', ()=>download(blob,'images.pdf','application/pdf'));
+    }catch(e){ console.error(e); toast('فشل إنشاء الـ PDF من الصور','error'); }
+  });
+
+  // 6) PDF ← Word
+  bindDropFile($('#pt-p2w-file').parentElement, $('#pt-p2w-file'), f=>{ PT.p2w=f; pdfInfo(f,'#pt-p2w-info'); });
+  $('#pt-p2w-go').addEventListener('click', async ()=>{
+    if(!PT.p2w){ toast('اختر ملف PDF أولًا','warn'); return; }
+    try{
+      toast('⏳ جارٍ استخراج النص وتحويله…','info');
+      const r = await readPdfText(PT.p2w);
+      if(!r.text){ toast('الملف لا يحتوي نصًا قابلًا للاستخراج (صور ممسوحة) — استخدم أداة صورة←نص','warn'); return; }
+      const pagesHtml = r.text.split(/\n{2,}/).map((t,i)=>`<h3 style="color:#6d28d9">الصفحة ${i+1}</h3><p>${esc(t).replace(/\n/g,'<br>')}</p>`).join('');
+      downloadWord('document.doc', `<h1 style="text-align:center">${esc(PT.p2w.name.replace(/\.pdf$/i,''))}</h1>`+pagesHtml);
+      outMsg('pt-p2w-out', `<div class="soft p-4 text-sm leading-7 max-h-48 overflow-y-auto">${esc(r.text.slice(0,600))}…</div><div class="text-emerald-600 text-sm font-bold mt-2">✓ تم تنزيل الملف — ${wordCount(r.text)} كلمة من ${r.pages} صفحة</div>`);
+    }catch(e){ console.error(e); toast('فشل التحويل','error'); }
+  });
+
+  // 7) نص ← PDF/Word
+  $('#pt-t2p-pdf').addEventListener('click', ()=>{
+    const t = $('#pt-t2p-text').value.trim();
+    if(!t){ toast('اكتب النص أولًا','warn'); return; }
+    openPrint($('#pt-t2p-title').value.trim()||'مستند بدون عنوان', t.split(/\n{2,}/).map(p=>`<p>${esc(p).replace(/\n/g,'<br>')}</p>`).join(''));
+  });
+  $('#pt-t2p-word').addEventListener('click', ()=>{
+    const t = $('#pt-t2p-text').value.trim();
+    if(!t){ toast('اكتب النص أولًا','warn'); return; }
+    const title = $('#pt-t2p-title').value.trim()||'مستند';
+    downloadWord('document.doc', `<h1 style="text-align:center">${esc(title)}</h1>`+t.split(/\n{2,}/).map(p=>`<p>${esc(p).replace(/\n/g,'<br>')}</p>`).join(''));
+    toast('تم تنزيل ملف Word ✔','success');
+  });
+
+  // 8) OCR مستقل
+  bindDropMulti($('#pt-ocr-file').parentElement, $('#pt-ocr-file'), async files=>{
+    const st = $('#pt-ocr-status');
+    st.classList.remove('hidden');
+    try{
+      const t = await ocrFiles(files, p=>{ st.textContent='⏳ جارٍ التعرف الضوئي… '+Math.round(p*100)+'%'; });
+      $('#pt-ocr-text').value = ($('#pt-ocr-text').value?$('#pt-ocr-text').value+'\n\n':'')+t;
+      st.textContent = '✓ تم استخراج '+wordCount(t)+' كلمة من '+files.length+' صورة';
+      toast('تم استخراج النص ✔','success');
+    }catch(e){ st.textContent='✕ تعذر التعرف الضوئي — تأكد من الاتصال بالإنترنت'; toast('فشل التعرف الضوئي','error'); }
+  });
+  $('#pt-ocr-copy').addEventListener('click', ()=>copyText($('#pt-ocr-text').value));
+  $('#pt-ocr-dl').addEventListener('click', ()=>{ const t=$('#pt-ocr-text').value; if(!t){toast('لا يوجد نص','warn');return;} download(t,'ocr-text.txt','text/plain;charset=utf-8'); });
+  $('#pt-ocr-save').addEventListener('click', ()=>Store.add('pdftools','نص OCR','نص مستخرج من صورة', $('#pt-ocr-text').value));
+  $('#pt-ocr-tosum').addEventListener('click', ()=>sendTextTo('summary', $('#pt-ocr-text').value));
+
+  // 9) تدوير
+  bindDropFile($('#pt-rot-file').parentElement, $('#pt-rot-file'), f=>{ PT.rot=f; pdfInfo(f,'#pt-rot-info'); });
+  $('#pt-rot-go').addEventListener('click', async ()=>{
+    if(!PT.rot){ toast('اختر ملف PDF أولًا','warn'); return; }
+    if(!needLib('PDFLib','pdf-lib')) return;
+    try{
+      const doc = await PDFLib.PDFDocument.load(await PT.rot.arrayBuffer(), {ignoreEncryption:true});
+      const total = doc.getPageCount();
+      const angle = PDFLib.degrees(+$('#pt-rot-angle').value);
+      let pages = $('#pt-rot-mode').value==='all' ? null : parseRanges($('#pt-rot-ranges').value, total);
+      doc.getPages().forEach((p,i)=>{ if(!pages || pages.includes(i+1)) p.setRotation(angle); });
+      const blob = new Blob([await doc.save()],{type:'application/pdf'});
+      outMsg('pt-rot-out', `<div class="text-emerald-600 dark:text-emerald-400 text-sm font-bold mb-2">✓ تم التدوير ${$('#pt-rot-angle').value}°</div>`+dlCard('rotated.pdf','الصفحات المعدلة',null,'🔄'));
+      $('[data-dl]',$('#pt-rot-out')).addEventListener('click', ()=>download(blob,'rotated.pdf','application/pdf'));
+    }catch(e){ console.error(e); toast('فشل التدوير','error'); }
+  });
+
+  // 10) ترقيم
+  bindDropFile($('#pt-num-file').parentElement, $('#pt-num-file'), f=>{ PT.num=f; pdfInfo(f,'#pt-num-info'); });
+  $('#pt-num-go').addEventListener('click', async ()=>{
+    if(!PT.num){ toast('اختر ملف PDF أولًا','warn'); return; }
+    if(!needLib('PDFLib','pdf-lib')) return;
+    try{
+      const doc = await PDFLib.PDFDocument.load(await PT.num.arrayBuffer(), {ignoreEncryption:true});
+      const font = await doc.embedFont(PDFLib.StandardFonts.Helvetica);
+      const pages = doc.getPages();
+      const start = Math.max(1, +$('#pt-num-start').value||1);
+      const size = Math.min(36, Math.max(8, +$('#pt-num-size').value||12));
+      const pos = $('#pt-num-pos').value, fmt = $('#pt-num-fmt').value;
+      pages.forEach((page,i)=>{
+        const n = fmt==='xy' ? `Page ${i+start} of ${pages.length+start-1}` : String(i+start);
+        const w = font.widthOfTextAtSize(n, size);
+        const W = page.getWidth(), H = page.getHeight(), M = 28;
+        let x = pos==='bl' ? M : pos==='br' ? W-M-w : (W-w)/2;
+        const y = pos==='tc' ? H-M-size : M;
+        page.drawText(n,{x,y,size,font,color:PDFLib.rgb(0.35,0.35,0.4)});
+      });
+      const blob = new Blob([await doc.save()],{type:'application/pdf'});
+      outMsg('pt-num-out', `<div class="text-emerald-600 dark:text-emerald-400 text-sm font-bold mb-2">✓ تم ترقيم ${pages.length} صفحة</div>`+dlCard('numbered.pdf','ملف مرقّم',null,'🔢'));
+      $('[data-dl]',$('#pt-num-out')).addEventListener('click', ()=>download(blob,'numbered.pdf','application/pdf'));
+    }catch(e){ console.error(e); toast('فشل الترقيم','error'); }
+  });
+
+  // 11) أدوات الصور
+  bindDropMulti($('#pt-img-file').parentElement, $('#pt-img-file'), files=>{
+    PT.img.files.push(...files);
+    $('#pt-img-info').classList.remove('hidden');
+    $('#pt-img-info').textContent = `✓ لديك ${PT.img.files.length} صورة جاهزة للمعالجة`;
+  });
+  $('#pt-img-q').addEventListener('input', e=>{
+    const op = $('#pt-img-op').value;
+    $('#pt-img-qv').textContent = op==='resize' ? ('العرض الأقصى: '+e.target.value*8+'px') : ('الجودة: '+e.target.value+'%');
+  });
+  $('#pt-img-go').addEventListener('click', async ()=>{
+    if(!PT.img.files.length){ toast('اختر صورًا أولًا','warn'); return; }
+    const op = $('#pt-img-op').value, fmt = $('#pt-img-fmt').value, q = +$('#pt-img-q').value/100;
+    const out = $('#pt-img-out');
+    try{
+      const results = [];
+      for(const f of PT.img.files){
+        const img = await new Promise(res=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=()=>res(null); im.src=URL.createObjectURL(f); });
+        if(!img) continue;
+        let w = img.naturalWidth, h = img.naturalHeight;
+        if(op==='resize'){ const maxW = +$('#pt-img-q').value*8; if(w>maxW){ h=Math.round(h*maxW/w); w=maxW; } }
+        const c = document.createElement('canvas'); c.width=w; c.height=h;
+        const ctx = c.getContext('2d');
+        if(fmt==='jpeg'){ ctx.fillStyle='#fff'; ctx.fillRect(0,0,w,h); }
+        ctx.drawImage(img,0,0,w,h);
+        const dataUrl = c.toDataURL('image/'+fmt, q);
+        results.push({name:f.name.replace(/\.[^.]+$/,'')+'.'+(fmt==='jpeg'?'jpg':fmt), dataUrl, size:Math.round((dataUrl.length-dataUrl.indexOf(',')-1)*0.75)});
+      }
+      out.innerHTML = `<div class="grid grid-cols-2 lg:grid-cols-3 gap-3">${results.map((r,i)=>`
+        <div class="soft p-2 text-center"><img src="${r.dataUrl}" class="thumb-img mx-auto" alt=""><div class="text-xs font-bold mt-2 truncate">${esc(r.name)}</div><div class="text-[10px] text-slate-400">${fmtBytes(r.size)}</div><button type="button" class="btn-sm mt-2 w-full" data-imgdl2="${i}">⬇️ تنزيل</button></div>`).join('')}</div>
+        ${results.length>1?'<button type="button" class="btn-primary mt-4" id="img-zip">🗂️ تنزيل الكل في ZIP</button>':''}`;
+      $$('[data-imgdl2]',out).forEach(b=>b.addEventListener('click',()=>{
+        const r = results[+b.dataset.imgdl2];
+        const a=document.createElement('a'); a.href=r.dataUrl; a.download=r.name; a.click();
+      }));
+      const zb = $('#img-zip');
+      if(zb) zb.addEventListener('click', async ()=>{
+        if(!needLib('JSZip','JSZip')) return;
+        const zip = new JSZip();
+        results.forEach(r=>zip.file(r.name, r.dataUrl.split(',')[1], {base64:true}));
+        download(await zip.generateAsync({type:'blob'}),'images.zip','application/zip');
+      });
+      toast('تمت معالجة الصور ✔','success');
+    }catch(e){ console.error(e); toast('فشل معالجة الصور','error'); }
+  });
+}
+function downloadWord(name, bodyHtml){
+  const html = `<html dir="rtl"><head><meta charset="utf-8"><title>${esc(name)}</title></head><body style="font-family:'Segoe UI',Tahoma;line-height:2">${bodyHtml}<hr><p style="color:#888;font-size:12px">أُنشئ بواسطة خُلاصة — منصة الملخصات الذكية • إعداد: زياد أشرف • واتساب: +20 109 971 3432</p></body></html>`;
+  download(new Blob(['\ufeff'+html],{type:'application/msword;charset=utf-8'}), name, 'application/msword');
+}
+</script>
+<script>
+'use strict';
+/* ================= تنسيق النص ================= */
+function formatText(raw){
+  let t = String(raw||'').replace(/[ \t]+/g,' ').replace(/\s+([،,.؟?!:؛])/g,'$1').replace(/([،,؛:])(?=[^\s\d])/g,'$1 ').replace(/\n{3,}/g,'\n\n').trim();
+  const paras = t.split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean);
+  const a = State.art.analysis || analyzeText(t);
+  const bold = w=>`<strong class="text-violet-600 dark:text-violet-300">${esc(w)}</strong>`;
+  const html = paras.map(p=>{
+    const lines = p.split('\n');
+    const isList = lines.every(l=>/^[-•*]\s*/.test(l.trim()));
+    if(isList){
+      return `<ul class="space-y-2">${lines.map(l=>`<li class="flex gap-2 items-start"><span class="text-violet-500 mt-1">◆</span><span>${hlLine(l.replace(/^[-•*]\s*/,''),a)}</span></li>`).join('')}</ul>`;
+    }
+    return `<p class="leading-loose">${hlLine(p,a)}</p>`;
+  }).join('');
+  return {html, plain: paras.join('\n\n')};
+  function hlLine(line, an){
+    let h = esc(line);
+    (an.keywords||[]).slice(0,6).forEach(k=>{
+      if(!k.word || k.word.length<3) return;
+      try{ h = h.replace(new RegExp(escapeRe(k.word),'g'), m=>`<strong class="text-violet-600 dark:text-violet-300">${m}</strong>`); }catch(_){}
+    });
+    return h;
+  }
+}
+
+/* ================= شريط أدوات المخرجات ================= */
+const ART = {
+  summary:{ title:'الملخص الذكي', kind:'ملخص', sec:'summary', get:()=>State.art.summary?.plain||'' },
+  formatted:{ title:'النص المنسق', kind:'نص منسق', sec:'magic', get:()=>State.art.formatted||'' },
+  map:{ title:'الخريطة الذهنية (نص)', kind:'خريطة ذهنية', sec:'summary', get:()=>State.art.map?mapTreeText(State.art.map):'' },
+  quizbank:{ title:'بنك الأسئلة', kind:'بنك أسئلة', sec:'quiz', get:()=>State.bank.length?bankText():'' },
+  transcript:{ title:'التفريغ الصوتي', kind:'نص مفرَّغ', sec:'recorder', get:()=>val('sttText') }
+};
+function artBar(key){
+  const a = ART[key]; if(!a) return '';
+  return `<div class="flex flex-wrap items-center gap-2">
+    <button type="button" class="btn-primary-sm" data-artact="save" data-artkey="${key}">💾 حفظ في المحفوظات</button>
+    <button type="button" class="btn-sm" data-artact="copy" data-artkey="${key}">📋 نسخ</button>
+    <button type="button" class="btn-sm" data-artact="dl" data-artkey="${key}">⬇️ تنزيل TXT</button>
+    ${key==='summary'||key==='map'?`<button type="button" class="btn-sm" data-artact="print" data-artkey="${key}">🖨️ طباعة PDF</button>`:''}
+  </div>`;
+}
+document.addEventListener('click', e=>{
+  const b = e.target.closest('[data-artact]'); if(!b) return;
+  const a = ART[b.dataset.artkey]; if(!a) return;
+  const t = a.get();
+  if(b.dataset.artact==='save') Store.add(a.sec, a.kind, a.title, t);
+  else if(b.dataset.artact==='copy') copyText(t);
+  else if(b.dataset.artact==='dl'){ if(!t){toast('لا يوجد محتوى','warn');return;} download(t, a.title.replace(/\s+/g,'-')+'.txt','text/plain;charset=utf-8'); }
+  else if(b.dataset.artact==='print'){
+    if(!t){toast('لا يوجد محتوى','warn');return;}
+    openPrint(a.title, t.split(/\n{2,}/).map(p=>`<p>${esc(p).replace(/\n/g,'<br>')}</p>`).join(''));
+  }
+});
+
+/* ================= المعالجة السحرية ================= */
+function setStep(i, state){
+  const s = $(`#magic-steps [data-step="${i}"]`); if(!s) return;
+  const dot = s.querySelector('.step-dot');
+  if(state==='run'){ dot.className='step-dot w-3 h-3 rounded-full mx-auto bg-violet-500 animate-blink'; }
+  else if(state==='done'){ dot.className='step-dot w-3 h-3 rounded-full mx-auto bg-emerald-500'; s.classList.add('!bg-emerald-50','dark:!bg-emerald-500/10'); }
+}
+async function runMagic(){
+  const text = getPickerText('magic');
+  if(wordCount(text)<20){ toast('النص قصير جدًا — أدخل 20 كلمة على الأقل لأفضل نتيجة سحرية ✨','warn'); return; }
+  const btn = $('#magic-run');
+  btn.disabled = true; btn.classList.add('opacity-70','pointer-events-none'); btn.textContent='⏳ جارٍ العمل السحري…';
+  $('#magic-steps').classList.remove('hidden');
+  $('#magic-out').classList.add('hidden');
+  for(let i=0;i<4;i++){ const s=$(`#magic-steps [data-step="${i}"]`); s.classList.remove('!bg-emerald-50','dark:!bg-emerald-500/10'); setStep(i,''); }
+  try{
+    setStep(0,'run'); await sleep(500);
+    State.art.analysis = analyzeText(text);
+    State.art.analysis.kwHighlight = true;
+    const fmt = formatText(text);
+    State.art.formatted = fmt.plain; State.art.formattedHtml = fmt.html;
+    $('#mg-fmt').innerHTML = fmt.html;
+    setStep(0,'done'); setStep(1,'run'); await sleep(500);
+    const a = State.art.analysis;
+    const quick = makeSummary(a,'quick','med');
+    const detailed = makeSummary(a,'detailed','long');
+    State.art.summary = { plain: quick.plain+'\n\n'+detailed.plain, html:`<div class="mb-4"><span class="badge bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300">⚡ الخلاصة السريعة</span><p class="mt-2 leading-loose">${quick.html||esc(quick.plain)}</p></div><div><span class="badge bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300">📖 الشرح التفصيلي</span><div class="mt-3">${detailed.html}</div></div>` };
+    $('#mg-sum').innerHTML = State.art.summary.html;
+    setStep(1,'done'); setStep(2,'run'); await sleep(500);
+    State.art.map = buildMindmap(a);
+    renderMindmap(State.art.map, 'tree', $('#mg-map-wrap'));
+    setStep(2,'done'); setStep(3,'run'); await sleep(500);
+    State.bank = genQuestions(text, 10, ['mcq','tf','essay']);
+    $('#mg-quiz').innerHTML = State.bank.slice(0,4).map((q,i)=>`
+      <div class="soft p-4"><div class="flex items-center gap-2 mb-2"><span class="badge ${Q_BADGE[q.type]}">${Q_LABEL[q.type]}</span><span class="text-xs font-black text-slate-400">معاينة ${i+1} من ${State.bank.length}</span></div><div class="font-bold leading-7">${esc(q.q)}</div></div>`).join('')
+      + `<div class="text-center text-xs font-bold text-slate-400 py-3">…و${Math.max(0,State.bank.length-4)} أسئلة أخرى في البنك الكامل</div>`;
+    // التحميلات
+    $('#mg-dl').innerHTML = ['formatted','summary','map','quizbank'].map(k=>`
+      <div class="soft p-5">
+        <div class="font-black mb-1">${ART[k].title}</div>
+        <div class="text-[11px] text-slate-400 font-bold mb-3">${ART[k].kind} — جاهز للحفظ والمشاركة</div>
+        ${artBar(k)}
+      </div>`).join('');
+    setStep(3,'done');
+    $('#magic-out').classList.remove('hidden');
+    $('#magic-out').scrollIntoView({behavior:'smooth', block:'start'});
+    toast('✨ اكتملت المعالجة السحرية — كل شيء جاهز!','success');
+  }catch(e){
+    console.error(e); toast('حدث خطأ أثناء المعالجة — حاول مرة أخرى','error');
+  }finally{
+    btn.disabled=false; btn.classList.remove('opacity-70','pointer-events-none');
+    btn.innerHTML='✨ اضغط مرة واحدة… ودع الباقي علينا ✨';
+  }
+}
+function initMagic(){
+  $('#magic-run').addEventListener('click', runMagic);
+  $$('.tabbtn[data-mtab]').forEach(b=>b.addEventListener('click', ()=>keepScroll(()=>{
+    $$('.tabbtn[data-mtab]').forEach(x=>x.classList.toggle('tabbtn-on', x===b));
+    ['fmt','sum','map','quiz','dl'].forEach(k=>$('#mg-'+k).classList.toggle('hidden', k!==b.dataset.mtab));
+    if(b.dataset.mtab==='map') setTimeout(()=>drawEdges($('#mg-map-wrap')), 60);
+  })));
+  $('#mg-opensum').addEventListener('click', ()=>{ if(State.art.summary?.plain){ setPickerText('summary', State.art.analysis?.raw||''); switchTab('summary'); } });
+  $('#mg-openquiz').addEventListener('click', ()=>{ if(State.bank.length){ switchTab('quiz'); setTimeout(renderBank,100); } });
+}
+
+/* ================= القراءة الصوتية TTS ================= */
+const TTS = { q:[], idx:0, speaking:false };
+function ttsText(){
+  const src = $('#tts-src').value;
+  if(src==='custom') return $('#tts-custom').value.trim();
+  if(src==='formatted') return State.art.formatted;
+  return State.art.summary?.plain || '';
+}
+function ttsBuildView(){
+  const t = ttsText();
+  const view = $('#tts-view');
+  if(!t){ view.innerHTML='لا يوجد محتوى بعد — ولّد ملخصًا أولًا أو اكتب نصًا مخصصًا.'; TTS.q=[]; return; }
+  TTS.q = splitSentences(t);
+  if(!TTS.q.length) TTS.q=[t];
+  view.innerHTML = TTS.q.map((s,i)=>`<span class="tts-sent" data-tts="${i}">${esc(s)} </span>`).join('');
+}
+function ttsHighlight(i){
+  $$('#tts-view .tts-sent').forEach(s=>s.classList.toggle('tts-on', +s.dataset.tts===i));
+  const el = $(`#tts-view [data-tts="${i}"]`);
+  if(el) el.scrollIntoView({block:'nearest', behavior:'smooth'});
+}
+function ttsSpeakNext(){
+  if(TTS.idx>=TTS.q.length){ ttsStop(); toast('انتهت القراءة 🎧','info'); return; }
+  const u = new SpeechSynthesisUtterance(TTS.q[TTS.idx]);
+  u.lang = 'ar-EG';
+  u.rate = +$('#tts-rate').value; u.pitch = +$('#tts-pitch').value;
+  const v = $('#tts-voice').value;
+  if(v){ const vs = speechSynthesis.getVoices(); const found = vs.find(x=>x.name===v); if(found) u.voice = found; }
+  u.onstart = ()=>ttsHighlight(TTS.idx);
+  u.onend = ()=>{ if(TTS.speaking){ TTS.idx++; ttsSpeakNext(); } };
+  speechSynthesis.speak(u);
+}
+function ttsStop(){
+  TTS.speaking=false; speechSynthesis.cancel();
+  $$('#tts-view .tts-sent').forEach(s=>s.classList.remove('tts-on'));
+}
+function initExport(){
+  $('#tts-src').addEventListener('change', e=>{ $('#tts-custom-wrap').classList.toggle('hidden', e.target.value!=='custom'); ttsBuildView(); });
+  $('#tts-rate').addEventListener('input', e=>$('#tts-ratev').textContent=e.target.value);
+  $('#tts-pitch').addEventListener('input', e=>$('#tts-pitchv').textContent=e.target.value);
+  $('#tts-custom').addEventListener('input', ()=>{ if($('#tts-src').value==='custom') ttsBuildView(); });
+  $('#tts-play').addEventListener('click', ()=>{
+    if(!('speechSynthesis' in window)){ toast('متصفحك لا يدعم النطق','error'); return; }
+    if(!TTS.q.length) ttsBuildView();
+    if(!TTS.q.length){ toast('لا يوجد نص للقراءة','warn'); return; }
+    if(TTS.speaking && speechSynthesis.paused){ speechSynthesis.resume(); return; }
+    ttsStop(); TTS.speaking=true; TTS.idx=0; ttsSpeakNext();
+  });
+  $('#tts-pause').addEventListener('click', ()=>{ if(TTS.speaking) speechSynthesis.pause(); });
+  $('#tts-stop').addEventListener('click', ttsStop);
+  if('speechSynthesis' in window){
+    const fill = ()=>{
+      const vs = speechSynthesis.getVoices().filter(v=>/ar/i.test(v.lang));
+      const sel = $('#tts-voice');
+      sel.innerHTML = '<option value="">الصوت العربي الافتراضي</option>'+vs.map(v=>`<option value="${esc(v.name)}">${esc(v.name)} (${esc(v.lang)})</option>`).join('');
+    };
+    fill(); speechSynthesis.onvoiceschanged = fill;
+    ttsBuildView();
+  }
+  // الطباعة
+  $('#print-src').addEventListener('change', e=>$('#print-custom-wrap').classList.toggle('hidden', e.target.value!=='custom'));
+  $('#print-go').addEventListener('click', ()=>{
+    const src = $('#print-src').value;
+    let title='', html='';
+    if(src==='custom'){ title='مستند'; html = ($('#print-custom').value.trim()||'').split(/\n{2,}/).map(p=>`<p>${esc(p).replace(/\n/g,'<br>')}</p>`).join(''); }
+    else if(src==='summary'){ title='ملخص دراسي ذكي'; html = State.art.summary?.html||''; if(!html){toast('ولّد ملخصًا أولًا','warn');return;} }
+    else if(src==='map'){ title='خريطة ذهنية'; if(!State.art.map){toast('ولّد خريطة أولًا','warn');return;} html = mapTreeTextHtml(State.art.map); }
+    else if(src==='formatted'){ title='نص منسق'; html = State.art.formattedHtml||''; if(!html){toast('سجّل نصًا منسقًا أولًا عبر الزر السحري','warn');return;} }
+    else if(src==='quiz'){ title='بنك أسئلة'; if(!State.bank.length){toast('ولّد بنك أسئلة أولًا','warn');return;} html = bankText().split('\n').map(l=>l.trim()?`<p>${esc(l)}</p>`:'<p>&nbsp;</p>').join(''); }
+    openPrint(title, html);
+  });
+  // نسخ احتياطي
+  $('#bk-export').addEventListener('click', ()=>{
+    const data = { v:2, exportedAt:new Date().toISOString(), platform:'Khulasa — Smart Study Platform', saves:Store.items, drafts:Drafts.d, settings:Settings.data };
+    download(JSON.stringify(data,null,2),'khulasa-backup.json','application/json');
+    toast('تم تصدير النسخة الاحتياطية ✔','success');
+  });
+  $('#bk-import').addEventListener('click', ()=>$('#bk-file').click());
+  $('#bk-file').addEventListener('change', e=>{ const f=e.target.files[0]; if(f) importBackup(f); e.target.value=''; });
+  $('#bk-clear').addEventListener('click', ()=>confirmDlg('⚠️ سيتم مسح <b>كل</b> المحفوظات والمسودات نهائيًا — هل أنت متأكد؟', ()=>{ Store.clear(); Drafts.d={}; Drafts.persist(); initSaveBars(); refreshBackupStats(); toast('تم مسح كل شيء','info'); }, 'نعم، امسح الكل'));
+  refreshBackupStats();
+  renderCopyCenter();
+}
+function importBackup(file){
+  const fr = new FileReader();
+  fr.onload = ()=>{
+    try{
+      const data = JSON.parse(fr.result);
+      if(Array.isArray(data.saves)){
+        const ids = new Set(Store.items.map(i=>i.id));
+        data.saves.forEach(s=>{ if(s&&s.id&&!ids.has(s.id)) Store.items.push(s); });
+        Store.persist();
+      }
+      if(data.drafts && typeof data.drafts==='object'){ Drafts.d = Object.assign(Drafts.d, data.drafts); Drafts.persist(); }
+      if(data.settings) { Settings.data = Object.assign(Settings.data, data.settings); Settings.persist(); }
+      renderLibrary(); refreshBackupStats(); initSaveBars();
+      toast('تم استيراد النسخة الاحتياطية ✔','success');
+    }catch(e){ toast('الملف غير صالح','error'); }
+  };
+  fr.readAsText(file);
+}
+function refreshBackupStats(){
+  const el = $('#bk-stats');
+  if(el) el.innerHTML = `📦 لديك <b class="text-violet-500">${Store.items.length}</b> عنصرًا محفوظًا • <b class="text-sky-500">${Object.keys(Drafts.d).length}</b> مسودة نشطة`;
+}
+function renderCopyCenter(){
+  const el = $('#copy-center'); if(!el) return;
+  const items = [
+    ['📄 النص المنسق','formatted'],['🧠 الملخص الذكي','summary'],['🗺️ الخريطة (نص)','map'],['🗃️ بنك الأسئلة','quizbank']
+  ];
+  el.innerHTML = items.map(([lbl,k])=>`<button type="button" class="soft p-4 text-start hover:border-violet-400 transition cursor-pointer" data-cc="${k}"><div class="font-black text-sm">${lbl}</div><div class="text-[11px] text-slate-400 mt-1 truncate">${esc((ART[k].get()||'— لا يوجد بعد —').slice(0,60))}</div></button>`).join('');
+  $$('[data-cc]',el).forEach(b=>b.addEventListener('click', ()=>copyText(ART[b.dataset.cc].get())));
+}
+
+/* ================= الطباعة الأنيقة ================= */
+function openPrint(title, bodyHtml){
+  const w = window.open('', '_blank');
+  if(!w){ toast('المتصفح منع فتح نافذة الطباعة — اسمح بالنوافذ المنبثقة','error'); return; }
+  const doc = `<!DOCTYPE html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><title>${esc(title)}</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+@page{size:A4;margin:16mm}
+*{box-sizing:border-box}
+body{font-family:'Cairo',sans-serif;color:#1e293b;line-height:2.1;font-size:14px}
+.cover{border:3px solid #7c3aed;border-radius:18px;padding:28px;text-align:center;margin-bottom:26px;background:linear-gradient(135deg,#f5f3ff,#eff6ff)}
+.cover .logo{font-size:34px}
+.cover h2{margin:6px 0 2px;font-size:22px;color:#4c1d95}
+.cover p{margin:2px 0;color:#64748b;font-size:12px}
+h1{font-size:20px;color:#4c1d95;border-bottom:3px solid #7c3aed;padding-bottom:8px;margin:0 0 18px}
+h3{color:#7c3aed;margin:18px 0 6px;font-size:15px}
+p{margin:0 0 10px;text-align:justify}
+strong{color:#6d28d9}
+.foot{margin-top:38px;border-top:1.5px solid #e2e8f0;padding-top:10px;color:#64748b;font-size:11px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px}
+</style></head><body>
+<div class="cover"><div class="logo">خ</div><h2>خُلاصة — منصة الملخصات الذكية</h2><p>Khulasa • Smart Study Platform</p><p style="margin-top:8px;font-weight:700">${esc(title)}</p><p>${dateStr()}</p></div>
+<h1>${esc(title)}</h1>
+${bodyHtml}
+<div class="foot"><span>إعداد: زياد أشرف — واتساب: +20 109 971 3432</span><span>خُلاصة • منصة الملخصات الذكية • ${dateStr()}</span></div>
+<script>window.onload=function(){setTimeout(function(){window.print()},700)}<\/script>
+</body></html>`;
+  w.document.write(doc);
+  w.document.close();
+}
+
+/* ================= المكتبة ================= */
+function badgeCls(c){ return `bg-${c}-100 text-${c}-700 dark:bg-${c}-500/15 dark:text-${c}-300`; }
+function renderLibrary(){
+  const list = $('#lib-list'); if(!list) return;
+  const q = val('lib-q').toLowerCase();
+  const f = State.libFilter;
+  const items = Store.items.filter(i=>(f==='all'||i.section===f) && (!q || i.title.toLowerCase().includes(q) || (i.content||'').toLowerCase().includes(q)));
+  $('#lib-count').textContent = items.length ? `${items.length} عنصر` : '';
+  $('#lib-empty').classList.toggle('hidden', Store.items.length>0);
+  const counts = {all:Store.items.length};
+  Object.keys(SECTIONS).forEach(k=>{ counts[k] = Store.items.filter(i=>i.section===k).length; });
+  const filters = $('#lib-filters');
+  if(filters) filters.innerHTML = [['all','الكل']].concat(Object.keys(SECTIONS).map(k=>[k,SECTIONS[k].l])).map(([k,lbl])=>
+    `<button type="button" class="${k===State.libFilter?'chip chip-on':'chip'}" data-libf="${k}">${lbl} <span class="opacity-60">(${counts[k]||0})</span></button>`).join('');
+  $$('[data-libf]',filters).forEach(b=>b.addEventListener('click', ()=>{ State.libFilter=b.dataset.libf; renderLibrary(); }));
+  list.innerHTML = items.map(it=>{
+    const sec = SECTIONS[it.section]||SECTIONS.home;
+    return `<div class="card p-5">
+      <div class="flex items-center gap-2 flex-wrap mb-2">
+        <span class="badge ${badgeCls(sec.c)}">${sec.l}</span>
+        <span class="badge bg-slate-100 text-slate-500 dark:bg-slate-700 dark:text-slate-300">${esc(it.kind)}</span>
+        <span class="text-[10px] font-bold text-slate-400 ms-auto">${dateStr(it.date)}</span>
+      </div>
+      <h4 class="font-black text-sm">${esc(it.title)}</h4>
+      <p class="text-xs text-slate-500 dark:text-slate-400 leading-6 mt-2 line-clamp-3">${esc((it.content||'').slice(0,180))}${(it.content||'').length>180?'…':''}</p>
+      <div class="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-slate-200/70 dark:border-slate-700/60">
+        <button type="button" class="btn-sm" data-libact="view" data-id="${it.id}">👁️ عرض</button>
+        ${SAVEBARS[it.section]?'<button type="button" class="btn-sm" data-libact="restore" data-id="'+it.id+'">↩︎ استرجاع لأداته</button>':''}
+        <button type="button" class="btn-sm" data-libact="copy" data-id="${it.id}">📋 نسخ</button>
+        <button type="button" class="btn-sm" data-libact="dl" data-id="${it.id}">⬇️ تنزيل</button>
+        <button type="button" class="btn-danger-sm" data-libact="del" data-id="${it.id}">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+  $$('[data-libact]',list).forEach(b=>b.addEventListener('click', ()=>{
+    const it = Store.items.find(x=>x.id===b.dataset.id); if(!it) return;
+    const act = b.dataset.libact;
+    if(act==='view') showModal(it.title, `<p class="text-sm leading-8 text-slate-600 dark:text-slate-300 whitespace-pre-wrap max-h-[50vh] overflow-y-auto">${esc(it.content)}</p><div class="text-xs font-bold text-slate-400">${SECTIONS[it.section]?.l||''} • ${dateStr(it.date)}</div>`);
+    else if(act==='restore'){ const c=SAVEBARS[it.section]; c.set(it.content); switchTab(it.section); toast('تم استرجاع العنصر لأداته ✔','success'); }
+    else if(act==='copy') copyText(it.content);
+    else if(act==='dl') download(it.content,(it.title||'saved').replace(/\s+/g,'-')+'.txt','text/plain;charset=utf-8');
+    else if(act==='del') Store.del(it.id);
+  }));
+}
+function initLibrary(){
+  $('#lib-q').addEventListener('input', renderLibrary);
+  $('#lib-export').addEventListener('click', ()=>{
+    const data = { v:2, exportedAt:new Date().toISOString(), platform:'Khulasa — Smart Study Platform', saves:Store.items, drafts:Drafts.d, settings:Settings.data };
+    download(JSON.stringify(data,null,2),'khulasa-backup.json','application/json');
+  });
+  $('#lib-import').addEventListener('click', ()=>$('#lib-file').click());
+  $('#lib-file').addEventListener('change', e=>{ const f=e.target.files[0]; if(f) importBackup(f); e.target.value=''; });
+  $('#lib-clear').addEventListener('click', ()=>confirmDlg('⚠️ سيتم مسح كل المحفوظات نهائيًا — متأكد؟', ()=>{ Store.clear(); toast('تم مسح المكتبة','info'); }, 'نعم، امسح'));
+}
+
+/* ================= التهيئة العامة ================= */
+function init(){
+  injectFabsIcons();
+  initTheme();
+  bindNav();
+  initDrawer();
+  initFabs();
+  Store.load(); Drafts.load(); Settings.load();
+  initPickers();
+  initSaveBars();
+  initRecorder();
+  initPdfTools();
+  initSummary();
+  initQuiz();
+  initMagic();
+  initExport();
+  initLibrary();
+  $('#homeQuickBtn')?.addEventListener('click', ()=>{
+    const t = $('#homeQuickText').value.trim();
+    if(!t){ toast('الصق نصًا أولًا','warn'); return; }
+    setPickerText('magic', t);
+    switchTab('magic');
+    toast('تم نقل النص — اضغط الزر السحري ✨','info');
+  });
+  $$('[data-nav="summary"].btn-ghost').forEach(b=>b.addEventListener('click', ()=>{ const t=$('#homeQuickText').value.trim(); if(t) setPickerText('summary',t); }));
+  $('#year').textContent = new Date().getFullYear();
+  switchTab('home',{instant:true});
+  window.addEventListener('beforeunload', e=>{ if(TTS.speaking) speechSynthesis.cancel(); });
+}
+function injectFabsIcons(){
+  $$('[data-icon]').forEach(el=>{ el.innerHTML = icon(el.dataset.icon, el.dataset.cls||'w-5 h-5'); });
+}
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
