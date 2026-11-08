@@ -617,6 +617,9 @@ html.dark .btn{background:#1c2749;border-color:#2e3d6e;color:#cbd5e1}
 .field{width:100%;border:1px solid #cbd5e1;border-radius:.8rem;padding:.6rem .85rem;font-size:.85rem;background:#fff;color:#1e293b;outline:none}
 .field:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
 html.dark .field{background:#0f1830;border-color:#334166;color:#e2e8f0}
+/* خط Cairo العربي مقاييسه الرأسية عالية (ascent+descent ≈ 1.74em) — السطر الافتراضي بيخلي الحروف تلمس بعضها في مربعات النص
+   فبنرفّع تباعد أسطر كل الـ textarea لعشان الكلام يفضل مفصول ومقروء */
+textarea.field{line-height:2 !important}
 .nav-btn{display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap;border-radius:.8rem;padding:.5rem .85rem;font-size:.8rem;font-weight:700;background:transparent;border:none;color:#475569}
 html.dark .nav-btn{color:#94a3b8}
 .nav-btn.active,.nav-btn:hover{background:#4f46e5;color:#fff}
@@ -643,6 +646,24 @@ html.dark ::-webkit-scrollbar-thumb{background:#3730a3}
 .fc-face{backface-visibility:hidden;-webkit-backface-visibility:hidden}
 .fc-back{position:absolute;inset:0;transform:rotateY(180deg)}
 @media (max-width:640px){.fc-inner{min-height:180px}}
+/* ===== 🤖 شات بوت خلاصة — مساعد ذكي محلي بالكامل ===== */
+#chat-msgs .cmsg{max-width:88%;border-radius:1.15rem;padding:.55rem .9rem;font-size:.82rem;line-height:2;animation:cmsgIn .18s ease;word-wrap:break-word;overflow-wrap:anywhere}
+#chat-msgs .cbot{background:#f1f5f9;color:#1e293b;border-bottom-right-radius:.35rem;white-space:pre-wrap}
+html.dark #chat-msgs .cbot{background:#1c2749;color:#e2e8f0}
+#chat-msgs .cuser{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border-bottom-left-radius:.35rem;margin-inline-start:auto}
+#chat-msgs .cmeta{font-size:.6rem;color:#94a3b8;margin-top:.15rem;padding:0 .35rem}
+.chat-typing{display:inline-flex;gap:.28rem;padding:.65rem .95rem;background:#f1f5f9;border-radius:1.15rem;border-bottom-right-radius:.35rem}
+html.dark .chat-typing{background:#1c2749}
+.chat-typing i{width:.42rem;height:.42rem;border-radius:50%;background:#6366f1;animation:cty 1s infinite}
+.chat-typing i:nth-child(2){animation-delay:.18s}
+.chat-typing i:nth-child(3){animation-delay:.36s}
+@keyframes cty{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-.3rem);opacity:1}}
+@keyframes cmsgIn{from{opacity:0;transform:translateY(.4rem)}to{opacity:1;transform:none}}
+#chat-chips button{border-radius:999px;padding:.28rem .75rem;font-size:.68rem;font-weight:700;background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe;transition:.15s}
+#chat-chips button:hover{background:#e0e7ff}
+html.dark #chat-chips button{background:#1c2749;color:#a5b4fc;border-color:#312e81}
+#chat-btn{animation:chatPulse 3s infinite}
+@keyframes chatPulse{0%,92%,100%{box-shadow:0 10px 24px -8px rgba(79,70,229,.55)}96%{box-shadow:0 0 0 10px rgba(79,70,229,.12),0 10px 24px -8px rgba(79,70,229,.55)}}
 </style>
 <style type="text/tailwindcss">
 @layer components {
@@ -717,7 +738,9 @@ html.dark ::-webkit-scrollbar-thumb{background:#3730a3}
         <span class="chip bg-white/15 text-white">🧠 خرائط ذهنية</span>
         <span class="chip bg-white/15 text-white">🎯 اختبارات</span>
         <span class="chip bg-white/15 text-white">🧰 أدوات PDF</span>
+        <span class="chip bg-white/15 text-white">🤖 مساعد ذكي</span>
       </div>
+      <p class="text-white/75 text-[12.5px] mt-3">💬 عندك سؤال؟ افتح <b>«مساعد خُلاصة»</b> — زرار الروبوت 🤖 تحت على اليمين: بينفّذ أوامرك («لخّص» / «اعمللي اختبار») وبييجاوب من نصك — وكل ده أوفلاين.</p>
     </div>
   </div>
 
@@ -1019,7 +1042,7 @@ html.dark ::-webkit-scrollbar-thumb{background:#3730a3}
           <h3 class="font-black flex items-center gap-2">📄 الملخص</h3>
           <span id="s4-stats" class="label-mini"></span>
         </div>
-        <div id="s4-output" class="text-[14px] leading-loose">
+        <div id="s4-output" class="text-[14.5px] leading-[2.1] [overflow-wrap:anywhere]">
           <div class="text-sm text-slate-400 dark:text-slate-500 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-8 text-center">سيظهر الملخص هنا بعد الضغط على «توليد الملخص»</div>
         </div>
       </div>
@@ -1328,8 +1351,8 @@ html.dark ::-webkit-scrollbar-thumb{background:#3730a3}
         <h3 class="text-lg font-black">Ziad Ashraf <span class="text-white/80 text-sm font-bold">— زياد أشرف</span></h3>
         <p class="text-white/85 text-sm mt-0.5">مطور منصة خلاصة (khulasa) — لأي استفسار أو اقتراح أو دعم فني تواصل معي مباشرة:</p>
         <div class="flex flex-wrap gap-2 mt-3">
-          <a href="https://wa.me/201099713432" target="_blank" rel="noopener" class="btn bg-white text-emerald-700 hover:bg-emerald-50">💬 واتساب: <bdi dir="ltr">+20 109 971 3432</bdi></a>
-          <a href="tel:+201099713432" class="btn bg-white/15 text-white hover:bg-white/25">📞 اتصال مباشر</a>
+          <a href="https://instagram.com/ziaadd_1" target="_blank" rel="noopener" class="btn bg-white text-pink-600 hover:bg-pink-50">📸 انستجرام: <bdi dir="ltr">@ziaadd_1</bdi></a>
+          <a href="https://instagram.com/ziaadd_1" target="_blank" rel="noopener" class="btn bg-white/15 text-white hover:bg-white/25">📸 تابعني هنا</a>
         </div>
       </div>
     </div>
@@ -1351,22 +1374,48 @@ html.dark ::-webkit-scrollbar-thumb{background:#3730a3}
       </div>
       <div class="text-center">
         <p class="text-[13px] font-bold">تصميم وتطوير: <span class="text-indigo-500">Ziad Ashraf</span> (زياد أشرف)</p>
-        <a href="https://wa.me/201099713432" target="_blank" rel="noopener" class="text-[12px] font-bold text-emerald-600 dark:text-emerald-400 hover:underline">💬 واتساب: <bdi dir="ltr">+20 109 971 3432</bdi></a>
+        <a href="https://instagram.com/ziaadd_1" target="_blank" rel="noopener" class="text-[12px] font-bold text-pink-600 dark:text-pink-400 hover:underline">📸 انستجرام: <bdi dir="ltr">@ziaadd_1</bdi></a>
       </div>
-      <p class="text-[11px] text-slate-400 dark:text-slate-500">الإصدار 2.1 © 2026 — جميع الحقوق محفوظة</p>
+      <p class="text-[11px] text-slate-400 dark:text-slate-500">الإصدار 3.0 — نسخة المساعد الذكي 🤖 © 2026 — جميع الحقوق محفوظة</p>
     </div>
   </div>
 </footer>
 
 <!-- أزرار عائمة -->
-<a href="https://wa.me/201099713432" target="_blank" rel="noopener" title="تواصل واتساب" class="fixed bottom-4 left-4 z-40 grid place-items-center rounded-full bg-emerald-500 text-white text-2xl shadow-2xl shadow-emerald-500/40 hover:scale-110 transition" style="width:52px;height:52px">💬</a>
+<a href="https://instagram.com/ziaadd_1" target="_blank" rel="noopener" title="تابعنا على انستجرام ziaadd_1" class="fixed bottom-4 left-4 z-40 grid place-items-center rounded-full bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 text-white text-2xl shadow-2xl shadow-pink-500/40 hover:scale-110 transition" style="width:52px;height:52px">📸</a>
 <button type="button" id="top-btn" title="العودة للأعلى" class="fixed bottom-20 left-4 z-40 grid place-items-center rounded-full bg-indigo-600 text-white shadow-xl shadow-indigo-500/40 hover:scale-110 transition" style="width:44px;height:44px">↑</button>
+
+<!-- ==================== 🤖 مساعد خلاصة — شات بوت ذكي 100% محلي ==================== -->
+<button type="button" id="chat-btn" title="مساعد خلاصة الذكي" aria-label="افتح المساعد الذكي"
+        class="fixed bottom-4 right-4 z-40 grid place-items-center rounded-full bg-gradient-to-l from-indigo-600 to-violet-600 text-white shadow-2xl shadow-indigo-500/40 hover:scale-110 transition" style="width:56px;height:56px">
+  <span class="text-2xl leading-none">🤖</span>
+  <span id="chat-dot" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-emerald-400 border-2 border-white dark:border-[#0a0f1e] hidden"></span>
+</button>
+<div id="chat-panel" class="hidden" dir="rtl" aria-hidden="true">
+  <div class="fixed bottom-[84px] right-4 z-50 flex flex-col rounded-3xl border border-slate-200 dark:border-[#26335c] bg-white dark:bg-[#0f1830] shadow-2xl overflow-hidden" style="width:min(384px, calc(100vw - 2rem)); height:min(560px, 74vh)">
+    <div class="flex items-center gap-3 px-4 py-3 bg-gradient-to-l from-indigo-600 to-violet-600 text-white shrink-0">
+      <div class="w-10 h-10 rounded-2xl bg-white/15 grid place-items-center text-xl">🤖</div>
+      <div class="flex-1 min-w-0">
+        <p class="font-black text-sm">مساعد خُلاصة</p>
+        <p class="text-[11px] text-white/80 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-300 inline-block"></span> شغال جوّه جهازك — بدون إنترنت</p>
+      </div>
+      <button type="button" id="chat-clear" title="مسح المحادثة" class="w-8 h-8 rounded-xl bg-white/10 hover:bg-white/25 grid place-items-center text-sm">🗑️</button>
+      <button type="button" id="chat-close" title="إغلاق" class="w-8 h-8 rounded-xl bg-white/10 hover:bg-white/25 grid place-items-center text-sm">✖️</button>
+    </div>
+    <div id="chat-msgs" class="flex-1 overflow-y-auto px-3.5 py-3 flex flex-col gap-2.5"></div>
+    <div id="chat-chips" class="px-3 pb-2 flex flex-wrap gap-1.5 shrink-0"></div>
+    <div class="border-t border-slate-200 dark:border-[#26335c] p-2.5 flex items-end gap-2 shrink-0 bg-white dark:bg-[#0f1830]">
+      <textarea id="chat-input" rows="1" class="field !rounded-2xl flex-1 !py-2 max-h-[110px] resize-none" placeholder="اكتب سؤالك هنا... (Enter للإرسال)"></textarea>
+      <button type="button" id="chat-send" title="إرسال" class="btn btn-primary !rounded-2xl !px-3.5 !py-2.5">📤</button>
+    </div>
+  </div>
+</div>
 
 <script>
 'use strict';
 /* =========================================================
    خلاصة (khulasa) — منطق التطبيق الكامل
-   تطوير: Ziad Ashraf — واتساب: +201099713432
+   تطوير: Ziad Ashraf — انستجرام: @ziaadd_1
    ========================================================= */
 
 /* ===== أدوات عامة ===== */
@@ -1680,7 +1729,7 @@ function captureLightClone(el, title, opt) {
   } catch (e) {}
   const foot = document.createElement('div');
   foot.style.cssText = 'border-top:2px solid #e2e8f0;margin-top:24px;padding-top:12px;font-size:12.5px;font-weight:700;color:#64748b;display:flex;justify-content:space-between;align-items:center;';
-  foot.innerHTML = '<span>منصة خُلاصة (khulasa) — تطوير Ziad Ashraf</span><bdi dir="ltr">WhatsApp +20 109 971 3432</bdi>';
+  foot.innerHTML = '<span>منصة خُلاصة (khulasa) — تطوير Ziad Ashraf</span><bdi dir="ltr">Instagram @ziaadd_1</bdi>';
   stage.appendChild(head); stage.appendChild(clone); stage.appendChild(foot);
   document.body.appendChild(stage);
   return stage;
@@ -1758,7 +1807,7 @@ function printHTML(title, bodyHtml) {
   w.document.write('<!DOCTYPE html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><title>' + esc(title) + '</title>' +
     '<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">' +
     '<style>body{font-family:Cairo,Arial,sans-serif;padding:28px;line-height:2;color:#111827} h1{font-size:20pt;color:#4338ca;border-bottom:3px solid #4338ca;padding-bottom:8px} h2{font-size:15pt;color:#6d28d9} .muted{color:#6b7280;font-size:10pt} ul{padding-right:20px} .chip{display:inline-block;background:#eef2ff;color:#4338ca;border-radius:999px;padding:2px 12px;font-size:10pt;font-weight:700;margin-left:6px} table{width:100%;border-collapse:collapse} td,th{border:1px solid #d1d5db;padding:8px;text-align:right}</style>' +
-    '</head><body>' + bodyHtml + '<p class="muted" style="margin-top:30px;border-top:1px solid #e5e7eb;padding-top:10px">أُنشئ بواسطة منصة خلاصة (khulasa) — تطوير Ziad Ashraf — واتساب: <bdi dir="ltr">+201099713432</bdi></p>' +
+    '</head><body>' + bodyHtml + '<p class="muted" style="margin-top:30px;border-top:1px solid #e5e7eb;padding-top:10px">أُنشئ بواسطة منصة خلاصة (khulasa) — تطوير Ziad Ashraf — انستجرام: <bdi dir="ltr">@ziaadd_1</bdi></p>' +
     '</body></html>');
   w.document.close();
   setTimeout(() => { try { w.focus(); w.print(); } catch (e) {} }, 700);
@@ -1795,6 +1844,9 @@ function switchSection(id) {
   }
   $$('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.sec === id));
   lsSet('last_section', id);
+  /* لو الخريطة الذهنية اترسمت وهي مخفية، جولة التدقيق ما كانتش بتشتغل صح —
+     فبنشغلها تاني أول ما قسم الملخصات يبان */
+  if (id === 'sec4' && s4MapData && s4MapStyle === 'tree') refineMapTree($('#s4-map'));
 }
 function setupNav() {
   $('#main-nav').addEventListener('click', e => {
@@ -1947,6 +1999,10 @@ function rebuildTextFromItems(items) {
   if (cur.length) lines.push(cur);
   /* 2) ترتيب القطع داخل كل سطر حسب الاتجاه + إدراج مسافة عند وجود فجوة حقيقية */
   return lines.map(line => {
+    /* بنحفظ ترتيب كل قطعة الأصلي (بما فيها القطع اللي نصها مسافة بس) —
+       عشان نرجّع المسافة اللي بعض ملفات الـ PDF بتخزنها كقطعة مستقلة،
+       وده سبب رئيسي لالتصاق الكلمات في بعضها بعد الاستخراج */
+    line.forEach((o, idx) => { o._i = idx; });
     const parts = line.filter(o => o.s && o.s.trim());
     if (!parts.length) return '';
     const joined = parts.map(o => o.s).join('');
@@ -1961,7 +2017,10 @@ function rebuildTextFromItems(items) {
       if (i > 0) {
         const p = arr[i - 1];
         const gap = rtl ? (p.x - (o.x + o.w)) : (o.x - (p.x + p.w));
-        if (gap > Math.max(1.1, avgH * 0.17) && !/\s$/.test(out) && !/^\s/.test(o.s)) out += ' ';
+        /* مسافة هندسية حقيقية بين القطعتين، أو قطعة مسافة كانت بينهم في الترتيب الأصلي —
+           والعتبة اتظبطت أدق عشان الكلمات مالزقش في بعضها في ملفات الـ PDF الواقعية */
+        const hadSpaceItem = Math.abs(o._i - p._i) > 1;
+        if ((gap > Math.max(0.9, avgH * 0.14) || hadSpaceItem) && !/\s$/.test(out) && !/^\s/.test(o.s)) out += ' ';
       }
       out += o.s;
     }
@@ -1979,7 +2038,10 @@ function fixLetterSpaced(line) {
   if (singles < 5 || singles < toks.length * 0.6) return line;
   let out = '', run = '';
   const flush = () => { if (run) { out += (out ? ' ' : '') + run; run = ''; } };
-  toks.forEach(t => { if (isSingle(t)) run += t; else { flush(); out += (out ? ' ' : '') + t; } });
+  toks.forEach(t => {
+    if (isSingle(t)) { run += t; if (run.length >= 14) flush(); /* سقف آمن — أطول الكلمات العربية أقل من كده، يمنع لصق كلمات كاملة في بعضها */ }
+    else { flush(); out += (out ? ' ' : '') + t; }
+  });
   flush();
   return out;
 }
@@ -2690,13 +2752,16 @@ function mapTextWidth(text, size, weight) {
   });
   return mx;
 }
-/* لفّ نص بالعرض الحقيقي بالبكسل — مفيش أي قص للكلام (الحد الأقصى للسطور بس سلّمة أمان) */
-function svgWrapPx(text, maxW, size, weight, maxLines) {
+/* لفّ نص بالعرض المتاح — بيقبل دالة قياس حقيقية (من DOM نفسه) أو تقدير الكانفس.
+   تقدير الكانفس بياخد هامش أمان 8% لأن خط القياس ممكن يطلع أضيق من خط العرض
+   الفعلي — والجولة التانية (refineMapTree) بتتأكد بالقياس الحقيقي وتصحّح لو لازم */
+function svgWrapPx(text, maxW, size, weight, maxLines, measure) {
+  const mf = measure || ((t, sz, wt) => mapTextWidth(t, sz, wt) * 1.08);
   const words = String(text || '').split(/\s+/).filter(Boolean);
   const lines = []; let cur = '';
   for (const w of words) {
     const t = cur ? cur + ' ' + w : w;
-    if (mapTextWidth(t, size, weight) > maxW && cur) { lines.push(cur); cur = w; }
+    if (mf(t, size, weight) > maxW && cur) { lines.push(cur); cur = w; }
     else cur = t;
   }
   if (cur) lines.push(cur);
@@ -2707,19 +2772,23 @@ function svgWrapPx(text, maxW, size, weight, maxLines) {
   }
   return lines.length ? lines : ['—'];
 }
-function renderMapTree(data) {
-  /* شجرة أفقية من اليمين لليسار (مناسبة للعربي): المركز يمين والفروع متمددة لتحت —
-     الارتفاع بيتحسب من المحتوى نفسه بالبكسل فمستحيل يتقص ملخص أو يتراكب الفروع */
-  const W = 1080, PAD = 26, CW = 210, GAP = 12;
+function renderMapTree(data, measure) {
+  /* شجرة أفقية من اليمين لليسار (مناسبة للعربي) — والعرض بقى مضمون بجولتين:
+     1) تقدير بالكانفس وقت البناء   2) جولة تدقيق حقيقية (refineMapTree) بعد الإدراج
+     بتقيس كل سطر بالخط اللي المتصفح رسمه بيه فعلاً — وأي سطر أعرض من مكانه
+     يُعاد لفّه بقياس DOM الحقيقي (خط القياس = خط العرض بالظبط) فمستحيل
+     النص يفيض خارج صندوقه أو يدخل في كلام تاني مهما كان خط الجهاز */
+  const W = 1080, PAD = 26, CW = 210, GAP = 16;
   const BW = W - PAD * 2 - CW - 60; /* عرض صندوق الفرع */
-  const KID_SIZE = 12.5, KID_W = BW - 64;   /* عرض النص المتاح داخل الصندوق */
+  const KID_SIZE = 12.5, KID_W = BW - 68, KID_WRAP = KID_W - 16; /* 16px مخصوصة للنقطه */
   const LBL_SIZE = 15, LBL_W = CW - 30;
+  const LH = 34, KH = 30; /* تباعد أسطر مريح لخط Cairo العربي الطويل رأسياً */
+  const FF = 'Cairo,Arial,Tahoma,sans-serif';
   const meas = data.branches.map(b => {
-    const labelLines = svgWrapPx(b.label, LBL_W, LBL_SIZE, 800, 3);
-    /* كل جُمل الملخص تظهر كاملة — بدون حد أقصى عملي للسطور (سلّمة أمان 60 سطر بس للجملة الخرافية) */
-    const kids = b.children.map(ch => svgWrapPx(ch, KID_W, KID_SIZE, 400, 60));
-    const h = 14 + labelLines.length * 22 + kids.reduce((a, ls) => a + ls.length * 18 + 6, 0) + 12;
-    return { b, labelLines, kids, h: Math.max(52, h) };
+    const labelLines = svgWrapPx(b.label, LBL_W, LBL_SIZE, 800, 3, measure);
+    const kids = b.children.map(ch => svgWrapPx(ch, KID_WRAP, KID_SIZE, 400, 60, measure));
+    const h = 18 + labelLines.length * LH + kids.reduce((a, ls) => a + ls.length * KH + 10, 0) + 16;
+    return { b, labelLines, kids, h: Math.max(56, h) };
   });
   const contentH = meas.reduce((a, m) => a + m.h + GAP, -GAP);
   const H = Math.max(520, contentH + PAD * 2);
@@ -2737,24 +2806,24 @@ function renderMapTree(data) {
       '<rect x="' + (BX + BW - 7) + '" y="' + (by + 8) + '" width="7" height="' + Math.max(10, bh - 16) + '" rx="3.5" fill="' + color + '"/>';
     const hasKids = m.kids.length > 0;
     m.labelLines.forEach((ln, li) => {
-      const ly = hasKids ? (by + 30 + li * 22) : (by + bh / 2 + 5 - (m.labelLines.length - 1 - li) * 22);
-      inner += '<text x="' + (BX + BW - 20) + '" y="' + ly + '" text-anchor="start" font-size="15" font-weight="800" fill="' + color + '" font-family="Cairo,Arial">' + svgEscape(ln) + '</text>';
+      const ly = hasKids ? (by + 40 + li * LH) : (by + bh / 2 + 8 - (m.labelLines.length - 1 - li) * LH);
+      inner += '<text x="' + (BX + BW - 22) + '" y="' + ly + '" text-anchor="start" font-size="15" font-weight="800" fill="' + color + '" font-family="' + FF + '" data-mw="' + (LBL_W + 4) + '">' + svgEscape(ln) + '</text>';
     });
-    let ty = by + 14 + m.labelLines.length * 22 + 4;
+    let ty = by + 18 + m.labelLines.length * LH + 4;
     m.kids.forEach(ls => {
-      inner += '<text x="' + (BX + BW - 26) + '" y="' + (ty + 13) + '" text-anchor="start" font-size="12.5" font-weight="700" fill="#334155" font-family="Cairo,Arial">• ' + svgEscape(ls[0]) + '</text>';
-      ty += 18;
+      inner += '<text x="' + (BX + BW - 28) + '" y="' + (ty + 17) + '" text-anchor="start" font-size="12.5" font-weight="700" fill="#334155" font-family="' + FF + '" data-mw="' + (KID_W + 4) + '">• ' + svgEscape(ls[0]) + '</text>';
+      ty += KH;
       for (let li = 1; li < ls.length; li++) {
-        inner += '<text x="' + (BX + BW - 34) + '" y="' + (ty + 13) + '" text-anchor="start" font-size="12.5" fill="#64748b" font-family="Cairo,Arial">' + svgEscape(ls[li]) + '</text>';
-        ty += 18;
+        inner += '<text x="' + (BX + BW - 36) + '" y="' + (ty + 17) + '" text-anchor="start" font-size="12.5" fill="#64748b" font-family="' + FF + '" data-mw="' + (KID_W + 4) + '">' + svgEscape(ls[li]) + '</text>';
+        ty += KH;
       }
-      ty += 6;
+      ty += 10;
     });
     nodes += '<g>' + inner + '</g>';
     y += bh + GAP;
   });
-  const centerLines = svgWrapPx(data.center, CW - 34, LBL_SIZE, 800, 4);
-  const chh = Math.max(64, 24 + centerLines.length * 22);
+  const centerLines = svgWrapPx(data.center, CW - 34, LBL_SIZE, 800, 4, measure);
+  const chh = Math.max(72, 34 + centerLines.length * LH);
   const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" direction="rtl" style="max-width:100%;height:auto">' +
     '<rect width="' + W + '" height="' + H + '" rx="18" fill="#f8fafc"/>' +
     links +
@@ -2763,10 +2832,39 @@ function renderMapTree(data) {
       '<rect x="' + (-CW / 2) + '" y="' + (-chh / 2) + '" width="' + CW + '" height="10" rx="5" fill="#7c3aed"/>' +
       centerLines.map((ln, li) => {
         const off = li - (centerLines.length - 1) / 2;
-        return '<text x="0" y="' + (off * 22 + 6) + '" text-anchor="middle" font-size="15" font-weight="800" fill="#ffffff" font-family="Cairo,Arial">' + svgEscape(ln) + '</text>';
+        return '<text x="0" y="' + (off * LH + 6) + '" text-anchor="middle" font-size="15" font-weight="800" fill="#ffffff" font-family="' + FF + '" data-mw="' + (CW - 26) + '">' + svgEscape(ln) + '</text>';
       }).join('') +
     '</g>' + nodes + '</svg>';
   return svg;
+}
+/* جولة التدقيق الحقيقية: بعد رسم الخريطة بنقيس كل سطر بالخط اللي المتصفح رسمه بيه
+   فعلياً (getComputedTextLength) — ولو أي سطر أعرض من مساحته بنعيد بناء الخريطة
+   كلها بقياس DOM الحقيقي، فيبقى خط القياس هو نفسه خط العرض بالظبط */
+function refineMapTree(box) {
+  const run = () => {
+    try {
+      const svg = box && box.querySelector('svg');
+      const holder = box && box.querySelector('[data-map-holder]');
+      if (!svg || !holder || typeof s4MapData !== 'object' || !s4MapData) return;
+      let overflow = false;
+      $$('text[data-mw]', svg).forEach(t => {
+        if (t.getComputedTextLength() > parseFloat(t.getAttribute('data-mw'))) overflow = true;
+      });
+      if (!overflow) return;
+      const probe = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      probe.setAttribute('font-family', 'Cairo,Arial,Tahoma,sans-serif');
+      svg.appendChild(probe);
+      const real = (txt, size, weight) => {
+        probe.setAttribute('font-size', size);
+        probe.setAttribute('font-weight', weight);
+        probe.textContent = txt;
+        return probe.getComputedTextLength();
+      };
+      holder.innerHTML = renderMapTree(s4MapData, real);
+    } catch (e) { /* نسيب الرسم الأول أحسن من فشل كامل */ }
+  };
+  setTimeout(run, 90);
+  try { if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => setTimeout(run, 130)); } catch (e) {}
 }
 function wrapSvgText(text, maxChars, maxLines) {
   const words = String(text || '').split(/\s+/);
@@ -2785,7 +2883,7 @@ function renderMapGrid(data) {
     return '<div class="rounded-2xl border-2 bg-white dark:bg-[#0f1830] p-4" style="border-color:' + color + '33">' +
       '<div class="flex items-center justify-between mb-2"><span class="font-black text-[14px]" style="color:' + color + '">' + esc(b.label) + '</span>' +
       '<span class="chip" style="background:' + color + '18;color:' + color + '">×' + b.count + '</span></div>' +
-      (b.children.length ? '<ul class="text-[12.5px] space-y-1.5 text-slate-600 dark:text-slate-300 list-disc pe-4">' +
+      (b.children.length ? '<ul class="text-[12.5px] space-y-2.5 leading-loose text-slate-600 dark:text-slate-300 list-disc pe-4">' +
         b.children.map(ch => '<li>' + esc(ch) + '</li>').join('') + '</ul>'
         : '<p class="text-[12px] text-slate-400">—</p>') +
       '</div>';
@@ -2850,7 +2948,7 @@ function icFooter(ctx, W, H) {
   ctx.textAlign = 'right'; ctx.direction = 'rtl';
   ctx.fillText('منصة خُلاصة — تطوير Ziad Ashraf', W - PAD, yLine + 52);
   ctx.direction = 'ltr'; ctx.textAlign = 'left';
-  ctx.fillText('+20 109 971 3432', PAD, yLine + 52);
+  ctx.fillText('Instagram @ziaadd_1', PAD, yLine + 52);
   ctx.direction = 'rtl'; ctx.textAlign = 'right';
 }
 /* أنواع البطاقات: cover غلاف / slide شريحة / tall شريط طويل / end ختامية */
@@ -2893,7 +2991,7 @@ function icBuildCard(spec) {
     ctx.font = icFont(26, 700); ctx.fillStyle = 'rgba(255,255,255,0.92)';
     ctx.fillText('تطوير: Ziad Ashraf', W / 2, 1215);
     ctx.font = icFont(23, 700); ctx.fillStyle = 'rgba(255,255,255,0.75)';
-    ctx.direction = 'ltr'; ctx.fillText('WhatsApp +20 109 971 3432', W / 2, 1258);
+    ctx.direction = 'ltr'; ctx.fillText('Instagram @ziaadd_1', W / 2, 1258);
     return c;
   }
 
@@ -2904,13 +3002,13 @@ function icBuildCard(spec) {
     const meas = document.createElement('canvas').getContext('2d');
     let contentH = 0;
     (spec.blocks || []).forEach(b => {
-      if (b.type === 'h') contentH += 33 + 31;
+      if (b.type === 'h') contentH += 33 + 42;
       else if (b.type === 'b') {
         meas.font = icFont(31, 400);
-        contentH += icWrap(meas, b.text, CW - 40).length * 52 + 28;
+        contentH += icWrap(meas, b.text, CW - 40).length * 58 + 28;
       } else {
         meas.font = icFont(30, 400);
-        contentH += icWrap(meas, b.text, CW).length * 50 + 26;
+        contentH += icWrap(meas, b.text, CW).length * 56 + 26;
       }
     });
     /* 2) ارتفاع الشريحة يتكيف: مضغوط للمحتوى القصير، ومد للطويل (بدون فيض) */
@@ -2935,20 +3033,20 @@ function icBuildCard(spec) {
       if (yy > H - 170) return;
       if (b.type === 'h') {
         ctx.fillStyle = IC_COLORS.indigo; ctx.font = icFont(33, 900);
-        ctx.fillText(b.text, W - PAD, yy); yy += 33 + 31;
+        ctx.fillText(b.text, W - PAD, yy); yy += 33 + 42;
       } else if (b.type === 'b') {
         ctx.font = icFont(31, 400);
         const lines = icWrap(ctx, b.text, CW - 40);
         ctx.fillStyle = IC_COLORS.indigo;
         ctx.beginPath(); ctx.arc(W - PAD - 9, yy - 11, 9, 0, 7); ctx.fill();
         ctx.fillStyle = IC_COLORS.slate;
-        lines.forEach(ln => { ctx.fillText(ln, W - PAD - 38, yy); yy += 52; });
+        lines.forEach(ln => { ctx.fillText(ln, W - PAD - 38, yy); yy += 58; });
         yy += 28;
       } else {
         ctx.font = icFont(30, 400);
         const lines = icWrap(ctx, b.text, CW);
         ctx.fillStyle = IC_COLORS.slate;
-        lines.forEach(ln => { ctx.fillText(ln, W - PAD, yy); yy += 50; });
+        lines.forEach(ln => { ctx.fillText(ln, W - PAD, yy); yy += 56; });
         yy += 26;
       }
     });
@@ -3003,9 +3101,9 @@ function icBuildCard(spec) {
   const laid = []; let yy = HEADER + 70;
   (spec.blocks || []).forEach(b => {
     let e = null;
-    if (b.type === 'h') { meas.font = icFont(33, 900); const ls = icWrap(meas, b.text, CW); e = { lines: ls, font: icFont(33, 900), color: IC_COLORS.indigo, lh: 48, indent: 0, bullet: false }; yy += ls.length * 48 + 34; }
-    else if (b.type === 'b') { meas.font = icFont(30, 400); const ls = icWrap(meas, b.text, CW - 40); e = { lines: ls, font: icFont(30, 400), color: IC_COLORS.slate, lh: 50, indent: 38, bullet: true }; yy += ls.length * 50 + 24; }
-    else { meas.font = icFont(29, 400); const ls = icWrap(meas, b.text, CW); e = { lines: ls, font: icFont(29, 400), color: IC_COLORS.slate, lh: 48, indent: 0, bullet: false }; yy += ls.length * 48 + 22; }
+    if (b.type === 'h') { meas.font = icFont(33, 900); const ls = icWrap(meas, b.text, CW); e = { lines: ls, font: icFont(33, 900), color: IC_COLORS.indigo, lh: 56, indent: 0, bullet: false }; yy += ls.length * 56 + 34; }
+    else if (b.type === 'b') { meas.font = icFont(30, 400); const ls = icWrap(meas, b.text, CW - 40); e = { lines: ls, font: icFont(30, 400), color: IC_COLORS.slate, lh: 54, indent: 38, bullet: true }; yy += ls.length * 54 + 24; }
+    else { meas.font = icFont(29, 400); const ls = icWrap(meas, b.text, CW); e = { lines: ls, font: icFont(29, 400), color: IC_COLORS.slate, lh: 52, indent: 0, bullet: false }; yy += ls.length * 52 + 22; }
     e.y = yy; laid.push(e);
   });
   let chips = null;
@@ -3435,8 +3533,8 @@ function buildPaperPages(data) {
       }
       if (b.type === 'h') {
         ctx.fillStyle = '#4338ca'; ctx.font = ppFont(30, 900);
-        icWrap(ctx, b.text, CW - 10).forEach(ln => { ctx.fillText(ln, W - PAD, y + 30, CW); y += 46; });
-        y += 30;
+        icWrap(ctx, b.text, CW - 10).forEach(ln => { ctx.fillText(ln, W - PAD, y + 30, CW); y += 52; });
+        y += 34;
         ctx.strokeStyle = '#c7d2fe'; ctx.lineWidth = 2;
         ctx.beginPath(); ctx.moveTo(W - PAD, y - 16); ctx.lineTo(W - PAD - 130, y - 16); ctx.stroke();
         return;
@@ -3447,13 +3545,13 @@ function buildPaperPages(data) {
         ctx.fillStyle = '#4f46e5';
         ctx.beginPath(); ctx.arc(W - PAD - 8, y + 28, 8, 0, 7); ctx.fill();
         ctx.fillStyle = '#334155';
-        lines.forEach(ln => { ctx.fillText(ln, W - PAD - 34, y + 38, CW - 34); y += 42; });
+        lines.forEach(ln => { ctx.fillText(ln, W - PAD - 34, y + 38, CW - 34); y += 48; });
         y += 16;
         return;
       }
       ctx.font = ppFont(25, 400);
       ctx.fillStyle = '#334155';
-      icWrap(ctx, b.text, CW).forEach(ln => { ctx.fillText(ln, W - PAD, y + 34, CW); y += 41; });
+      icWrap(ctx, b.text, CW).forEach(ln => { ctx.fillText(ln, W - PAD, y + 34, CW); y += 46; });
       y += 16;
     });
     /* 4) التذييل */
@@ -3463,7 +3561,7 @@ function buildPaperPages(data) {
     ctx.fillStyle = '#64748b'; ctx.font = ppFont(22, 700);
     ctx.fillText('منصة خُلاصة (khulasa) — تطوير Ziad Ashraf', W - PAD, H - 44);
     ctx.direction = 'ltr'; ctx.textAlign = 'left';
-    ctx.fillText('+20 109 971 3432', PAD, H - 44);
+    ctx.fillText('Instagram @ziaadd_1', PAD, H - 44);
     ctx.direction = 'rtl'; ctx.textAlign = 'center';
     ctx.font = ppFont(19, 700); ctx.fillStyle = '#94a3b8';
     ctx.fillText('صفحة ' + (pi + 1) + ' من ' + total, W / 2, H - 44);
@@ -3520,16 +3618,16 @@ function generateSummary(withToast) {
   const levelNames = { quick: '⚡ ملخص سريع', points: '🔑 نقاط رئيسية', detailed: '📚 شرح تفصيلي' };
   let body = '';
   if (s4Level === 'quick') {
-    body = '<p class="text-[15px] leading-loose">' + result.picked.map(p => esc(p.s)).join(' ') + '</p>';
+    body = '<p class="text-[15px] leading-[2.2]">' + result.picked.map(p => esc(p.s)).join(' ') + '</p>';
   } else if (s4Level === 'points') {
-    body = '<ul class="space-y-2.5">' + result.picked.map(p =>
-      '<li class="flex gap-2.5 items-start"><span class="mt-1.5 w-2 h-2 rounded-full bg-indigo-500 shrink-0"></span><span>' + esc(p.s) + '</span></li>').join('') + '</ul>';
+    body = '<ul class="space-y-3">' + result.picked.map(p =>
+      '<li class="flex gap-2.5 items-start"><span class="mt-2 w-2 h-2 rounded-full bg-indigo-500 shrink-0"></span><span class="leading-[2.1]">' + esc(p.s) + '</span></li>').join('') + '</ul>';
   } else {
     const half = Math.ceil(result.picked.length / 2);
-    body = '<div class="space-y-3 leading-loose">' +
+    body = '<div class="space-y-3.5 leading-[2.1]">' +
       '<p>' + result.picked.slice(0, half).map(p => esc(p.s)).join(' ') + '</p>' +
       '<p>' + result.picked.slice(half).map(p => esc(p.s)).join(' ') + '</p>' +
-      '<div class="mt-4 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 p-4"><h4 class="font-black text-sm mb-2 text-indigo-700 dark:text-indigo-300">🔑 أهم ما يجب فهمه:</h4><ul class="space-y-1.5 text-[13.5px]">' +
+      '<div class="mt-4 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 p-4"><h4 class="font-black text-sm mb-2 text-indigo-700 dark:text-indigo-300">🔑 أهم ما يجب فهمه:</h4><ul class="space-y-2 text-[13.5px] leading-[2]">' +
       result.keywords.slice(0, 5).map(k => '<li>• <b>' + esc(k.word) + '</b> — وردت ' + k.count + ' مرة في النص</li>').join('') + '</ul></div></div>';
   }
   const kwsHtml = kws.map(k => '<span class="chip bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-300">#' + esc(k.word) + '</span>').join(' ');
@@ -3568,7 +3666,10 @@ function renderMap() {
   const box = $('#s4-map');
   if (!s4MapData) return;
   /* على الموبايل: الـ SVG بله عرض أدنى مع سحب أفقي — عشان النص يفضل مقروء */
-  if (s4MapStyle === 'tree') box.innerHTML = '<div class="overflow-x-auto"><div style="min-width:900px">' + renderMapTree(s4MapData) + '</div></div>';
+  if (s4MapStyle === 'tree') {
+    box.innerHTML = '<div class="overflow-x-auto"><div data-map-holder style="min-width:900px">' + renderMapTree(s4MapData) + '</div></div>';
+    refineMapTree(box); /* تدقيق بالقياس الحقيقي بعد الرسم — يمنع أي فيض/تداخل */
+  }
   else box.innerHTML = renderMapGrid(s4MapData);
   $('#s4-map-dl').disabled = false;
   const st = $('#s4-map-stats');
@@ -3718,21 +3819,21 @@ function buildFlashcardPages(cards) {
       const y = top + (chh + gy) * row;
       ctx.fillStyle = '#ffffff'; icRoundRect(ctx, x, y, cw, chh, 16); ctx.fill();
       ctx.strokeStyle = '#c7d2fe'; ctx.lineWidth = 2; icRoundRect(ctx, x, y, cw, chh, 16); ctx.stroke();
-      let qy = y + 36;
+      let qy = y + 38;
       ctx.direction = 'rtl'; ctx.textAlign = 'right';
       ctx.fillStyle = '#4338ca'; ctx.font = ppFont(19, 900);
       ctx.fillText('س' + (pi * perPage + i + 1) + '.', x + cw - 18, qy, cw - 36);
       ctx.fillStyle = '#0f172a'; ctx.font = ppFont(20, 700);
-      icWrap(ctx, card.q, cw - 44).slice(0, 3).forEach(ln => { qy += 29; ctx.fillText(ln, x + cw - 18, qy, cw - 36); });
+      icWrap(ctx, card.q, cw - 44).slice(0, 3).forEach(ln => { qy += 36; ctx.fillText(ln, x + cw - 18, qy, cw - 36); });
       const dy = y + chh / 2;
       ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1.5; ctx.setLineDash([7, 6]);
       ctx.beginPath(); ctx.moveTo(x + 12, dy); ctx.lineTo(x + cw - 12, dy); ctx.stroke();
       ctx.setLineDash([]);
-      let ay = dy + 28;
+      let ay = dy + 30;
       ctx.fillStyle = '#059669'; ctx.font = ppFont(17, 900);
       ctx.fillText('الإجابة:', x + cw - 18, ay, cw - 36);
       ctx.fillStyle = '#1f2937'; ctx.font = ppFont(19, 400);
-      icWrap(ctx, card.a, cw - 44).slice(0, 3).forEach(ln => { ay += 27; ctx.fillText(ln, x + cw - 18, ay, cw - 36); });
+      icWrap(ctx, card.a, cw - 44).slice(0, 3).forEach(ln => { ay += 34; ctx.fillText(ln, x + cw - 18, ay, cw - 36); });
     });
     ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(PAD, H - 84); ctx.lineTo(W - PAD, H - 84); ctx.stroke();
@@ -3740,7 +3841,7 @@ function buildFlashcardPages(cards) {
     ctx.fillStyle = '#64748b'; ctx.font = ppFont(20, 700);
     ctx.fillText('منصة خُلاصة (khulasa) — تطوير Ziad Ashraf', W - PAD, H - 46);
     ctx.direction = 'ltr'; ctx.textAlign = 'left';
-    ctx.fillText('+20 109 971 3432', PAD, H - 46);
+    ctx.fillText('Instagram @ziaadd_1', PAD, H - 46);
     pages.push(c);
   }
   return pages;
@@ -3784,11 +3885,12 @@ function setupQuiz() {
   $('#s5-generate').addEventListener('click', () => {
     const text = $('#s5-text').value.trim();
     if (countWords(text) < 25) { toast('النص قصير جداً — أضف نصاً أطول (25 كلمة على الأقل)', 'warn'); return; }
-    startExam(genQuiz(text, {
-      mcq: clampInt('#s5-mcq', 0, 15, 5),
-      tf: clampInt('#s5-tf', 0, 10, 3),
-      written: clampInt('#s5-written', 0, 5, 2)
-    }), clampInt('#s5-time', 1, 180, 10), $('#s5-instant').value === '1');
+    const cfg = { mcq: clampInt('#s5-mcq', 0, 15, 5), tf: clampInt('#s5-tf', 0, 10, 3), written: clampInt('#s5-written', 0, 5, 2) };
+    const qs = genQuiz(text, cfg);
+    const wanted = cfg.mcq + cfg.tf + cfg.written;
+    if (qs.length && qs.length < wanted)
+      toast('النص أمدّنا بـ ' + qs.length + ' سؤال من أصل ' + wanted + ' — نص أطول وأغنى هيطلع أسئلة أكتر وأعمق', 'info', 6000);
+    startExam(qs, clampInt('#s5-time', 1, 180, 10), $('#s5-instant').value === '1');
   });
   $('#s5-submit').addEventListener('click', submitExam);
   $('#s5-exit').addEventListener('click', () => {
@@ -3809,54 +3911,240 @@ function clampInt(sel, min, max, dflt) {
   return Math.max(min, Math.min(max, v));
 }
 function shuffle(arr) { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
-function genQuiz(text, cfg) {
-  const sents = splitSentences(text).filter(s => countWords(s) >= 4 && countWords(s) <= 30).slice(0, 40);
-  const kws = topKeywords(text, 30).map(k => k.word);
-  const questions = [];
-  const used = new Set();
-  const pickSent = f => { const c = sents.filter(s => !used.has(s) && f(s)); return c.length ? c[Math.floor(Math.random() * c.length)] : null; };
-  for (let i = 0; i < cfg.mcq && kws.length >= 4; i++) {
-    const s = pickSent(s2 => kws.some(k => s2.includes(k)));
-    if (!s) break;
-    const kw = kws.filter(k => s.includes(k)).sort((a, b) => b.length - a.length)[0];
-    if (!kw) continue;
-    used.add(s);
-    const distract = shuffle(kws.filter(k => k !== kw)).slice(0, 3);
-    const options = shuffle([kw, ...distract]);
-    questions.push({
-      type: 'mcq', q: 'أكمل الفراغ: ' + s.replace(kw, '......'), options,
-      answer: options.indexOf(kw), explain: 'الجملة الأصلية: ' + s, source: s
-    });
+/* =========================================================
+   🎯 مولّد الأسئلة الذكي — أسئلة ليها معنى مش فراغات عشوائية:
+   بنستخرج «بنك معرفة» من النص (تعريفات، أدوار ووظايف، قوائم،
+   أرقام، تعليلات) ونبني منه أسئلة بمموهات حقيقية من نفس النص،
+   وأسئلة صح/خطأ بعكس النفي أو تبديل المتضادات، ومقالية بصيغة «علّل».
+   ========================================================= */
+const AR_ANT = [['كبيرة','صغيرة'],['كبير','صغير'],['كثيرة','قليلة'],['كثير','قليل'],['يزيد','ينقص'],['تزيد','تنقص'],['زيادة','نقص'],['أعلى','أدنى'],['علوي','سفلي'],['سريعة','بطيئة'],['سريع','بطيء'],['ساخنة','باردة'],['ساخن','بارد'],['الأول','الأخير'],['الأولى','الأخيرة'],['داخلي','خارجي'],['الداخل','الخارج'],['مؤقتة','دائمة'],['مؤقت','دائم'],['إيجابية','سلبية'],['إيجابي','سلبي'],['موجب','سالب'],['طبيعية','صناعية'],['طبيعي','صناعي'],['سهلة','صعبة'],['سهل','صعب'],['قوية','ضعيفة'],['قوي','ضعيف'],['نافع','ضار'],['نافعة','ضارة'],['يبدأ','ينتهي'],['تبدأ','تنتهي'],['أرخص','أغلى'],['بناء','هدم'],['مباشرة','غير مباشرة'],['حيوية','موتية'],['كاملة','ناقصة'],['عام','خاص'],['عامة','خاصة']];
+function normArW(w) {
+  return String(w || '').replace(/[\u064B-\u0652\u0640]/g, '')
+    .replace(/[،.؛:!؟()\[\]«»"'\-]/g, '')
+    .replace(/^(?:وال|بال|كال|فال|ال)/, '').trim();
+}
+/* تنظيف خيار: شيل علامات الترقيم + حرف العطف الملتصق قبل «ال» التعريف */
+function cleanOpt(w) {
+  let s = String(w || '').replace(/[،.؛:!؟()\[\]«»"']/g, '').trim();
+  s = s.replace(/^(?:و|ف)(?=ال[\u0621-\u064A]{3,})/, '');
+  return s.trim();
+}
+function bareLead(s) { return String(s || '').trim().replace(/^(?:و|ف)(?=[\u0621-\u064A]{3})/, '').trim(); }
+function okOpt(w) { const s = normArW(w); return s.length >= 3 && !AR_STOP.has(s) && !/^\d+$/.test(s); }
+/* اختيار مموهات محترمة: كلمات كاملة من النص، قريبة في الطول من الإجابة،
+   مش جزء من الإجابة ولا شبه بعض — عشان السؤال يبقى سؤال حقيقي */
+function pickDistract(correct, pool, n) {
+  const c = normArW(correct);
+  const cands = shuffle(pool || []).map(o => cleanOpt(o)).filter(o => {
+    const on = normArW(o);
+    if (!on || !okOpt(o) || on === c) return false;
+    if (/^[وف]/.test(on)) return false; /* مموهات نظيفة بس — كلمات بادئة بالواو/الفاء بتلبس */
+    if (on.length >= 4 && c.length >= 4 && (on.includes(c) || c.includes(on))) return false;
+    return true;
+  });
+  cands.sort((a, b) => Math.abs(normArW(a).length - c.length) - Math.abs(normArW(b).length - c.length));
+  const out = [], seen = new Set();
+  for (const o of cands) {
+    const k = normArW(o);
+    if (seen.has(k)) continue;
+    seen.add(k); out.push(o);
+    if (out.length >= n) break;
   }
-  for (let i = 0; i < cfg.tf && sents.length; i++) {
-    const s = pickSent(s2 => kws.some(k => s2.includes(k)) || true);
-    if (!s) break;
-    used.add(s);
-    if (Math.random() < 0.5) {
-      questions.push({ type: 'tf', q: s, answer: 1, explain: 'عبارة صحيحة واردة في النص كما هي.', source: s });
-    } else {
-      const kw = kws.filter(k => s.includes(k))[0];
-      const fake = kws.filter(k => !s.includes(k) && k !== kw)[Math.floor(Math.random() * Math.max(1, kws.length - 1))];
-      if (kw && fake) {
-        const wrong = s.replace(kw, fake);
-        questions.push({ type: 'tf', q: wrong, answer: 0, explain: 'العبارة صُحّفت خطأً — الأصل: ' + s, source: s });
-      } else {
-        questions.push({ type: 'tf', q: s, answer: 1, explain: 'عبارة صحيحة واردة في النص.', source: s });
-      }
+  return out;
+}
+const FN_VERBS = 'يمتص|تمتص|يطلق|تطلق|ينتج|تنتج|يستخدم|تستخدم|يتم|تتم|يحدث|تحدث|يعمل|تعمل|يؤدي|تؤدي|يتحول|تحوّل|تحول|تخزن|يخزن|تبدأ|يمثل|تمثل|يوفر|توفّر|توفر';
+function buildKnowledge(text) {
+  const sents = splitSentences(text).map(s => s.replace(/\s+/g, ' ').trim())
+    .filter(s => countWords(s) >= 5 && countWords(s) <= 45);
+  const K = { sents, defs: [], funcs: [], lists: [], nums: [], causes: [], kws: topKeywords(text, 40).map(k => k.word) };
+  const fnRe = new RegExp('^(.{3,50}?)\\s+(' + FN_VERBS + ')\\s+(.{6,})$');
+  sents.forEach(s => {
+    let m;
+    /* تعريف: «X هو/هي Y» أو سطر «عنوان: شرح» */
+    if ((m = s.match(/^(.{3,50}?)\s+(?:هو|هي|هى)\s+(.{10,})$/)) && countWords(m[1]) <= 6)
+      K.defs.push({ subj: m[1].trim(), def: m[2].trim().replace(/[.،؛]$/, ''), s });
+    else if ((m = s.match(/^(.{3,40})\s*[:：]\s*(.{10,})$/)) && countWords(m[1]) <= 6)
+      K.defs.push({ subj: m[1].trim(), def: m[2].trim().replace(/[.،؛]$/, ''), s });
+    /* وظيفة/دور: «الفاعل + فعل + الباقي» — السؤال بيتكتب من نفس كلمات النص فبيفضل سليم نحوياً */
+    if ((m = s.match(fnRe)) && countWords(m[1]) <= 8) {
+      const subj = m[1].trim();
+      K.funcs.push({ q: 'حسب النص، ماذا ' + m[2].trim() + ' ' + subj + '؟', correct: trimWords(m[3].replace(/[.،؛]$/, ''), 10), s });
+    }
+    /* قائمة أمثلة: «مثل أ و ب و ج» */
+    const lm = s.match(/(?:مثل|ومثل)\s+([^،.:؛!؟]{6,90})/);
+    if (lm && lm.index >= 4) {
+      const items = lm[1].split(/\s+و(?=[\u0621-\u064A]{3,})/).map(cleanOpt).filter(okOpt);
+      if (items.length >= 2) K.lists.push({ lead: trimWords(s.slice(0, lm.index).trim(), 12), items, s });
+    }
+    /* أرقام ونِسب */
+    const nm = s.match(/(\d+(?:[.,]\d+)?\s*%?|[٠-٩]+(?:[.,][٠-٩]+)?\s*٪?)/);
+    if (nm) K.nums.push({ s, num: nm[1].trim() });
+    /* تعليل: «... لأن ...» */
+    if ((m = s.match(/^(.{10,90}?)\s*(?:لأن|لأنه|لأنها|بسبب|بما أن)\s+(.{8,})$/)))
+      K.causes.push({ claim: m[1].trim().replace(/[،:]$/, ''), reason: m[2].trim(), s });
+  });
+  return K;
+}
+/* بناء عبارة خطأ مفهومة لع صح/خطأ: عكس النفي أو تبديل المتضاد أو تبديل كلمة */
+function corruptSentence(s, kws) {
+  const neg = s.match(/\s(لا|ليس|ليست|لم|لن)\s/);
+  if (neg) {
+    const wrong = s.replace(neg[0], ' ').replace(/\s{2,}/g, ' ').trim();
+    if (countWords(wrong) >= 5) return { type: 'tf', q: wrong, answer: 0, explain: 'العبارة معكوسة — الأصل: «' + trimWords(s, 30) + '»', source: s };
+  }
+  if (Math.random() < 0.7) {
+    const vm = s.match(/\s((?:ي|ت)[\u0621-\u064A]{2,})\s/);
+    if (vm) {
+      const wrong = s.replace(vm[0], ' لا ' + vm[1] + ' ').replace(/\s{2,}/g, ' ');
+      return { type: 'tf', q: wrong, answer: 0, explain: 'العبارة معكوسة — الأصل: «' + trimWords(s, 30) + '»', source: s };
     }
   }
-  for (let i = 0; i < cfg.written; i++) {
-    const s = pickSent(s2 => countWords(s2) >= 6);
-    if (!s) break;
-    used.add(s);
-    const kwsOf = [...new Set(arWords(s).filter(w => w.length > 2 && !AR_STOP.has(w)))].slice(0, 6);
-    questions.push({
-      type: 'written',
-      q: 'اشرح بالتفصيل ما ورد في العبارة التالية: «' + trimWords(s, 18) + '»',
-      answer: s, explain: s, kws: kwsOf, source: s
+  for (const pair of AR_ANT) {
+    if (new RegExp('\\s' + pair[0] + '\\s').test(s)) {
+      const wrong = s.replace(new RegExp('\\s' + pair[0] + '\\s'), ' ' + pair[1] + ' ');
+      return { type: 'tf', q: wrong, answer: 0, explain: '«' + pair[0] + '» اتبدلت بعكسها «' + pair[1] + '» — الأصل: «' + trimWords(s, 30) + '»', source: s };
+    }
+  }
+  const inS = kws.filter(k => s.includes(k) && cleanOpt(k) === k && k.length >= 5);
+  const outS = kws.filter(k => !s.includes(k) && cleanOpt(k) === k && k.length >= 5);
+  if (inS.length && outS.length) {
+    const a = inS[0], b = outS[Math.floor(Math.random() * outS.length)];
+    return { type: 'tf', q: s.replace(a, b), answer: 0, explain: 'فيه تبديل في العبارة — الأصل: «' + trimWords(s, 30) + '»', source: s };
+  }
+  return null;
+}
+function kwsOf(txt) {
+  return [...new Set(arWords(txt).filter(w => w.length > 3 && !AR_STOP.has(w)))].slice(0, 6);
+}
+function genQuiz(text, cfg) {
+  const K = buildKnowledge(formatTextAr(text));
+  const questions = [];
+  const used = new Set();
+  const srcUsed = s => used.has(s);
+  const mkMcq = (q, correctTxt, pool, src, explain) => {
+    const ds = pickDistract(correctTxt, pool, 3);
+    if (ds.length < 3) return null;
+    const options = shuffle([correctTxt].concat(ds));
+    return { type: 'mcq', q, options, answer: options.indexOf(correctTxt), explain, source: src };
+  };
+  /* مرشحين MCQ من كل الأنماط — بنلف عليهم بالتناوب عشان الامتحان متنوع */
+  const cand = { def: [], fn: [], list: [], num: [] };
+  K.defs.forEach(d => {
+    const c = bareLead(trimWords(d.def, 9));
+    const q = mkMcq('ما المقصود بـ «' + d.subj + '» كما ورد في النص؟', c,
+      K.defs.filter(o => o !== d).map(o => bareLead(trimWords(o.def, 9))), d.s,
+      'ورد في النص: «' + trimWords(d.s, 34) + '»');
+    if (q) cand.def.push(q);
+  });
+  K.funcs.forEach(f => {
+    const q = mkMcq(f.q, bareLead(f.correct),
+      K.funcs.filter(o => o !== f).map(o => bareLead(o.correct)), f.s,
+      'ورد في النص: «' + trimWords(f.s, 34) + '»');
+    if (q) cand.fn.push(q);
+  });
+  K.lists.forEach(L => {
+    const correctTxt = bareLead(L.items[Math.floor(Math.random() * L.items.length)]);
+    const q = mkMcq('حسب النص، أيٌّ مما يلي ذُكر ضمن: «' + L.lead + '»؟', correctTxt,
+      K.kws.filter(k => !normArW(L.s).includes(normArW(k))), L.s,
+      'ورد في النص: «' + trimWords(L.s, 34) + '»');
+    if (q) cand.list.push(q);
+  });
+  K.nums.forEach(N => {
+    const num = N.num;
+    const plain = num.replace(/%/g, '').replace(/٪/g, '').replace(/,/g, '.');
+    const val = parseFloat(plain.replace(/[٠-٩]/g, d => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))));
+    if (isNaN(val)) return;
+    const pct = /[%٪]/.test(num);
+    const fmt = v => (pct ? (Math.round(v * 10) / 10) + '%' : String(Math.round(v * 10) / 10));
+    const raws = [val + Math.max(2, Math.round(val * 0.35)), Math.max(pct ? 1 : 2, Math.round(val / 2)), val * 2, Math.max(1, val - Math.round(val * 0.25))];
+    const ds = [...new Set(raws.map(fmt))].filter(x => x !== fmt(val)).slice(0, 3);
+    if (ds.length < 3) return;
+    const options = shuffle([fmt(val)].concat(ds));
+    cand.num.push({ type: 'mcq', q: 'حسب النص، ما القيمة الصحيحة مكان الفراغ: «' + N.s.replace(num, '……') + '»', options, answer: options.indexOf(fmt(val)), explain: 'الجملة الأصلية: «' + trimWords(N.s, 34) + '»', source: N.s });
+  });
+  const pools = [cand.def, cand.fn, cand.list, cand.num];
+  for (let round = 0; round < 60 && questions.length < cfg.mcq; round++) {
+    let added = false;
+    pools.forEach(p => {
+      if (questions.length >= cfg.mcq || !p.length) return;
+      const q = p.shift();
+      if (srcUsed(q.source)) return;
+      used.add(q.source); questions.push(q); added = true;
+    });
+    if (!added) break;
+  }
+  /* كمل الناقص بأسئلة «اختر الكلمة الأنسب» عالية الجودة: كلمة محتوى واضحة + مموهات محترمة */
+  if (questions.length < cfg.mcq) {
+    shuffle(K.sents.filter(s => !srcUsed(s) && countWords(s) >= 8)).forEach(s => {
+      if (questions.length >= cfg.mcq) return;
+      const words = s.split(/\s+/);
+      const cands = words.map((w, i) => ({ w: cleanOpt(w), i }))
+        .filter(x => okOpt(x.w) && x.w.length >= 5 && !/^(?:و|ف|ب|ل|ك)/.test(x.w) && words.filter(v => normArW(v) === normArW(x.w)).length === 1);
+      if (!cands.length) return;
+      const pick = cands[Math.floor(Math.random() * cands.length)];
+      const ns = normArW(s);
+      const ds = pickDistract(pick.w, K.kws.filter(k => !ns.includes(normArW(k))), 3);
+      if (ds.length < 3) return;
+      const options = shuffle([pick.w].concat(ds));
+      const qTxt = words.map((w, i) => i === pick.i ? '……' : w).join(' ');
+      used.add(s);
+      questions.push({ type: 'mcq', q: 'اختر الكلمة الأنسب مكان الفراغ: «' + qTxt + '»', options, answer: options.indexOf(pick.w), explain: 'الجملة الأصلية: «' + trimWords(s, 34) + '»', source: s });
     });
   }
-  return questions;
+  /* صح/خطأ: عبارات صحيحة من النص + عبارات خطأ اتعكست أو اتبدلت
+     (بنفضل الجمل اللي ما اتعملش منها MCQ — ولو النص قصير بنسمح بإعادة الاستخدام
+     لأن سؤال صح/خطأ على نفس الجملة سؤال مختلف خالص عن MCQ) */
+  const falses = [], trues = [];
+  const tfPool = shuffle(K.sents.filter(s => countWords(s) >= 6 && countWords(s) <= 32))
+    .sort((a, b) => (srcUsed(a) ? 1 : 0) - (srcUsed(b) ? 1 : 0));
+  tfPool.forEach(s => {
+    if (falses.length >= Math.ceil(cfg.tf * 0.7) + 2) {
+      if (trues.length < cfg.tf + 2) trues.push({ type: 'tf', q: trimWords(s, 26), answer: 1, explain: 'عبارة صحيحة واردة في النص كما هي.', source: s });
+      return;
+    }
+    const f = corruptSentence(s, K.kws);
+    if (f) falses.push(f);
+    else if (trues.length < cfg.tf + 2) trues.push({ type: 'tf', q: trimWords(s, 26), answer: 1, explain: 'عبارة صحيحة واردة في النص كما هي.', source: s });
+  });
+  let wantFalse = Math.random() < 0.6;
+  for (let i = 0; i < cfg.tf; i++) {
+    let q = null;
+    if (wantFalse && falses.length) q = falses.shift();
+    else if (trues.length) q = trues.shift();
+    else if (falses.length) q = falses.shift();
+    if (!q) break;
+    used.add(q.source);
+    questions.push(q);
+    wantFalse = !wantFalse;
+  }
+  /* مقالية: «علّل» من تعليلات النص → تعريفات → شرح جمل كثيفة الكلمات المفتاحية
+     (بنفضل غير المستخدمة في MCQ — ولو النص قصير بنسمح بإعادة الاستخدام
+     لأن سؤال مقالي على نفس الجملة سؤال مختلف خالص) */
+  const written = [];
+  const byPref = arr => shuffle(arr).sort((a, b) => (srcUsed(a.s) ? 1 : 0) - (srcUsed(b.s) ? 1 : 0));
+  byPref(K.causes).forEach(c => {
+    if (written.length >= cfg.written) return;
+    written.push({ type: 'written', q: 'علّل: ' + c.claim + '؟', answer: 'لأن ' + c.reason, explain: trimWords(c.s, 34), kws: kwsOf(c.reason), source: c.s });
+  });
+  byPref(K.defs).forEach(d => {
+    if (written.length >= cfg.written) return;
+    written.push({ type: 'written', q: 'عرّف «' + d.subj + '» بأسلوبك موضحاً دوره في السياق.', answer: d.def, explain: trimWords(d.s, 34), kws: kwsOf(d.def), source: d.s });
+  });
+  byPref(K.sents.filter(s => countWords(s) >= 10)).forEach(s => {
+    if (written.length >= cfg.written) return;
+    written.push({ type: 'written', q: 'اشرح بأسلوبك ما ورد في النص في العبارة: «' + trimWords(s, 16) + '»', answer: s, explain: trimWords(s, 34), kws: kwsOf(s), source: s });
+  });
+  questions.push(...written);
+  /* فحص جودة نهائي: مفيش سؤال من غير مضمون، ومفيش مموهتين شبه بعض */
+  return questions.filter(q => {
+    if (q.type === 'mcq') {
+      if (!q.options || q.options.length !== 4 || q.answer < 0 || q.answer > 3) return false;
+      const ns = q.options.map(normArW);
+      if (new Set(ns).size !== 4) return false;
+      return ns.every(x => x.length >= 2);
+    }
+    return !!q.q && String(q.q).length > 8;
+  });
 }
 function startExam(questions, minutes, instant) {
   if (!questions.length) { toast('لم نتمكن من توليد أسئلة — جرب نصاً أطول وأوضح', 'warn'); return; }
@@ -4699,30 +4987,289 @@ function setupLectures() {
 }
 
 /* =========================================================
+   🤖 مساعد خلاصة — شات بوت ذكي 100% محلي (بدون أي إنترنت):
+   • بينفّذ أوامر حقيقية: «لخّص» / «اعمللي اختبار» / «خريطة» / «ورقة تلخيص» / «فلاش كاردز»
+   • بيجاوب على أسئلتك من النص اللي رفعته (بحث ذكي جوّه الجُمل)
+   • بيحسب، بيعدّ الكلمات، وبيرشدك لأي قسم في المنصة
+   ========================================================= */
+const CHAT_STORE = 'khulasa_chat_v1';
+let chatOpen = false, chatMsgs = [];
+function chatNorm(t) {
+  return String(t || '').replace(/[\u064B-\u0652\u0640]/g, '')
+    .replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/ؤ/g, 'و').replace(/ئ/g, 'ي').replace(/ة/g, 'ه')
+    .replace(/[،.؛:!؟()"'\-]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+}
+function chatBestText() {
+  const cands = [['#s4-text', 'محرك الملخصات'], ['#s2-text', 'قارئ PDF'], ['#s1-text', 'التفريغ الصوتي'], ['#s6-text', 'المعالجة السحرية'], ['#s5-text', 'وضع الاختبارات']];
+  let best = '', label = '';
+  cands.forEach(c => {
+    const v = $(c[0]) ? $(c[0]).value.trim() : '';
+    if (countWords(v) > countWords(best)) { best = v; label = c[1]; }
+  });
+  return { text: best, label };
+}
+function chatSents() {
+  const t = chatBestText().text;
+  if (!t || countWords(t) < 12) return [];
+  return splitSentences(formatTextAr(t)).filter(s => countWords(s) >= 4);
+}
+/* بحث ذكي جوّه نص المستخدم: تطبيع عربي + تطابق كلمات السؤال مع كل جملة */
+function chatFindAnswer(q) {
+  const qs = chatNorm(q).split(' ').filter(w => w.length > 2 && !AR_STOP.has(w));
+  if (!qs.length) return null;
+  const sents = chatSents();
+  if (!sents.length) return null;
+  let best = null, bestScore = 0;
+  sents.forEach(s => {
+    const ns = ' ' + chatNorm(s) + ' ';
+    let hits = 0;
+    qs.forEach(w => {
+      const w2 = w.replace(/^ال/, '');
+      if (ns.includes(' ' + w + ' ') || ns.includes(' ' + w2 + ' ') || (w2.length >= 4 && ns.includes(w2))) hits++;
+    });
+    const score = hits / qs.length;
+    if (score > bestScore) { bestScore = score; best = s; }
+  });
+  return (best && bestScore >= 0.5) ? { sent: best, score: bestScore } : null;
+}
+const CHAT_FAQ = [
+  { k: ['ادمج', 'دمج'], a: 'دمج PDF: افتح «أدوات PDF» ← «دمج ملفات» ← اختار الملفات بالترتيب اللي يعجبك ← «دمج الآن» — هيطلع لك ملف واحد جامع الكل 📎' },
+  { k: ['قسم', 'اقسم', 'تقسيم'], a: 'تقسيم PDF: «أدوات PDF» ← «تقسيم» ← اكتب الصفحات زي ما تحب (مثال: 1-3 أو 5, 8-10) ← كل مجموعة تنزل في ملف مستقل 📄' },
+  { k: ['ضغط'], a: 'ضغط PDF: «أدوات PDF» ← «ضغط» ← ارفع الملف ← ينزل لك نسخة أخف مع الحفاظ على الجودة 🗜️' },
+  { k: ['سجل', 'تسجيل', 'صوتي', 'تفريغ'], a: 'التفريغ الصوتي: قسم «التفريغ» ← سجّل مباشرة 🎙️ أو ارفع تسجيل ← النص بيتكتب تلقائي ← وبعدين «إرسال إلى التلخيص» أو «إرسال إلى الاختبارات» بضغطة واحدة' },
+  { k: ['حفظ', 'تصدير', 'نزل', 'انزل', 'تحميل'], a: 'كل قسم فيه مركز حفظ خاص بيه: PDF 📕 / Word 📄 / صور PNG 🖼️ / نص 💾 / نسخ / طباعة — وفي الملخص كمان «ورقة تلخيص A4» وبطاقات صور جاهزة للمذاكرة' },
+  { k: ['مكتبه', 'محاضر'], a: '«مكتبة المحاضرات» بتحفظ كل ملف رفعته تلقائياً مع نسخته الأصلية (PDF / صورة / صوت) — راجع النص، شغّل الصوت، نزّل الملف، أو لخّص واعمل اختبار بضغطة 📚' },
+  { k: ['بي دي اف', 'pdf', 'ارفع', 'رفع', 'ملف'], a: 'الرفع سهل: كل قسم (التفريغ / قارئ PDF / محرك الملخصات / الاختبارات / المعالجة السحرية) فيه منطقة رفع خاصة — اضغط عليها أو اسحب الملف عليها مباشرة، وبتدعم PDF وصور وتسجيلات ونصوص ✅' },
+  { k: ['حول', 'تحويل', 'صور'], a: 'التحويلات في «أدوات PDF»: تحويل PDF لصور PNG عالية الجودة، تحويل الصور لـ PDF، وتحويل PDF لـ Word قابل للتعديل 🔄' },
+  { k: ['ازاي', 'إزاي', 'استخدم', 'ابدا', 'بدايه', 'بداية'], a: 'الخطة السريعة: ① ارفع أي محتوى (صوت / PDF / صورة / نص) ② اضغط «توليد الملخص» — الخريطة الذهنية والفلاش كاردز بيجوا معاه ③ ولّد اختبار واختبر نفسك ④ صدّر اللي يعجبك. ولو مش عارف تبدأ منين قولّي «لخّص» وأنا أعمل كل حاجة 😄' }
+];
+function chatBotReply(raw) {
+  const t = chatNorm(raw);
+  const has = (...ws) => ws.some(w => t.includes(chatNorm(w)));
+  /* —تعريفات بالذات— */
+  if (/(^|\s)(مين|من)(\s|$).*(انت|انتي|اسمك)/.test(t) || t === 'مين انت' || has('من انت'))
+    return { text: 'أنا «مساعد خُلاصة» 🤖 — مساعد ذكي شغّال جوّه جهازك بالكامل (بدون إنترنت وبدون سيرفر): بنفّذ أوامرك في المنصة، وأجاوب على أسئلتك من النص اللي رفعته. والمنصة كلها من تطوير Ziad Ashraf 👨‍💻' };
+  if (has('مطور', 'مين عمل', 'صاحب المنصه', 'صاحب المنصة', 'زياد'))
+    return { text: 'منصة خلاصة من تصميم وتطوير Ziad Ashraf (زياد أشرف) — تابعوه على انستجرام: \u2066@ziaadd_1\u2069 📸' };
+  if (/(سلام|اهلا|هلا|ازيك|ازيكم|صباح|مساء الخير)/.test(t))
+    return { text: 'أهلاً بيك! 👋 أنا جاهز — ارفع محاضرة واسألني عنها، أو جرّب: «لخّص» / «اعمللي اختبار» / «إزاي أرفع PDF؟»' };
+  if (/(شكرا|تسلم|ممتاز|جميل|رائع)/.test(t))
+    return { text: 'تحت أمرك دايماً 🌟 لو محتاج أي حاجة تانية أنا هنا — جرّب كمان «ورقة تلخيص» أو «فلاش كاردز»' };
+  /* —أوامر تنفيذية— */
+  if ((/(^|\s)لخص/.test(t)) || (t.includes('ملخص') && /(اعمل|هات|جيب)/.test(t)) || t.includes('لخصه') || t.includes('لخصلي')) {
+    const bt = chatBestText();
+    if (countWords(bt.text) < 25)
+      return { text: 'مفيش نص كفاية عندي للحد الآن 😅 — ارفع PDF أو صورة أو الصق نصاً في أي قسم، وبعدين قولّي «لخّص» وهظبطه لك في ثانية.' };
+    $('#s4-text').value = bt.text;
+    $('#s4-text').dispatchEvent(new Event('input', { bubbles: true }));
+    switchSection('sec4');
+    generateSummary(false);
+    return { text: 'جهزت لك الملخص في «محرك الملخصات» ✓ (النص جاي من ' + bt.label + ')\nمستوياته: سريع ⚡ / نقاط رئيسية 🔑 / تفصيلي 📚 — والخريطة الذهنية والفلاش كاردز اتولدوا معاه.\nتحب ورقة A4 جاهزة للطباعة؟ قول «ورقة تلخيص» 📄' };
+  }
+  if (t.includes('اختبار') || t.includes('امتحان') || t.includes('اختبرني') || (t.includes('اسئله') && /(اعمل|جيب)/.test(t))) {
+    const bt = chatBestText();
+    if (countWords(bt.text) < 25)
+      return { text: 'محتاج نص أطول شوية الأول (25 كلمة على الأقل) 📚 — ارفع محاضرتك أو الصقها وقولّي تاني.' };
+    $('#s5-text').value = bt.text;
+    $('#s5-text').dispatchEvent(new Event('input', { bubbles: true }));
+    switchSection('sec5');
+    setTimeout(() => { try { $('#s5-generate').click(); } catch (e) {} }, 180);
+    return { text: 'ولّيت لك اختبار من نصك ✓ والأسئلة المرة دي ليها معنى فعلاً: تعريفات، وظايف، أرقام، وتعليلات من نفس النص 🎯\nتقدر تعدّل عدد الأسئلة والوقت من إعدادات الاختبار فوق.' };
+  }
+  if (t.includes('خريطه') || t.includes('خريطة')) {
+    const bt = chatBestText();
+    if (countWords(bt.text) >=25 && !$('#s4-output').dataset.done) {
+      $('#s4-text').value = bt.text;
+      $('#s4-text').dispatchEvent(new Event('input', { bubbles: true }));
+      generateSummary(false);
+    }
+    if (!s4MapData) return { text: 'الخريطة بتتولد مع الملخص 🧠 — ارفع نص أولاً (أو قولّي «لخّص») وهفتحهالك بعدها.' };
+    switchSection('sec4');
+    setTimeout(() => { const m = $('#s4-map'); if (m) m.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
+    return { text: 'فتحت لك الخريطة الذهنية 🧠 كل جُمل الملخص عليها كاملة وموزّعة على الفروع — جرّب كمان عرض «شجرة» أو «شبكة»، وحمّلها PNG بجودة كاملة من الزر اللي جنبها.' };
+  }
+  if (t.includes('ورقه') || t.includes('ورقة')) {
+    const bt = chatBestText();
+    if (countWords(bt.text) < 10) return { text: 'محتاج نص الأول 📄 — ارفع ملف أو الصقه وبعدين قول «ورقة تلخيص».' };
+    if (!$('#s4-output').dataset.done) {
+      $('#s4-text').value = bt.text;
+      $('#s4-text').dispatchEvent(new Event('input', { bubbles: true }));
+      generateSummary(false);
+    }
+    setTimeout(() => { try { openPaperSheet(); } catch (e) {} }, 150);
+    return { text: 'بجهز لك ورقة التلخيص — صفحة A4 أنيقة جاهزة للطباعة والحفظ PDF 📄✨' };
+  }
+  if (t.includes('فلاش') || t.includes('كروت') || t.includes('كارت')) {
+    const bt = chatBestText();
+    if (countWords(bt.text) < 12) return { text: 'الفلاش كاردز بتتبني من نصك 🎯 — ارفع المحاضرة الأول وبعدين قول «فلاش كاردز».' };
+    switchSection('sec4');
+    setTimeout(() => { try { fcGenerateFrom(formatTextAr(bt.text)); } catch (e) {} }, 180);
+    return { text: 'جهزت لك كروت المراجعة في «محرك الملخصات» 🎯 اضغط على الكارت يشقلب ويوريك الإجابة — وعلّم ✅ عرفتها أو ❌ راجعها لحد ما تخلص.' };
+  }
+  if (has('كام كلمه', 'كام كلمة', 'عدد كلمات', 'عدّ الكلمات', 'كلمات النص')) {
+    const bt = chatBestText();
+    if (!bt.text) return { text: 'مفيش نص محمّل حالياً — ارفع ملف أو الصق نص في أي قسم وأنا أعدّه لك 🔢' };
+    return { text: 'النص اللي عندك (' + bt.label + ') فيه ' + countWords(bt.text) + ' كلمة تقريباً 🔢' };
+  }
+  /* —حساب— */
+  let mq = '';
+  const rawS = String(raw).trim();
+  if (/^[\d\s+\-*/().^%×x÷،]+$/.test(rawS) && /\d/.test(rawS)) mq = rawS;
+  else if (/(يساوي|=|ناتج|احسب|كم\s)/.test(rawS)) {
+    const mm = rawS.match(/\d[\d\s+\-*/().^%×x÷،]*\d/);
+    if (mm) mq = mm[0];
+  }
+  if (mq) {
+    mq = mq.replace(/[×x]/g, '*').replace(/[÷]/g, '/').replace(/،/g, '.');
+    if (/\d/.test(mq) && /[+\-*/^]/.test(mq) && /^[\d\s+\-*/().^%.]+$/.test(mq.trim())) {
+      try {
+        const v = Function('"use strict";return(' + mq.replace(/\^/g, '**') + ')')();
+        if (typeof v === 'number' && isFinite(v)) return { text: 'النتيجة: ' + (Math.round(v * 10000) / 10000) + ' 🧮' };
+      } catch (e) {}
+    }
+  }
+  /* —سؤال من النص (أولوية قبل الأسئلة العامة)— */
+  const hit = chatFindAnswer(raw);
+  if (hit) {
+    const bt = chatBestText();
+    return { text: 'من النص اللي رفعته (' + bt.label + '):\n«' + trimWords(hit.sent, 45) + '»\n\nعايز تفاصيل أكتر؟ اسألني بكلمة تانية من الموضوع 😊' };
+  }
+  /* —أسئلة المنصة— */
+  for (const f of CHAT_FAQ) {
+    if (f.k.some(k => t.includes(chatNorm(k)))) return { text: f.a };
+  }
+  /* —ردود ذكية متنوعة لو مافهمتش— */
+  const fb = [
+    'مش متأكد إني فهمت قصدك 😅 — أنا شاطر في الحاجات دي:\n• «لخّص» — ملخص + خريطة ذهنية + فلاش كاردز\n• «اعمللي اختبار» — أسئلة حقيقية من نصك\n• اسألني عن أي معلومة جوّه النص اللي رفعته\n• أو اسألني: «إزاي أرفع PDF؟» / «إزاي أدمج ملفات؟»',
+    'قولها بشكل تاني وأنا هفهمك أكتر 🙂 — جرّب كمان: «ورقة تلخيص» أو «عدد كلمات النص» أو «إزاي أحوّل PDF لصور؟»',
+    'أنا بفهم كويس أوي في المحتوى بتاعك 🔍 — اكتب كلمة من الموضوع (مثلاً اسم مصطلح من المحاضرة) وأنا أجيبلك الجملة اللي فيه من النص.'
+  ];
+  return { text: fb[Math.floor(Math.random() * fb.length)] };
+}
+function chatSave() { try { lsSet(CHAT_STORE, chatMsgs.slice(-60)); } catch (e) {} }
+function chatRenderMsg(m) {
+  const box = $('#chat-msgs');
+  if (!box) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'flex flex-col ' + (m.role === 'user' ? 'items-end' : 'items-start');
+  wrap.innerHTML = '<div class="cmsg ' + (m.role === 'user' ? 'cuser' : 'cbot') + '">' + esc(m.text).replace(/\n/g, '<br>') + '</div>' +
+    '<div class="cmeta">' + new Date(m.t || Date.now()).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }) + '</div>';
+  box.appendChild(wrap);
+  box.scrollTop = box.scrollHeight;
+}
+function chatPush(role, text) {
+  const m = { role, text, t: Date.now() };
+  chatMsgs.push(m);
+  chatRenderMsg(m);
+  chatSave();
+}
+function chatTyping(on) {
+  let el = $('#chat-typing');
+  if (on) {
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'chat-typing'; el.className = 'chat-typing';
+      el.innerHTML = '<i></i><i></i><i></i>';
+      $('#chat-msgs').appendChild(el);
+    }
+    const box = $('#chat-msgs'); box.scrollTop = box.scrollHeight;
+  } else if (el) el.remove();
+}
+function chatChips() {
+  const box = $('#chat-chips');
+  if (!box) return;
+  const hasText = chatSents().length > 0;
+  const chips = hasText
+    ? ['✨ لخّص', '🎯 اعمللي اختبار', '🧠 خريطة ذهنية', '📄 ورقة تلخيص', '🔢 كام كلمة النص؟']
+    : ['🚀 إزاي أستخدم المنصة؟', '📕 إزاي أرفع PDF؟', '📎 إزاي أدمج ملفات PDF؟', '👨‍💻 مين عمل المنصة؟'];
+  box.innerHTML = '';
+  chips.forEach(c => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.textContent = c;
+    b.addEventListener('click', () => { $('#chat-input').value = c.replace(/^[^ ]+\s/, ''); chatSend(); });
+    box.appendChild(b);
+  });
+}
+function chatSend() {
+  const inp = $('#chat-input');
+  const v = inp.value.trim();
+  if (!v) return;
+  inp.value = ''; inp.style.height = 'auto';
+  chatPush('user', v);
+  chatTyping(true);
+  setTimeout(() => {
+    chatTyping(false);
+    let r;
+    try { r = chatBotReply(v); } catch (e) { console.error('chatBot', e); r = null; }
+    chatPush('bot', (r && r.text) || 'حصلت حاجة صغيرة عندي 😅 جرّب تاني');
+    chatChips();
+  }, 420 + Math.random() * 550);
+}
+function chatGreet() {
+  chatPush('bot', 'أهلاً بيك في خُلاصة! 🌟\nأنا مساعدك الذكي — شغّال جوّه جهازك 100% (بدون إنترنت):\n• ارفع أي محاضرة (PDF / صورة / صوت) وأنا هلخصها وأعملك منها اختبار\n• اسألني عن أي معلومة في النص اللي رفعته وهجيبلك جوابها\n• أو قول مباشرة: «لخّص» / «اعمللي اختبار» / «ورقة تلخيص»');
+}
+function setupChatbot() {
+  /* لو اتركّب قبل كده متكررش — عشان الشبكة الأمان ما تضغطش الأزرار مرتين */
+  if (window.__khChatReady) return;
+  try { chatMsgs = JSON.parse((window.localStorage && localStorage.getItem(LS_PREFIX + CHAT_STORE)) || '[]') || []; } catch (e) { chatMsgs = []; }
+  if (!Array.isArray(chatMsgs)) chatMsgs = [];
+  try { chatMsgs.slice(-60).forEach(m => chatRenderMsg(m)); } catch (e) {}
+  const openPanel = v => {
+    chatOpen = v;    $('#chat-panel').classList.toggle('hidden', !v);
+    $('#chat-panel').setAttribute('aria-hidden', String(!v));
+    if (v) {
+      $('#chat-dot').classList.add('hidden');
+      if (!chatMsgs.length) chatGreet();
+      chatChips();
+      setTimeout(() => { try { $('#chat-input').focus(); } catch (e) {} }, 100);
+    }
+  };
+  $('#chat-btn').addEventListener('click', () => openPanel(!chatOpen));
+  $('#chat-close').addEventListener('click', () => openPanel(false));
+  $('#chat-clear').addEventListener('click', () => {
+    chatMsgs = []; chatSave();
+    $('#chat-msgs').innerHTML = '';
+    chatGreet(); chatChips();
+    toast('تم مسح المحادثة 🗑️', 'info');
+  });
+  $('#chat-send').addEventListener('click', chatSend);
+  $('#chat-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); chatSend(); }
+  });
+  $('#chat-input').addEventListener('input', function () {
+    this.style.height = 'auto';
+    this.style.height = Math.min(110, this.scrollHeight) + 'px';
+  });
+  /* نقطة خضرا لما يكون فيه رد جديد والمحادثة مقفولة */
+  const origPush = chatRenderMsg;
+  chatRenderMsg = function (m) { origPush(m); if (!chatOpen) $('#chat-dot').classList.remove('hidden'); };
+  setTimeout(() => { $('#chat-dot').classList.remove('hidden'); }, 2500);
+  window.__khChatReady = true; /* اتركّب بنجاح */
+}
+/* شبكة أمان للشات بوت: لو أي خطأ غير متوقع في التهيئة (بيئة مقيدة، تخزين ممنوع...)
+   وقف init قبل ما يوصل للشات بوت — السطر ده بيركّبه لوحده بعد ثانية على أي حال */
+setTimeout(() => { if (!window.__khChatReady) { try { setupChatbot(); } catch (e) { console.error('chatbot-fallback', e); } } }, 1000);
+
+/* =========================================================
    التهيئة النهائية
    ========================================================= */
 function init() {
-  setupPdfWorker();
-  setupTheme();
-  setupNav();
-  globalAnchorGuard();
-  buildUploaders();
-  setupCommonButtons();
-  setupSaveHub();
-  setupRestrictedBanner();
-  setupRecorder();
-  setupSection2();
-  setupTools();
-  setupSummary();
-  setupFlashcards();
-  setupQuiz();
-  setupMagic();
-  setupExport();
-  setupDrafts();
-  setupImageSummarize();
-  setupImageCards();
-  setupLectures();
+  /* كل خطوة في شبكة أمان لوحدها — لو حاجة فشلت في بيئة معينة، الباقي كله
+     (ومنهم الشات بوت) بيفضل شغّال عادي بدون أي تأثير */
+  const steps = [
+    ['pdf', setupPdfWorker], ['theme', setupTheme], ['nav', setupNav],
+    ['guard', globalAnchorGuard], ['uploaders', buildUploaders],
+    ['common', setupCommonButtons], ['savehub', setupSaveHub],
+    ['banner', setupRestrictedBanner], ['recorder', setupRecorder],
+    ['sec2', setupSection2], ['tools', setupTools], ['summary', setupSummary],
+    ['cards', setupFlashcards], ['quiz', setupQuiz], ['magic', setupMagic],
+    ['export', setupExport], ['drafts', setupDrafts],
+    ['imgsum', setupImageSummarize], ['imgcards', setupImageCards],
+    ['lectures', setupLectures], ['chatbot', setupChatbot]
+  ];
+  steps.forEach(([name, fn]) => { try { fn(); } catch (e) { console.error('init:' + name, e); } });
   setTimeout(() => toast('أهلاً بك في منصة خلاصة 🌟 — تطوير Ziad Ashraf', 'success'), 600);
+  try { console.log('%ckhulasa v3.0', 'color:#6366f1;font-weight:bold', '— جاهزة 100% أوفلاين 🤖 شات بوت + إصلاحات كاملة — تطوير Ziad Ashraf (@ziaadd_1)'); } catch (e) {}
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
 else init();
