@@ -675,6 +675,8 @@ html.dark #chat-chips button{background:#1c2749;color:#a5b4fc;border-color:#312e
 /* دخول الأقسام: انزلاق + ظهور ناعم بدل الظهور المفاجئ */
 @keyframes khSecIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .app-section.sec-enter{animation:khSecIn .34s var(--kh-ease) both}
+/* مسافة أمان تحت الشريط الثابت لما scrollIntoView يظبط موضع القسم */
+.app-section{scroll-margin-top:112px}
 /* ظهور البطاقات داخل الاختبار والنتائج */
 @keyframes khCardIn{from{opacity:0;transform:translateY(10px) scale(.99)}to{opacity:1;transform:none}}
 .sec-enter .card{animation:khCardIn .4s var(--kh-ease) backwards}
@@ -698,11 +700,17 @@ html.dark .sr-timer-track{background:#253156}
 @keyframes srFlash{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
 .sr-badge{display:inline-grid;place-items:center;width:2.1rem;height:2.1rem;border-radius:999px;font-weight:900;font-size:.85rem;background:#eef2ff;color:#4338ca}
 html.dark .sr-badge{background:#1c2749;color:#a5b4fc}
-/* ===== 🎡 عجلة الحظ الدراسية ===== */
-#wheel-btn{animation:chatPulse 3.6s infinite}
-#wheel-cv{display:block;margin:0 auto;border-radius:999px;box-shadow:0 14px 34px -14px rgba(15,23,42,.35);transition:transform .2s}
-.wheel-pointer{width:0;height:0;margin:0 auto -14px;border-left:13px solid transparent;border-right:13px solid transparent;border-top:20px solid #f59e0b;filter:drop-shadow(0 3px 4px rgba(0,0,0,.25));position:relative;z-index:2}
-.wheel-result{animation:khCardIn .4s var(--kh-ease) both}
+/* ===== ⏱️ الكامبات الدراسية + 🎨 الاستوديو ===== */
+.camp-sess{display:flex;align-items:center;gap:.6rem;border:1.5px solid #e2e8f0;border-radius:.9rem;padding:.55rem .8rem;margin-bottom:.45rem;font-size:.8rem;font-weight:700;background:#fff}
+html.dark .camp-sess{background:#111a33;border-color:#26335c}
+.camp-sess.done{border-color:#10b981;background:#ecfdf5}
+html.dark .camp-sess.done{background:rgba(16,185,129,.1)}
+.camp-day-t{font-weight:900;font-size:.85rem;margin:.9rem 0 .4rem;color:#4f46e5}
+html.dark .camp-day-t{color:#a5b4fc}
+#camp-runner .cr-clock{font-size:2.2rem;font-weight:900;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+:root{--kh-brand:#4f46e5;--kh-brand2:#7c3aed}
+.btn-primary,.nav-btn.active,#chat-btn{background-image:linear-gradient(to left,var(--kh-brand),var(--kh-brand2))!important}
+.tab-btn.active{background-color:var(--kh-brand)!important}
 .diff-chip{border-radius:999px;padding:.14rem .6rem;font-size:.64rem;font-weight:800}
 .diff-easy{background:#ecfdf5;color:#059669}html.dark .diff-easy{background:rgba(16,185,129,.14);color:#34d399}
 .diff-mid{background:#fffbeb;color:#d97706}html.dark .diff-mid{background:rgba(245,158,11,.14);color:#fbbf24}
@@ -749,11 +757,11 @@ html.dark .diff-btn.active{background:rgba(99,102,241,.16);color:#a5b4fc}
     <div class="flex items-center gap-3 h-16">
       <div class="grid place-items-center w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white text-xl font-black shadow-lg shadow-indigo-500/30 shrink-0">خ</div>
       <div class="leading-tight min-w-0">
-        <h1 class="text-lg font-black truncate">خلاصة <span class="text-[11px] font-bold text-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 rounded-md px-1.5 py-0.5 align-middle">khulasa</span></h1>
-        <p class="text-[11px] text-slate-500 dark:text-slate-400 font-semibold truncate">منصتك الذكية للتلخيص والاختبارات وتحويل الملفات</p>
+        <h1 class="text-lg font-black truncate"><span id="site-title">خلاصة</span> <span class="text-[11px] font-bold text-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 rounded-md px-1.5 py-0.5 align-middle">khulasa</span></h1>
+        <p id="site-tagline" class="text-[11px] text-slate-500 dark:text-slate-400 font-semibold truncate hidden"></p>
       </div>
       <div class="flex-1"></div>
-      <span class="chip bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-300 hidden md:inline-flex">الإصدار 2.2</span>
+      <span class="chip bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-300 hidden md:inline-flex">الإصدار 4.0</span>
       <button id="theme-btn" type="button" title="تبديل الوضع الليلي/النهاري" class="btn btn-slate !px-3 !py-2.5 text-base leading-none">🌙</button>
     </div>
     <nav id="main-nav" class="flex items-center gap-1.5 overflow-x-auto pb-2 -mx-1 px-1" aria-label="أقسام المنصة">
@@ -763,8 +771,10 @@ html.dark .diff-btn.active{background:rgba(99,102,241,.16);color:#a5b4fc}
       <button type="button" class="nav-btn" data-sec="sec4">📝 محرك الملخصات</button>
       <button type="button" class="nav-btn" data-sec="sec5">🎯 وضع الاختبارات</button>
       <button type="button" class="nav-btn" data-sec="sec6">⚡ المعالجة السحرية</button>
+      <button type="button" class="nav-btn" data-sec="sec9">⏱️ الكامبات</button>
       <button type="button" class="nav-btn" data-sec="sec8">📚 المحاضرات</button>
       <button type="button" class="nav-btn" data-sec="sec7">📤 التصدير والإنتاجية</button>
+      <button type="button" class="nav-btn" data-sec="sec10">🎨 الاستوديو</button>
     </nav>
   </div>
 </header>
@@ -802,6 +812,7 @@ html.dark .diff-btn.active{background:rgba(99,102,241,.16);color:#a5b4fc}
       <button type="button" class="btn btn-slate" data-save="sec1-word">📄 حفظ Word</button>
       <button type="button" class="btn btn-slate" data-copy="s1-text">📋 نسخ</button>
       <button type="button" class="btn btn-slate" data-print="s1-text">🖨️ طباعة</button>
+      <button type="button" class="btn btn-rose" data-clear="s1-text">🗑️ مسح الكل</button>
     </div>
   </div>
 
@@ -834,7 +845,6 @@ html.dark .diff-btn.active{background:rgba(99,102,241,.16);color:#a5b4fc}
     <div class="flex flex-wrap gap-2 mt-4">
       <button type="button" class="btn btn-primary" data-send="s1-text:sec4">📝 إرسال إلى محرك الملخصات</button>
       <button type="button" class="btn btn-emerald" data-send="s1-text:sec5">🎯 إرسال إلى وضع الاختبارات</button>
-      <button type="button" class="btn btn-outline" data-clear="s1-text">🗑️ مسح النص</button>
     </div>
   </div>
 </section>
@@ -851,6 +861,7 @@ html.dark .diff-btn.active{background:rgba(99,102,241,.16);color:#a5b4fc}
       <button type="button" class="btn btn-slate" data-save="sec2-txt">💾 حفظ TXT</button>
       <button type="button" class="btn btn-slate" data-save="sec2-word">📄 حفظ Word</button>
       <button type="button" class="btn btn-slate" data-copy="s2-text">📋 نسخ</button>
+      <button type="button" class="btn btn-rose" data-clear="s2-text">🗑️ مسح الكل</button>
       <button type="button" class="btn btn-slate" data-print="s2-text">🖨️ طباعة</button>
     </div>
   </div>
@@ -880,7 +891,6 @@ html.dark .diff-btn.active{background:rgba(99,102,241,.16);color:#a5b4fc}
         <button type="button" class="btn btn-primary" data-send="s2-text:sec4">📝 إرسال إلى محرك الملخصات</button>
         <button type="button" class="btn btn-emerald" data-send="s2-text:sec5">🎯 إرسال إلى وضع الاختبارات</button>
         <button type="button" class="btn btn-outline" id="s2-fixdir" title="لو الحروف نازلة مقلوبة أو الكلمات متلخبطة جرّب الزر ده — كل ضغطة تجربة إصلاح مختلفة">🔄 إصلاح اتجاه الحروف</button>
-        <button type="button" class="btn btn-outline" data-clear="s2-text">🗑️ مسح</button>
       </div>
     </div>
   </div>
@@ -1017,6 +1027,7 @@ html.dark .diff-btn.active{background:rgba(99,102,241,.16);color:#a5b4fc}
       <div class="flex gap-2">
         <button type="button" class="btn btn-primary flex-1" data-tool="ocr">🌐 استخراج النص</button>
         <button type="button" class="btn btn-slate" data-copy-field="ocr-out">📋 نسخ</button>
+        <button type="button" class="btn btn-rose" data-clear-field="ocr-out">🗑️</button>
         <button type="button" class="btn btn-slate" data-send="ocr-out:sec4">📝 للملخص</button>
       </div>
       <p class="text-xs mt-2 font-bold text-emerald-600 dark:text-emerald-400 min-h-[18px]" data-result="ocr"></p>
@@ -1068,7 +1079,7 @@ html.dark .diff-btn.active{background:rgba(99,102,241,.16);color:#a5b4fc}
       </div>
       <div class="card">
         <h3 class="font-black mb-3">⚙️ إعدادات التلخيص</h3>
-        <p class="label-mini mb-1.5">النص المصدر (يُملأ تلقائياً من الأقسام الأخرى):</p>
+        <div class="flex items-center justify-between mb-1.5"><p class="label-mini">النص المصدر (يُملأ تلقائياً من الأقسام الأخرى):</p><button type="button" class="btn btn-rose !py-1 !px-2.5 !text-[11px]" data-clear="s4-text">🗑️ مسح</button></div>
         <textarea id="s4-text" data-draft="sec4" class="field min-h-[110px] mb-4" placeholder="سيظهر هنا النص القادم من التسجيل أو قارئ PDF، أو ارفع ملفاً من الأداة أعلاه..."></textarea>
         <p class="label-mini mb-2">مستوى التلخيص:</p>
         <div class="grid grid-cols-3 gap-2 mb-4" id="s4-levels">
@@ -1142,7 +1153,7 @@ html.dark .diff-btn.active{background:rgba(99,102,241,.16);color:#a5b4fc}
   <div class="grid lg:grid-cols-3 gap-5 mb-5" id="s5-config-area">
     <div class="card lg:col-span-1" data-uploader='{"key":"s5","modes":["pdf","image","text"],"target":"s5-text"}'></div>
     <div class="card lg:col-span-2">
-      <h3 class="font-black mb-3">⚙️ إعدادات الاختبار</h3>
+      <div class="flex items-center justify-between mb-1.5"><h3 class="font-black">⚙️ إعدادات الاختبار</h3><button type="button" class="btn btn-rose !py-1 !px-2.5 !text-[11px]" data-clear="s5-text">🗑️ مسح النص</button></div>
       <textarea id="s5-text" data-draft="sec5" class="field min-h-[110px] mb-4" placeholder="الصق أو اكتب النص الذي سيُبنى عليه الاختبار..."></textarea>
       <div class="grid sm:grid-cols-3 gap-3 mb-4">
         <div>
@@ -1256,7 +1267,7 @@ html.dark .diff-btn.active{background:rgba(99,102,241,.16);color:#a5b4fc}
   </div>
 
   <div class="card mb-5">
-    <p class="label-mini mb-2">النص الخام (اختياري إن لم ترفع ملفاً):</p>
+    <div class="flex items-center justify-between mb-2"><p class="label-mini">النص الخام (اختياري إن لم ترفع ملفاً):</p><button type="button" class="btn btn-rose !py-1 !px-2.5 !text-[11px]" data-clear="s6-text">🗑️ مسح</button></div>
     <textarea id="s6-text" data-draft="sec6" class="field min-h-[120px]" placeholder="أو الصق النص هنا مباشرة..."></textarea>
   </div>
 
@@ -1307,6 +1318,7 @@ html.dark .diff-btn.active{background:rgba(99,102,241,.16);color:#a5b4fc}
     <div class="flex items-center gap-3 flex-wrap">
       <input type="text" id="lec-search" class="field flex-1 min-w-[220px]" placeholder="🔍 ابحث في محاضراتك بالاسم...">
       <button type="button" id="lec-refresh" class="btn btn-slate">🔄 تحديث</button>
+      <button type="button" id="lec-delall" class="btn btn-rose">🗑️ حذف كل المحاضرات</button>
     </div>
   </div>
 
@@ -1417,6 +1429,140 @@ html.dark .diff-btn.active{background:rgba(99,102,241,.16);color:#a5b4fc}
   </div>
 </section>
 
+<!-- ==================== القسم 9: الكامبات الدراسية ==================== -->
+<section id="sec9" class="app-section hidden mx-auto max-w-7xl px-4 py-6">
+  <div class="flex items-start justify-between flex-wrap gap-3 mb-5">
+    <div>
+      <h2 class="sec-head">⏱️ الكامبات الدراسية</h2>
+      <p class="sec-sub">قول لنا بتذاكر كام ساعة وبتاخد راحة قد إيه — وهنبني لك كامب كامل بجلسات وراحات ومؤقت شغل حقيقي، مع حفظ تقدمك على جهازك.</p>
+    </div>
+    <div class="save-bar">
+      <span class="chip bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-300">🎯 جلسة ← راحة ← راحة أطول</span>
+      <span class="chip bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-300">💾 محفوظ أوفلاين</span>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-3 gap-5 mb-5">
+    <div class="card lg:col-span-1">
+      <h3 class="font-black mb-3">🎯 اعمل كامب جديد</h3>
+      <p class="label-mini mb-1.5">اسم الكامب</p>
+      <input type="text" id="cp-name" class="field mb-3" value="كامبي الدراسي" placeholder="مثال: كامب فيزياء قبل الامتحان">
+      <p class="label-mini mb-1.5">المواد (افصل بينها بفاصلة — اختياري)</p>
+      <input type="text" id="cp-subs" class="field mb-3" placeholder="مثال: فيزياء, كيمياء, رياضة">
+      <div class="grid grid-cols-2 gap-3 mb-3">
+        <div>
+          <p class="label-mini mb-1.5">ساعات المذاكرة يوميًا</p>
+          <input type="number" id="cp-hours" class="field" value="3" min="1" max="12" step="0.5">
+        </div>
+        <div>
+          <p class="label-mini mb-1.5">مدة الجلسة</p>
+          <select id="cp-slen" class="field">
+            <option value="25">25 دقيقة (بومودورو)</option>
+            <option value="45" selected>45 دقيقة</option>
+            <option value="60">60 دقيقة</option>
+          </select>
+        </div>
+        <div>
+          <p class="label-mini mb-1.5">الراحة بين الجلسات</p>
+          <input type="number" id="cp-brk" class="field" value="10" min="3" max="30">
+        </div>
+        <div>
+          <p class="label-mini mb-1.5">راحة طويلة كل</p>
+          <select id="cp-long" class="field">
+            <option value="3" selected>3 جلسات (ضعف الراحة)</option>
+            <option value="4">4 جلسات (ضعف الراحة)</option>
+            <option value="0">بدون راحة طويلة</option>
+          </select>
+        </div>
+        <div>
+          <p class="label-mini mb-1.5">عدد الأيام</p>
+          <input type="number" id="cp-days" class="field" value="5" min="1" max="30">
+        </div>
+        <div>
+          <p class="label-mini mb-1.5">بداية المذاكرة</p>
+          <input type="time" id="cp-start" class="field" value="16:00">
+        </div>
+      </div>
+      <button type="button" id="cp-create" class="btn btn-primary w-full !py-3">🚀 ابنِ الكامب</button>
+      <p class="text-[11px] text-slate-400 font-bold mt-2 text-center">الخطة مبنية على نظام الجلسات المركزة — نفس طريقة أفضل الدارسين حول العالم</p>
+    </div>
+
+    <div class="card lg:col-span-2">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="font-black">🏕️ كامباتك المحفوظة</h3>
+        <button type="button" id="cp-delall" class="btn btn-rose !py-1.5 !px-3 !text-[11px]">🗑️ حذف الكل</button>
+      </div>
+      <div id="cp-list" class="space-y-4"></div>
+    </div>
+  </div>
+
+  <div id="camp-runner" class="card hidden">
+    <div class="flex items-center justify-between gap-3 mb-2">
+      <h3 class="font-black flex items-center gap-2 min-w-0">⏳ شغّال الكامب: <span id="cr-name" class="truncate"></span></h3>
+      <button type="button" id="cr-close" class="btn btn-slate shrink-0 !px-3 !py-1.5">✕ إغلاق</button>
+    </div>
+    <div class="text-center py-2">
+      <p id="cr-phase" class="text-lg font-black mb-1"></p>
+      <p class="cr-clock" id="cr-clock">45:00</p>
+      <div class="progress-track max-w-md mx-auto mt-3"><div id="cr-bar" class="progress-bar" style="width:0%"></div></div>
+      <p id="cr-prog" class="label-mini mt-2"></p>
+    </div>
+    <div class="flex flex-wrap gap-2 justify-center mt-3">
+      <button type="button" id="cr-pause" class="btn btn-slate">⏸️ إيقاف مؤقت</button>
+      <button type="button" id="cr-skip" class="btn btn-slate">⏭️ تخطي المرحلة</button>
+      <button type="button" id="cr-tip" class="btn btn-soft">💡 نصيحة</button>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== القسم 10: استوديو التخصيص ==================== -->
+<section id="sec10" class="app-section hidden mx-auto max-w-7xl px-4 py-6">
+  <div class="flex items-start justify-between flex-wrap gap-3 mb-5">
+    <div>
+      <h2 class="sec-head">🎨 الاستوديو — عدّل موقعك براحتك</h2>
+      <p class="sec-sub">من الصفحة دي بتتحكم في شكل المنصة كله: الاسم، الجملة التعريفية، اللون، الحجم، والأقسام الظاهرة — كل حاجة بتتحفظ على جهازك وتتطبق فورًا من غير أي كود.</p>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-2 gap-5 mb-5">
+    <div class="card">
+      <h3 class="font-black mb-3">✍️ النصوص</h3>
+      <p class="label-mini mb-1.5">اسم المنصة (سيبه فاضي = «خلاصة» الافتراضي)</p>
+      <input type="text" id="st-title" class="field mb-3" placeholder="خلاصة">
+      <p class="label-mini mb-1.5">جملة تعريفية تحت الاسم</p>
+      <input type="text" id="st-tagline" class="field mb-1.5" placeholder="مثال: منصتي الشخصية للمذاكرة الذكية">
+      <p class="text-[11px] text-slate-400 font-bold">سيبها فاضية تمامًا لو مش عايز أي جملة تظهر — زي الإعداد الحالي.</p>
+    </div>
+
+    <div class="card">
+      <h3 class="font-black mb-3">🎨 الشكل والحجم</h3>
+      <div class="flex items-end gap-4 flex-wrap mb-4">
+        <div>
+          <p class="label-mini mb-1.5">اللون الرئيسي</p>
+          <input type="color" id="st-color" value="#4f46e5" class="w-16 h-10 rounded-xl border border-slate-300 dark:border-[#334166] bg-transparent cursor-pointer p-0.5">
+        </div>
+        <div class="flex-1 min-w-[180px]">
+          <p class="label-mini mb-1.5">حجم الواجهة: <b id="st-zoom-v">100%</b></p>
+          <input type="range" id="st-zoom" min="90" max="120" step="5" value="100" class="w-full accent-indigo-600">
+        </div>
+      </div>
+      <p class="label-mini mb-2">الأقسام الظاهرة في القائمة (الاستوديو ثابت مش بيتخفي)</p>
+      <div id="st-secs" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="font-black mb-3">💾 نقل الإعدادات بين الأجهزة</h3>
+    <div class="flex flex-wrap gap-2 mb-3">
+      <button type="button" id="st-copy" class="btn btn-soft">📋 انسخ الإعدادات كنص</button>
+      <button type="button" id="st-apply" class="btn btn-primary">⬆️ طبّق إعدادات ملصوقة</button>
+      <button type="button" id="st-reset" class="btn btn-rose">↩️ استعادة الافتراضي</button>
+    </div>
+    <textarea id="st-io" class="field min-h-[110px]" placeholder="اضغط «انسخ الإعدادات كنص» وانقل النص لأي جهاز تاني، أو الصق إعدادات هنا واضغط «طبّق»..."></textarea>
+    <p class="text-[11px] text-slate-400 font-bold mt-2">الإعدادات بتتحفظ تلقائيًا على الجهاز ده لحظة بلحظة — مش محتاج تضغط أي حفظ.</p>
+  </div>
+</section>
+
 </main>
 
 <!-- ==================== الفوتر ==================== -->
@@ -1434,7 +1580,7 @@ html.dark .diff-btn.active{background:rgba(99,102,241,.16);color:#a5b4fc}
         <p class="text-[13px] font-bold">تصميم وتطوير: <span class="text-indigo-500">Ziad Ashraf</span> (زياد أشرف)</p>
         <a href="https://instagram.com/ziaadd_1" target="_blank" rel="noopener" class="text-[12px] font-bold text-pink-600 dark:text-pink-400 hover:underline">📸 انستجرام: <bdi dir="ltr">@ziaadd_1</bdi></a>
       </div>
-      <p class="text-[11px] text-slate-400 dark:text-slate-500">الإصدار 3.1 — المساعد الذكي + تحدي الستين ثانية + عجلة الحظ 🎡 © 2026 — جميع الحقوق محفوظة</p>
+      <p class="text-[11px] text-slate-400 dark:text-slate-500">الإصدار 4.0 — الكامبات الدراسية ⏱️ + استوديو التخصيص 🎨 + تحدي الستين ثانية ⚡ © 2026 — جميع الحقوق محفوظة</p>
     </div>
   </div>
 </footer>
@@ -1448,10 +1594,6 @@ html.dark .diff-btn.active{background:rgba(99,102,241,.16);color:#a5b4fc}
         class="fixed bottom-4 right-4 z-40 grid place-items-center rounded-full bg-gradient-to-l from-indigo-600 to-violet-600 text-white shadow-2xl shadow-indigo-500/40 hover:scale-110 transition" style="width:56px;height:56px">
   <span class="text-2xl leading-none">🤖</span>
   <span id="chat-dot" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-emerald-400 border-2 border-white dark:border-[#0a0f1e] hidden"></span>
-</button>
-<button type="button" id="wheel-btn" title="عجلة الحظ الدراسية" aria-label="عجلة الحظ الدراسية"
-        class="fixed bottom-[88px] right-4 z-40 grid place-items-center rounded-full bg-gradient-to-l from-amber-500 to-orange-500 text-white shadow-2xl shadow-amber-500/40 hover:scale-110 transition" style="width:48px;height:48px">
-  <span class="text-xl leading-none">🎡</span>
 </button>
 <div id="chat-panel" class="hidden" dir="rtl" aria-hidden="true">
   <div class="fixed bottom-[84px] right-4 z-50 flex flex-col rounded-3xl border border-slate-200 dark:border-[#26335c] bg-white dark:bg-[#0f1830] shadow-2xl overflow-hidden" style="width:min(384px, calc(100vw - 2rem)); height:min(560px, 74vh)">
@@ -1903,6 +2045,11 @@ function switchSection(id) {
     el.classList.remove('sec-enter');
     void el.offsetWidth;
     el.classList.add('sec-enter');
+    /* لو القسم الجديد بادئ جوه أو فوق منطقة الشريط الثابت، بنظبط الموضع
+       بس العنوان يبان كامل تحته (scroll-margin-top:112px) — من غير أي قفزة لفوق
+       (لو القسم ظاهر كامل تحت الشريط أصلًا مفيش أي تمرير بيحصل) */
+    const r = el.getBoundingClientRect();
+    if (r.top < 120) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   $$('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.sec === id));
   lsSet('last_section', id);
@@ -2595,12 +2742,6 @@ function setupCommonButtons() {
       toast('تم النقل بنجاح ✓ — ' + (secId === 'sec4' ? 'اضغط «توليد الملخص»' : 'اضغط «توليد الاختبار»'), 'success');
       return;
     }
-    const clear = e.target.closest('[data-clear]');
-    if (clear) {
-      const ta = $('#' + clear.dataset.clear);
-      if (ta) { ta.value = ''; ta.dispatchEvent(new Event('input', { bubbles: true })); toast('تم المسح', 'info'); }
-      return;
-    }
     const cp = e.target.closest('[data-copy]');
     if (cp) {
       const el = $('#' + cp.dataset.copy);
@@ -2733,7 +2874,14 @@ function topKeywords(text, n) {
     .sort((a, b) => b.count - a.count || b.word.length - a.word.length)
     .slice(0, n);
 }
-function trimWords(s, n) { const w = s.split(/\s+/); return w.length <= n ? s : w.slice(0, n).join(' ') + '…'; }
+/* قطع صامت بدون أي نقاط — مستحيل يظهر «…» في أي نص مولّد */
+function trimWords(s, n) { const w = String(s || '').trim().split(/\s+/); return w.length <= n ? s : w.slice(0, n).join(' '); }
+/* أول جملة تامة من نص طويل (فاصلة/نقطة) — عشان الأسئلة تفضل كاملة من غير قطع أياً كان طول النص */
+function firstClause(s, maxW) {
+  const parts = String(s || '').split(/[،؛,.]/).map(x => x.trim()).filter(Boolean);
+  for (const p of parts) { const n = countWords(p); if (n >= 4 && n <= maxW) return p; }
+  return '';
+}
 function summarize(text, ratio) {
   const sents = splitSentences(text);
   if (!sents.length) return { picked: [], keywords: topKeywords(text, 8), total: 0 };
@@ -4119,147 +4267,334 @@ function srRenderBoard(hi) {
 }
 
 /* =========================================================
-   🎡 عجلة الحظ الدراسية (Study Roulette)
-   عجلة تفاعلية بختار عشوائياً تحدي/نصيحة/قسم للمراجعة
+   ⏱️ الكامبات الدراسية (Study Camps)
+   نظام خطاطيف مذاكرة شخصي: انت بتقول ساعاتك وراحتك وعدد أيامك،
+   والنظام يبني لك كامب كامل بجلسات وراحات ومؤقت شغل حقيقي،
+   وبيحفظ تقدمك على جهازك 100% أوفلاين.
    ========================================================= */
-const WHEEL_SEGS = [
-  { l: 'تحدي سريع ⚡', c: '#f59e0b', a: 'speed' },
-  { l: 'نصيحة تحفيزية 💡', c: '#10b981', a: 'tip' },
-  { l: 'راجع الملخصات 📝', c: '#6366f1', a: 'sec4' },
-  { l: 'اختبر نفسك 🎯', c: '#ec4899', a: 'sec5' },
-  { l: 'فلاش كاردز 🃏', c: '#8b5cf6', a: 'cards' },
-  { l: 'ورقة تلخيص 📄', c: '#0ea5e9', a: 'paper' },
-  { l: 'خريطة ذهنية 🧠', c: '#14b8a6', a: 'map' },
-  { l: 'أدوات PDF 🧰', c: '#f43f5e', a: 'sec3' }
+const CAMP_KEY = 'kh_camps_v1';
+const CAMP_TIPS = [
+  'قسّم مذاكرتك لجلسات مع راحة بينهم — دماغك بتحفظ أكتر لما بتتنفس 🧠',
+  'ابدأ بأصعب مادة وانت في قمة تركيزك — الباقي هيبقى سهل بعدها 💪',
+  'الراحة مش كسل — الراحة جزء من الخطة، من غيرها الدماغ بيقف 🛑',
+  'بعد كل جلسة قول لنفسك إيه اللي حفظته — كده بتثبّت المعلومة ✍️',
+  'المراجعة قبل النوم بتتحفر أعمق — خلي آخر جلسة خفيفة 🌙',
+  'موبايلك بعيد وقت الكامب — الإشعارات عدو التركيز الأول 📵',
+  'اشرب مياه وكل حاجة خفيفة — الدماغ بيمتص أكتر لما الجسم مرتاح 💧',
+  'كل جلسة بتخلصها دي خطوة قربتك من النجاح — كمّل بنفس الحماس 🔥'
 ];
-const WHEEL_TIPS = [
-  'قسّم مذاكرتك لجلسات 25 دقيقة مع راحة 5 — دماغك بتحفظ أكتر لما بتتنفس 🧠',
-  'لخّص المحاضرة بكلامك انت — إعادة الصياغة بتثبّت المعلومة 3 أضعاف ✍️',
-  'جرّب الفلاش كاردز قبل النوم — المراجعة قبل النوم بتتحفر أعمق 🌙',
-  'اختبر نفسك قبل ما تحس إنك جاهز — الاختبار نفسه بيثبّت أكتر من إعادة القراءة 🎯',
-  'علّم غيرك اللي فهمته — الشرح لحد تاني أقوى طريقة تكتشف فجواتك 🗣️',
-  'ابدأ بأصعب موضوع وانت في قمة تركيزك — الباقي هيبقى سهل بعدها 💪',
-  'حوّل الملخص لخريطة ذهنية — الصورة بتفضل في الذاكرة أطول من السطور 🧠',
-  'مذكراتك مش عارف تلخصها؟ ارفعها للمنصة وسيبها عليه 😄',
-  'خلي التحدي بينك وبين صاحبك: مين يعمل أعلى نتيجة في تحدي الستين ثانية؟ ⚡',
-  'راجع بمستوى صعب شوية — «الصعوبة المرغوبة» هي سر الحفظ طويل المدى 🔥'
-];
-let wheelAngle = 0, wheelSpinning = false;
-function drawWheel(rot) {
-  const cv = $('#wheel-cv');
-  if (!cv) return;
-  const ctx = cv.getContext('2d');
-  const W = cv.width, R = W / 2, seg = Math.PI * 2 / WHEEL_SEGS.length;
-  ctx.clearRect(0, 0, W, W);
-  ctx.save();
-  ctx.translate(R, R);
-  /* الحلقة الخارجية */
-  ctx.beginPath(); ctx.arc(0, 0, R - 3, 0, Math.PI * 2);
-  ctx.fillStyle = '#ffffff'; ctx.fill();
-  ctx.lineWidth = 5; ctx.strokeStyle = '#e2e8f0'; ctx.stroke();
-  WHEEL_SEGS.forEach((s, i) => {
-    const a0 = rot + i * seg, a1 = a0 + seg;
-    ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, R - 14, a0, a1); ctx.closePath();
-    ctx.fillStyle = s.c; ctx.globalAlpha = .92; ctx.fill(); ctx.globalAlpha = 1;
-    ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2.5; ctx.stroke();
-    /* نص القطاع */
-    ctx.save();
-    ctx.rotate(a0 + seg / 2);
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 13px Cairo,Arial,sans-serif';
-    ctx.direction = 'rtl';
-    ctx.shadowColor = 'rgba(0,0,0,.35)'; ctx.shadowBlur = 3;
-    ctx.fillText(s.l, R / 2 - 6, 0);
-    ctx.restore();
-  });
-  /* المركز */
-  ctx.beginPath(); ctx.arc(0, 0, 34, 0, Math.PI * 2);
-  ctx.fillStyle = '#ffffff'; ctx.fill();
-  ctx.lineWidth = 4; ctx.strokeStyle = '#f1f5f9'; ctx.stroke();
-  ctx.fillStyle = '#4f46e5'; ctx.font = '900 20px Cairo,Arial,sans-serif';
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText('خ', 0, 1);
-  ctx.restore();
+function campLoad() { try { return JSON.parse(localStorage.getItem(CAMP_KEY) || '[]'); } catch (e) { return []; } }
+function campSaveAll(list) { try { localStorage.setItem(CAMP_KEY, JSON.stringify(list)); } catch (e) {} }
+function campHM(min) { const h = Math.floor(min / 60) % 24, m = Math.round(min % 60); return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0'); }
+function campLen(min) { return min >= 60 ? ((min % 60) ? (Math.floor(min / 60) + 'س ' + (min % 60) + 'د') : (Math.floor(min / 60) + ' ساعات')) : (min + ' د'); }
+function campBeep(up) {
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    const ac = new AC(), o = ac.createOscillator(), g = ac.createGain();
+    o.connect(g); g.connect(ac.destination);
+    o.frequency.value = up ? 880 : 520; g.gain.value = .07;
+    o.start();
+    setTimeout(() => { try { o.stop(); ac.close(); } catch (e) {} }, 190);
+  } catch (e) {}
 }
-function wheelOpen(v) {
-  $('#wheel-modal').classList.toggle('hidden', !v);
-  document.body.style.overflow = v ? 'hidden' : '';
-  if (v) { drawWheel(wheelAngle); $('#wheel-result').innerHTML = ''; $('#wheel-result').classList.add('hidden'); }
-}
-function wheelSpin() {
-  if (wheelSpinning) return;
-  wheelSpinning = true;
-  const idx = Math.floor(Math.random() * WHEEL_SEGS.length);
-  const seg = Math.PI * 2 / WHEEL_SEGS.length;
-  /* المؤشر فوق — نوزع القطاعات بحيث مركز القطاع المختار يقف تحت المؤشر (-90°) */
-  const target = -(Math.PI / 2) - (idx * seg + seg / 2);
-  const turns = 5 + Math.floor(Math.random() * 3);
-  const start = wheelAngle, delta = turns * Math.PI * 2 + (((target - start) % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
-  const t0 = performance.now(), DUR = 4300;
-  $('#wheel-result').classList.add('hidden');
-  const step = now => {
-    const p = Math.min(1, (now - t0) / DUR);
-    const e = 1 - Math.pow(1 - p, 3); /* easeOutCubic */
-    wheelAngle = start + delta * e;
-    drawWheel(wheelAngle);
-    if (p < 1) requestAnimationFrame(step);
-    else { wheelSpinning = false; wheelResult(idx); }
-  };
-  requestAnimationFrame(step);
-}
-function wheelResult(idx) {
-  const s = WHEEL_SEGS[idx];
-  const box = $('#wheel-result');
-  const noText = () => countWords(($('#s4-text').value || '') + ' ' + ($('#s5-text').value || '')) < 25 && (() => { try { return countWords(chatBestText().text) < 25; } catch (e) { return true; } })();
-  const goBtn = (label, fn) => '<button type="button" id="wheel-go" class="btn btn-primary w-full !py-2.5 mt-3">' + label + '</button>';
-  let html = '<div class="wheel-result rounded-2xl p-4 text-white" style="background:linear-gradient(135deg,' + s.c + ',' + s.c + 'cc)">' +
-    '<p class="font-black text-lg mb-1">🎡 طلع لك: ' + s.l + '</p><p class="text-[13px] opacity-90">';
-  let act = null;
-  if (s.a === 'tip') {
-    html += WHEEL_TIPS[Math.floor(Math.random() * WHEEL_TIPS.length)] + '</p></div>';
-  } else if (s.a === 'speed') {
-    if (noText()) html += 'محتاج نص الأول — ارفع محاضرة أو الصق نصاً (25 كلمة+) وبعدين حاول تاني ⚡</p></div>';
-    else { html += 'أسئلة سريعة، 15 ثانية لكل سؤال — مين أعلى نتيجة؟</p>' + goBtn('⚡ ابدأ التحدي') + '</div>'; act = startSpeedRun; }
-  } else if (s.a === 'sec4') {
-    html += 'هوينا قسم محرك الملخصات — لخّص أي نص في ثواني</p>' + goBtn('📝 يلا بينا') + '</div>'; act = () => { switchSection('sec4'); };
-  } else if (s.a === 'sec5') {
-    html += 'جهز امتحان حقيقي من نصك — بمستويات سهل/متوسط/صعب</p>' + goBtn('🎯 يلا نختبر') + '</div>'; act = () => { switchSection('sec5'); };
-  } else if (s.a === 'sec3') {
-    html += 'دمج، تقسيم، ضغط، تحويلات — كل أدوات الملفات في مكان واحد</p>' + goBtn('🧰 افتح الأدوات') + '</div>'; act = () => { switchSection('sec3'); };
-  } else if (s.a === 'cards') {
-    html += 'كروت مراجعة بتشقلب — أسهل طريقة تحفظ بيها</p>' + goBtn('🃏 جهز الكروت') + '</div>';
-    act = () => { switchSection('sec4'); const bt = srGetText(); if (bt) { try { fcGenerateFrom(formatTextAr(bt.text)); } catch (e) {} } };
-  } else if (s.a === 'paper') {
-    html += 'صفحة A4 أنيقة جاهزة للطباعة من ملخصك</p>' + goBtn('📄 جهز الورقة') + '</div>';
-    act = () => {
-      const bt = srGetText();
-      if (!bt) { toast('محتاج نص الأول 📄', 'warn'); switchSection('sec4'); return; }
-      switchSection('sec4');
-      if (!$('#s4-output').dataset.done) { $('#s4-text').value = bt.text; $('#s4-text').dispatchEvent(new Event('input', { bubbles: true })); generateSummary(false); }
-      setTimeout(() => { try { openPaperSheet(); } catch (e) {} }, 200);
-    };
-  } else if (s.a === 'map') {
-    html += 'شوف ملخصك كخريطة ذهنية كاملة الفروع</p>' + goBtn('🧠 افتح الخريطة') + '</div>';
-    act = () => {
-      const bt = srGetText();
-      switchSection('sec4');
-      if (bt && !$('#s4-output').dataset.done) { $('#s4-text').value = bt.text; $('#s4-text').dispatchEvent(new Event('input', { bubbles: true })); generateSummary(false); }
-      setTimeout(() => { const m = $('#s4-map'); if (m) m.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 350);
-    };
+/* بناء خطة الكامب: جلسات مركزة + راحة قصيرة + راحة طويلة كل عدة جلسات */
+function buildCampPlan(cfg) {
+  const plan = [];
+  const subs = (cfg.subjects && cfg.subjects.length) ? cfg.subjects : ['المذاكرة'];
+  let si = 0;
+  for (let d = 0; d < cfg.days; d++) {
+    const day = { day: d + 1, rows: [] };
+    let t = cfg.startMin, doneMin = 0;
+    const totalMin = Math.round(cfg.hours * 60);
+    while (doneMin < totalMin) {
+      const len = Math.min(cfg.sessLen, totalMin - doneMin);
+      day.rows.push({ kind: 's', t, len, sub: subs[si++ % subs.length] });
+      t += len; doneMin += len;
+      if (doneMin < totalMin) {
+        const sessCount = day.rows.filter(r => r.kind === 's').length;
+        const isLong = cfg.longEvery > 0 && sessCount % cfg.longEvery === 0;
+        const blen = isLong ? cfg.brk * 2 : cfg.brk;
+        day.rows.push({ kind: 'b', t, len: blen, long: isLong });
+        t += blen;
+      }
+    }
+    plan.push(day);
   }
-  box.innerHTML = html;
-  box.classList.remove('hidden');
-  const go = $('#wheel-go');
-  if (go && act) go.addEventListener('click', () => { wheelOpen(false); act(); });
+  return plan;
 }
-function setupRoulette() {
-  $('#wheel-btn').addEventListener('click', () => wheelOpen(true));
-  $('#wheel-close').addEventListener('click', () => wheelOpen(false));
-  $('#wheel-spin').addEventListener('click', wheelSpin);
-  $('#wheel-cv').addEventListener('click', wheelSpin);
-  drawWheel(0);
+let campTimer = null, campRun = null;
+function campSessTotal(c) { return c.plan.reduce((a, d) => a + d.rows.filter(r => r.kind === 's').length, 0); }
+function renderCamps() {
+  const box = $('#cp-list'); if (!box) return;
+  const list = campLoad();
+  box.innerHTML = list.length ? list.map(c => {
+    const total = campSessTotal(c);
+    const pct = total ? Math.round((c.done || 0) * 100 / total) : 0;
+    const allDone = (c.done || 0) >= total;
+    const daysHtml = c.plan.map(d =>
+      '<p class="camp-day-t">📅 اليوم ' + d.day + '</p>' +
+      d.rows.map(r => r.kind === 's'
+        ? '<div class="camp-sess"><span class="chip bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-300 shrink-0">📚 مذاكرة</span><span class="font-black flex-1 truncate">' + esc(r.sub) + '</span><span class="text-slate-500 dark:text-slate-400 text-[11px] shrink-0"><bdi dir="ltr">' + campHM(r.t) + ' → ' + campHM(r.t + r.len) + '</bdi></span><span class="chip bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-300 shrink-0">' + campLen(r.len) + '</span></div>'
+        : '<div class="camp-sess opacity-75"><span class="chip bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-300 shrink-0">☕ راحة' + (r.long ? ' طويلة' : '') + '</span><span class="flex-1"></span><span class="text-slate-500 dark:text-slate-400 text-[11px] shrink-0"><bdi dir="ltr">' + campHM(r.t) + ' → ' + campHM(r.t + r.len) + '</bdi></span><span class="chip bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-300 shrink-0">' + campLen(r.len) + '</span></div>'
+      ).join('')
+    ).join('');
+    return '<div class="rounded-2xl border border-slate-200 dark:border-[#26335c] p-4" data-camp="' + c.id + '">' +
+      '<div class="flex items-center justify-between flex-wrap gap-2 mb-1.5">' +
+      '<h4 class="font-black">🏕️ ' + esc(c.name) + '</h4>' +
+      '<div class="flex gap-2">' +
+      '<button type="button" class="btn btn-primary !py-1.5 !px-3" data-camp-run="' + c.id + '">' + (allDone ? '🔄 اراجع الكامب تاني' : ((c.done || 0) ? '▶️ كمّل الكامب' : '▶️ ابدأ الكامب')) + '</button>' +
+      '<button type="button" class="btn btn-rose !py-1.5 !px-3" data-camp-del="' + c.id + '" title="حذف الكامب">🗑️</button></div></div>' +
+      '<div class="flex flex-wrap gap-1.5 mb-2">' +
+      '<span class="chip bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-300">⏱️ ' + c.hours + ' ساعات/يوم</span>' +
+      '<span class="chip bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300">📆 ' + c.days + ' أيام</span>' +
+      '<span class="chip bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-300">🎯 ' + total + ' جلسة</span>' +
+      '<span class="chip bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-300">✅ خلصت ' + (c.done || 0) + ' / ' + total + '</span></div>' +
+      '<div class="progress-track"><div class="progress-bar" style="width:' + pct + '%"></div></div>' +
+      '<details class="mt-2"><summary class="cursor-pointer text-[12px] font-black text-indigo-600 dark:text-indigo-300">👀 شوف الجدول الكامل</summary><div class="mt-1">' + daysHtml + '</div></details>' +
+      '</div>';
+  }).join('') : '<p class="text-[13px] text-slate-400 font-bold text-center py-6">لسه مفيش كامبات — اعمل أول كامب من الفورم اللي فوق وابدأ 💪</p>';
 }
+function campCreate() {
+  const name = $('#cp-name').value.trim() || 'كامبي الدراسي';
+  const subs = $('#cp-subs').value.split(/[,،]/).map(x => x.trim()).filter(Boolean);
+  const hours = Math.min(12, Math.max(1, parseFloat($('#cp-hours').value) || 3));
+  const sessLen = parseInt($('#cp-slen').value, 10) || 45;
+  const brk = Math.min(30, Math.max(3, parseInt($('#cp-brk').value, 10) || 10));
+  const longEvery = parseInt($('#cp-long').value, 10) || 0;
+  const days = Math.min(30, Math.max(1, parseInt($('#cp-days').value, 10) || 5));
+  const st = String($('#cp-start').value || '16:00').split(':');
+  const startMin = (parseInt(st[0], 10) || 16) * 60 + (parseInt(st[1], 10) || 0);
+  const plan = buildCampPlan({ name, subjects: subs, hours, sessLen, brk, longEvery, days, startMin });
+  const camp = { id: 'c' + Date.now().toString(36), name, subjects: subs, hours, sessLen, brk, longEvery, days, startMin, plan, done: 0, created: Date.now() };
+  const list = campLoad(); list.unshift(camp); campSaveAll(list);
+  renderCamps();
+  toast('اتبنع كامب «' + name + '» — ' + campSessTotal(camp) + ' جلسة جاهزة 🚀', 'success', 5000);
+  const first = box_firstCard();
+  if (first) first.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function box_firstCard() { const b = $('#cp-list'); return b ? b.querySelector('[data-camp]') : null; }
+function campStartRun(id) {
+  const c = campLoad().find(x => x.id === id); if (!c) return;
+  const flat = [];
+  c.plan.forEach(d => d.rows.forEach(r => flat.push({ day: d.day, ...r })));
+  if (!flat.length) return;
+  const sessIdxs = flat.map((r, k) => r.kind === 's' ? k : -1).filter(k => k >= 0);
+  const done = Math.min(c.done || 0, sessIdxs.length);
+  const i = (done >= sessIdxs.length) ? 0 : sessIdxs[done];
+  campRun = { id, list: flat, i, left: flat[i].len, paused: false };
+  $('#camp-runner').classList.remove('hidden');
+  $('#cr-name').textContent = c.name;
+  campPaint(); campTick();
+  $('#camp-runner').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+function campPaint() {
+  if (!campRun) return;
+  const r = campRun.list[campRun.i];
+  const isS = r.kind === 's';
+  const ph = $('#cr-phase');
+  ph.innerHTML = isS
+    ? '📚 جلسة مذاكرة — <span class="text-indigo-600 dark:text-indigo-300">' + esc(r.sub) + '</span> (اليوم ' + r.day + ')'
+    : '☕ وقت الراحة — استرخي ' + campLen(r.len);
+  ph.className = 'text-lg font-black mb-1 ' + (isS ? 'text-indigo-600 dark:text-indigo-300' : 'text-amber-600 dark:text-amber-300');
+  const mm = Math.floor(campRun.left / 60), ss = campRun.left % 60;
+  $('#cr-clock').textContent = String(mm).padStart(2, '0') + ':' + String(ss).padStart(2, '0');
+  $('#cr-bar').style.width = Math.round(100 * (1 - campRun.left / r.len)) + '%';
+  $('#cr-prog').textContent = 'المرحلة رقم ' + (campRun.i + 1) + ' من ' + campRun.list.length + ' — فاضل ' + (campRun.list.length - campRun.i - 1) + ' مرحلة 👏';
+  $('#cr-pause').textContent = campRun.paused ? '▶️ متابعة' : '⏸️ إيقاف مؤقت';
+}
+function campTick() {
+  clearInterval(campTimer);
+  campTimer = setInterval(() => {
+    if (!campRun || campRun.paused) return;
+    campRun.left--;
+    if (campRun.left <= 0) campNextPhase();
+    else campPaint();
+  }, 1000);
+}
+function campMarkDone() {
+  if (!campRun) return;
+  const doneSess = campRun.list.slice(0, campRun.i + 1).filter(x => x.kind === 's').length;
+  const list = campLoad(); const c = list.find(x => x.id === campRun.id);
+  if (c) { c.done = Math.max(c.done || 0, doneSess); campSaveAll(list); }
+}
+function campFinishOrNext() {
+  if (!campRun) return;
+  if (campRun.i + 1 < campRun.list.length) {
+    campRun.i++; campRun.left = campRun.list[campRun.i].len;
+    campPaint(); renderCamps();
+  } else {
+    clearInterval(campTimer);
+    campMarkDone();
+    const list = campLoad(); const c = list.find(x => x.id === campRun.id);
+    if (c) { c.done = campRun.list.filter(x => x.kind === 's').length; campSaveAll(list); }
+    const ph = $('#cr-phase');
+    ph.textContent = '🏆 خلصت الكامب كله — مجهود رهيب يا بطل!';
+    ph.className = 'text-lg font-black mb-1 text-emerald-600 dark:text-emerald-300';
+    $('#cr-clock').textContent = '🎉';
+    $('#cr-bar').style.width = '100%';
+    $('#cr-prog').textContent = CAMP_TIPS[Math.floor(Math.random() * CAMP_TIPS.length)];
+    renderCamps();
+  }
+}
+function campNextPhase() {
+  if (!campRun) return;
+  const r = campRun.list[campRun.i];
+  if (r.kind === 's') {
+    campMarkDone();
+    campBeep(true);
+    toast('برافو! خلصت جلسة «' + r.sub + '» — خد راحتك ☕', 'success', 4500);
+  } else {
+    campBeep(false);
+    toast('الراحة خلصت — يلا نرجع مذاكرة 💪', 'info', 3500);
+  }
+  campFinishOrNext();
+}
+function setupCamps() {
+  if (!$('#cp-create')) return;
+  $('#cp-create').addEventListener('click', campCreate);
+  $('#cp-delall').addEventListener('click', () => {
+    const list = campLoad();
+    if (!list.length) { toast('مفيش كامبات للمسح 🏕️', 'info'); return; }
+    if (!confirm('حذف كل الكامبات (' + list.length + ') نهائيًا؟ مش هتقدر ترجعها!')) return;
+    campSaveAll([]); renderCamps();
+    toast('تم مسح كل الكامبات 🗑️', 'info');
+  });
+  $('#cp-list').addEventListener('click', e => {
+    const r = e.target.closest('[data-camp-run]');
+    if (r) return campStartRun(r.dataset.campRun);
+    const d = e.target.closest('[data-camp-del]');
+    if (d) {
+      if (!confirm('حذف الكامب ده نهائيًا؟')) return;
+      campSaveAll(campLoad().filter(x => x.id !== d.dataset.campDel));
+      renderCamps(); toast('تم حذف الكامب 🗑️', 'info');
+    }
+  });
+  $('#cr-pause').addEventListener('click', () => { if (campRun) { campRun.paused = !campRun.paused; campPaint(); } });
+  $('#cr-skip').addEventListener('click', () => { if (campRun) campNextPhase(); });
+  $('#cr-tip').addEventListener('click', () => toast(CAMP_TIPS[Math.floor(Math.random() * CAMP_TIPS.length)], 'info', 6000));
+  $('#cr-close').addEventListener('click', () => { clearInterval(campTimer); campRun = null; $('#camp-runner').classList.add('hidden'); });
+  renderCamps();
+}
+
+/* =========================================================
+   🎨 استوديو التخصيص — عدّل المنصة من صفحة واحدة
+   نصوص + لون + حجم + إظهار/إخفاء أقسام — كلها بتتحفظ محليًا
+   ========================================================= */
+const STUDIO_KEY = 'kh_studio_v1';
+const ST_SECS = [['sec1', '🎙️ تسجيل وتفريغ'], ['sec2', '📖 قارئ PDF'], ['sec3', '🧰 أدوات PDF'], ['sec4', '📝 الملخصات'], ['sec5', '🎯 الاختبارات'], ['sec6', '⚡ المعالجة السحرية'], ['sec9', '⏱️ الكامبات'], ['sec8', '📚 المحاضرات'], ['sec7', '📤 التصدير']];
+function studioLoad() { try { return JSON.parse(localStorage.getItem(STUDIO_KEY) || '{}'); } catch (e) { return {}; } }
+function studioSave(s) { try { localStorage.setItem(STUDIO_KEY, JSON.stringify(s)); } catch (e) {} }
+/* ظل مشتق من اللون المختار — عشان التدرج يفضل منسجم مع أي لون يختاره صاحب المنصة */
+function khShade(hex, f) {
+  try {
+    const n = parseInt(String(hex).slice(1), 16);
+    const r = Math.round(((n >> 16) & 255) * f), g = Math.round(((n >> 8) & 255) * f), b = Math.round((n & 255) * f);
+    return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+  } catch (e) { return '#7c3aed'; }
+}
+function studioApply(s) {
+  try {
+    $('#site-title').textContent = (s.title && String(s.title).trim()) ? String(s.title).trim() : 'خلاصة';
+    const tag = $('#site-tagline');
+    const tl = (s.tagline && String(s.tagline).trim()) ? String(s.tagline).trim() : '';
+    if (tl) { tag.textContent = tl; tag.classList.remove('hidden'); } else { tag.classList.add('hidden'); }
+    const c = /^#[0-9a-fA-F]{6}$/.test(s.color || '') ? s.color : '#4f46e5';
+    document.documentElement.style.setProperty('--kh-brand', c);
+    /* اللون الثاني: افتراضي بنفسجي مع اللون الأصلي، ومشتق من اللون المختار لو اتغير */
+    document.documentElement.style.setProperty('--kh-brand2', c === '#4f46e5' ? '#7c3aed' : khShade(c, 0.78));
+    const z = Math.min(120, Math.max(90, parseInt(s.zoom, 10) || 100));
+    document.body.style.zoom = z + '%';
+    const hide = Array.isArray(s.hide) ? s.hide : [];
+    ST_SECS.forEach(pair => {
+      const btn = document.querySelector('.nav-btn[data-sec="' + pair[0] + '"]');
+      if (btn) btn.classList.toggle('hidden', hide.includes(pair[0]));
+    });
+    const cur = document.querySelector('.app-section:not(.hidden)');
+    if (cur && hide.includes(cur.id)) {
+      const first = ST_SECS.map(x => x[0]).find(id => !hide.includes(id));
+      if (first) switchSection(first);
+    }
+  } catch (e) {}
+}
+function setupStudio() {
+  const title = $('#st-title'); if (!title) return;
+  const s = studioLoad();
+  const io = $('#st-io');
+  const persist = debounce(() => {
+    const v = {
+      title: $('#st-title').value.trim(),
+      tagline: $('#st-tagline').value.trim(),
+      color: $('#st-color').value,
+      zoom: $('#st-zoom').value,
+      hide: $$('#st-secs input:not(:checked)').map(i => i.value)
+    };
+    studioSave(v); studioApply(v);
+  }, 350);
+  title.value = s.title || '';
+  $('#st-tagline').value = s.tagline || '';
+  if (/^#[0-9a-fA-F]{6}$/.test(s.color || '')) $('#st-color').value = s.color;
+  $('#st-zoom').value = s.zoom || 100;
+  $('#st-zoom-v').textContent = (parseInt(s.zoom, 10) || 100) + '%';
+  const box = $('#st-secs');
+  if (box && !box.childElementCount) {
+    const hide = Array.isArray(s.hide) ? s.hide : [];
+    box.innerHTML = ST_SECS.map(p =>
+      '<label class="flex items-center gap-2 text-[11.5px] font-bold rounded-xl border border-slate-200 dark:border-[#26335c] px-2.5 py-2 cursor-pointer"><input type="checkbox" class="accent-indigo-600 w-4 h-4 shrink-0" value="' + p[0] + '"' + (hide.includes(p[0]) ? '' : ' checked') + '> ' + p[1] + '</label>').join('');
+  }
+  ['st-title', 'st-tagline'].forEach(id => $('#' + id).addEventListener('input', persist));
+  if (box) box.addEventListener('change', persist);
+  $('#st-color').addEventListener('input', persist);
+  $('#st-zoom').addEventListener('input', () => { $('#st-zoom-v').textContent = $('#st-zoom').value + '%'; persist(); });
+  $('#st-copy').addEventListener('click', () => {
+    io.value = JSON.stringify(studioLoad());
+    io.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    try { if (navigator.clipboard) navigator.clipboard.writeText(io.value); } catch (e) {}
+    toast('اتنسخ الإعدادات — انقلها لأي جهاز تاني 📋', 'success');
+  });
+  $('#st-apply').addEventListener('click', () => {
+    try {
+      const v = JSON.parse($('#st-io').value);
+      if (!v || typeof v !== 'object' || Array.isArray(v)) throw new Error('bad');
+      studioSave(v); studioApply(v);
+      $('#st-title').value = v.title || '';
+      $('#st-tagline').value = v.tagline || '';
+      if (/^#[0-9a-fA-F]{6}$/.test(v.color || '')) $('#st-color').value = v.color;
+      $('#st-zoom').value = v.zoom || 100;
+      $('#st-zoom-v').textContent = (parseInt(v.zoom, 10) || 100) + '%';
+      $$('#st-secs input').forEach(i => { i.checked = !((v.hide || []).includes(i.value)); });
+      toast('تم تطبيق الإعدادات الملصوقة ✓', 'success');
+    } catch (e) { toast('النص ده مش إعدادات صحيحة — انسخه الأول بزرار «انسخ الإعدادات»', 'error'); }
+  });
+  $('#st-reset').addEventListener('click', () => {
+    if (!confirm('ترجّع كل حاجة للوضع الافتراضي؟')) return;
+    try { localStorage.removeItem(STUDIO_KEY); } catch (e) {}
+    studioApply({});
+    $('#st-title').value = ''; $('#st-tagline').value = '';
+    $('#st-color').value = '#4f46e5'; $('#st-zoom').value = 100;
+    $('#st-zoom-v').textContent = '100%';
+    $$('#st-secs input').forEach(i => { i.checked = true; });
+    toast('رجعنا للإعدادات الافتراضية ↩️', 'info');
+  });
+  studioApply(s);
+}
+
+/* 🗑️ مسح فوري لأي نافذة نص من زرار واحد — بدل التعب اليدوي */
+function setupClearAll() {
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-clear],[data-clear-field]');
+    if (!b) return;
+    const t = b.dataset.clear ? document.getElementById(b.dataset.clear) : document.querySelector('[data-field="' + b.dataset.clearField + '"]');
+    if (!t) return;
+    t.value = '';
+    if (t.dataset.draft) { try { localStorage.removeItem('draft_' + t.dataset.draft); } catch (err) {} }
+    t.dispatchEvent(new Event('input', { bubbles: true }));
+    toast('تم المسح 🗑️ — النص اتفرغ في ثانية', 'success');
+    try { t.focus(); } catch (err) {}
+  });
+}
+
 function shuffle(arr) { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 /* =========================================================
    🎯 مولّد الأسئلة الذكي — أسئلة ليها معنى مش فراغات عشوائية:
@@ -4317,20 +4652,25 @@ function buildKnowledge(text) {
       K.defs.push({ subj: m[1].trim(), def: m[2].trim().replace(/[.،؛]$/, ''), s });
     /* وظيفة/دور: «الفاعل + فعل + الباقي» — السؤال بيتكتب من نفس كلمات النص فبيفضل سليم نحوياً */
     if ((m = s.match(fnRe)) && countWords(m[1]) <= 8) {
-      const subj = m[1].trim();
-      K.funcs.push({ q: 'حسب النص، ماذا ' + m[2].trim() + ' ' + subj + '؟', correct: trimWords(m[3].replace(/[.،؛]$/, ''), 10), s });
+      const subj = m[1].trim(), obj = m[3].replace(/[.،؛]$/, '').trim();
+      if (countWords(obj) >= 3) K.funcs.push({ q: 'حسب النص، ماذا ' + m[2].trim() + ' ' + subj + '؟', correct: obj, s });
     }
     /* قائمة أمثلة: «مثل أ و ب و ج» */
     const lm = s.match(/(?:مثل|ومثل)\s+([^،.:؛!؟]{6,90})/);
     if (lm && lm.index >= 4) {
       const items = lm[1].split(/\s+و(?=[\u0621-\u064A]{3,})/).map(cleanOpt).filter(okOpt);
-      if (items.length >= 2) K.lists.push({ lead: trimWords(s.slice(0, lm.index).trim(), 12), items, s });
+      const lead = s.slice(0, lm.index).trim();
+      if (items.length >= 2) {
+        let ld = lead;
+        if (countWords(ld) > 14) ld = firstClause(ld, 14) || ld;
+        if (ld && countWords(ld) >= 4) K.lists.push({ lead: ld, items, s });
+      }
     }
     /* أرقام ونِسب */
     const nm = s.match(/(\d+(?:[.,]\d+)?\s*%?|[٠-٩]+(?:[.,][٠-٩]+)?\s*٪?)/);
     if (nm) K.nums.push({ s, num: nm[1].trim() });
-    /* تعليل: «... لأن ...» */
-    if ((m = s.match(/^(.{10,90}?)\s*(?:لأن|لأنه|لأنها|بسبب|بما أن)\s+(.{8,})$/)))
+    /* تعليل: «... لأن ...» — بنسمح بعبارة سبب طويلة نسبياً */
+    if ((m = s.match(/^(.{10,200}?)\s*(?:لأن|لأنه|لأنها|بسبب|بما أن)\s+(.{8,})$/)))
       K.causes.push({ claim: m[1].trim().replace(/[،:]$/, ''), reason: m[2].trim(), s });
   });
   return K;
@@ -4340,26 +4680,26 @@ function corruptSentence(s, kws) {
   const neg = s.match(/\s(لا|ليس|ليست|لم|لن)\s/);
   if (neg) {
     const wrong = s.replace(neg[0], ' ').replace(/\s{2,}/g, ' ').trim();
-    if (countWords(wrong) >= 5) return { type: 'tf', q: wrong, answer: 0, explain: 'العبارة معكوسة — الأصل: «' + trimWords(s, 30) + '»', source: s };
+    if (countWords(wrong) >= 5) return { type: 'tf', q: wrong, answer: 0, explain: 'العبارة معكوسة — الأصل: «' + s + '»', source: s };
   }
   if (Math.random() < 0.7) {
     const vm = s.match(/\s((?:ي|ت)[\u0621-\u064A]{2,})\s/);
     if (vm) {
       const wrong = s.replace(vm[0], ' لا ' + vm[1] + ' ').replace(/\s{2,}/g, ' ');
-      return { type: 'tf', q: wrong, answer: 0, explain: 'العبارة معكوسة — الأصل: «' + trimWords(s, 30) + '»', source: s };
+      return { type: 'tf', q: wrong, answer: 0, explain: 'العبارة معكوسة — الأصل: «' + s + '»', source: s };
     }
   }
   for (const pair of AR_ANT) {
     if (new RegExp('\\s' + pair[0] + '\\s').test(s)) {
       const wrong = s.replace(new RegExp('\\s' + pair[0] + '\\s'), ' ' + pair[1] + ' ');
-      return { type: 'tf', q: wrong, answer: 0, explain: '«' + pair[0] + '» اتبدلت بعكسها «' + pair[1] + '» — الأصل: «' + trimWords(s, 30) + '»', source: s };
+      return { type: 'tf', q: wrong, answer: 0, explain: '«' + pair[0] + '» اتبدلت بعكسها «' + pair[1] + '» — الأصل: «' + s + '»', source: s };
     }
   }
   const inS = kws.filter(k => s.includes(k) && cleanOpt(k) === k && k.length >= 5);
   const outS = kws.filter(k => !s.includes(k) && cleanOpt(k) === k && k.length >= 5);
   if (inS.length && outS.length) {
     const a = inS[0], b = outS[Math.floor(Math.random() * outS.length)];
-    return { type: 'tf', q: s.replace(a, b), answer: 0, explain: 'فيه تبديل في العبارة — الأصل: «' + trimWords(s, 30) + '»', source: s };
+    return { type: 'tf', q: s.replace(a, b), answer: 0, explain: 'فيه تبديل في العبارة — الأصل: «' + s + '»', source: s };
   }
   return null;
 }
@@ -4381,10 +4721,14 @@ function buildReverseDefs(K, usedSrc) {
     if (usedSrc(d.s)) return;
     const subj = bareLead(d.subj);
     if (!okOpt(subj) || countWords(subj) !== 1) return;
+    /* وصف التعريف: كله لو قصير، أو أول جملة تامة منه — أو النص كله لو مفيش فاصلة */
+    let dq = d.def;
+    if (countWords(dq) > 14) dq = firstClause(dq, 16) || dq;
+    if (!dq || countWords(dq) < 5) return;
     const ds = pickDistract(subj, K.kws.filter(k => !normArW(d.s).includes(normArW(k)) && normArW(k) !== normArW(subj)), 3);
     if (ds.length < 3) return;
     const options = shuffle([subj].concat(ds));
-    out.push(tag({ type: 'mcq', q: 'المصطلح الذي تعريفه في النص: «' + trimWords(d.def, 14) + '» هو:', options, answer: options.indexOf(subj), explain: 'ورد في النص: «' + trimWords(d.s, 40) + '»', source: d.s }, 'hard'));
+    out.push(tag({ type: 'mcq', q: 'المصطلح الذي تعريفه في النص: «' + dq + '» هو:', options, answer: options.indexOf(subj), explain: 'ورد في النص: «' + d.s + '»', source: d.s }, 'hard'));
   });
   return out;
 }
@@ -4403,23 +4747,32 @@ function genQuiz(text, cfg, level) {
   /* مرشحين MCQ من كل الأنماط — بنلف عليهم بالتناوب عشان الامتحان متنوع */
   const cand = { def: [], fn: [], list: [], num: [] };
   K.defs.forEach(d => {
-    const c = bareLead(trimWords(d.def, 9));
-    const q = mkMcq('ما المقصود بـ «' + d.subj + '» كما ورد في النص؟', c,
-      K.defs.filter(o => o !== d).map(o => bareLead(trimWords(o.def, 9))), d.s,
-      'ورد في النص: «' + trimWords(d.s, 40) + '»');
+    /* التعريف القصير كله، والطويل بناخد أول جملة تامة منه — ولو مفيش فاصلة بناخده كله خيار تام */
+    let c = d.def;
+    if (countWords(c) > 12) c = firstClause(c, 12) || c;
+    if (!c || countWords(c) < 4) return;
+    /* بنك المموهات: تعريفات تانية + كلمات مفتاحية من النص — عشان النصوص القصيرة كمان تطلع امتحان كامل */
+    const dPool = K.defs.filter(o => o !== d).map(o => { let x = o.def; if (countWords(x) > 12) x = firstClause(x, 12) || x; return bareLead(x || o.def); })
+      .concat(K.kws.filter(k => !normArW(d.s).includes(normArW(k))));
+    const q = mkMcq('ما المقصود بـ «' + d.subj + '» كما ورد في النص؟', bareLead(c), dPool, d.s,
+      'ورد في النص: «' + d.s + '»');
     if (q) cand.def.push(tag(q, 'easy'));
   });
   K.funcs.forEach(f => {
-    const q = mkMcq(f.q, bareLead(f.correct),
-      K.funcs.filter(o => o !== f).map(o => bareLead(o.correct)), f.s,
-      'ورد في النص: «' + trimWords(f.s, 40) + '»');
+    let cc = f.correct;
+    if (countWords(cc) > 12) cc = firstClause(cc, 12) || cc;
+    if (!cc || countWords(cc) < 3) return;
+    const fPool = K.funcs.filter(o => o !== f).map(o => { let x = o.correct; if (countWords(x) > 12) x = firstClause(x, 12) || x; return bareLead(x || o.correct); })
+      .concat(K.kws.filter(k => !normArW(f.s).includes(normArW(k))));
+    const q = mkMcq(f.q, bareLead(cc), fPool, f.s,
+      'ورد في النص: «' + f.s + '»');
     if (q) cand.fn.push(tag(q, 'mid'));
   });
   K.lists.forEach(L => {
     const correctTxt = bareLead(L.items[Math.floor(Math.random() * L.items.length)]);
     const q = mkMcq('حسب النص، أيٌّ مما يلي ذُكر ضمن: «' + L.lead + '»؟', correctTxt,
       K.kws.filter(k => !normArW(L.s).includes(normArW(k))), L.s,
-      'ورد في النص: «' + trimWords(L.s, 40) + '»');
+      'ورد في النص: «' + L.s + '»');
     if (q) cand.list.push(tag(q, 'easy'));
   });
   K.nums.forEach(N => {
@@ -4432,8 +4785,12 @@ function genQuiz(text, cfg, level) {
     const raws = [val + Math.max(2, Math.round(val * 0.35)), Math.max(pct ? 1 : 2, Math.round(val / 2)), val * 2, Math.max(1, val - Math.round(val * 0.25))];
     const ds = [...new Set(raws.map(fmt))].filter(x => x !== fmt(val)).slice(0, 3);
     if (ds.length < 3) return;
+    /* سؤال كامل بدون أي فراغات: السياق = آخر 6 كلمات قبل الرقم في الجملة */
+    const before = N.s.slice(0, N.s.indexOf(num)).trim().split(/\s+/).filter(Boolean);
+    const ctx = before.slice(Math.max(0, before.length - 6)).join(' ').replace(/[،:؛]$/, '');
+    if (countWords(ctx) < 2) return;
     const options = shuffle([fmt(val)].concat(ds));
-    cand.num.push(tag({ type: 'mcq', q: 'حسب النص، ما القيمة الصحيحة مكان الفراغ: «' + N.s.replace(num, '……') + '»', options, answer: options.indexOf(fmt(val)), explain: 'الجملة الأصلية: «' + trimWords(N.s, 40) + '»', source: N.s }, 'mid'));
+    cand.num.push(tag({ type: 'mcq', q: 'حسب النص، ما العدد أو النسبة المذكورة فيما يخص: «' + ctx + '»؟', options, answer: options.indexOf(fmt(val)), explain: 'الجملة كاملة كما وردت: «' + N.s + '»', source: N.s }, 'mid'));
   });
   const pools = [cand.def, cand.fn, cand.list, cand.num];
   /* سياسة الاختيار حسب المستوى: بنرتب البرك بحيث يظهر مستوى السؤال المطلوب أولاً،
@@ -4461,38 +4818,44 @@ function genQuiz(text, cfg, level) {
       used.add(q.source); questions.push(q);
     });
   }
-  /* كمل الناقص بأسئلة «اختر الكلمة الأنسب» عالية الجودة: كلمة محتوى واضحة + مموهات محترمة */
+  /* كمل الناقص بسؤال «أي العبارات وردت في النص؟» — سؤال كامل من غير أي فراغات:
+     الإجابة الصحيحة عبارة حرفية من النص، والمموهات نسخ معدّلة من عبارات تانية */
   if (questions.length < cfg.mcq) {
-    shuffle(K.sents.filter(s => !srcUsed(s) && countWords(s) >= 8)).forEach(s => {
+    const spool = K.sents.filter(s => countWords(s) >= 6 && countWords(s) <= 40);
+    shuffle(spool.filter(s => !srcUsed(s))).forEach(s => {
       if (questions.length >= cfg.mcq) return;
-      const words = s.split(/\s+/);
-      const cands = words.map((w, i) => ({ w: cleanOpt(w), i }))
-        .filter(x => okOpt(x.w) && x.w.length >= 5 && !/^(?:و|ف|ب|ل|ك)/.test(x.w) && words.filter(v => normArW(v) === normArW(x.w)).length === 1);
-      if (!cands.length) return;
-      const pick = cands[Math.floor(Math.random() * cands.length)];
-      const ns = normArW(s);
-      const ds = pickDistract(pick.w, K.kws.filter(k => !ns.includes(normArW(k))), 3);
-      if (ds.length < 3) return;
-      const options = shuffle([pick.w].concat(ds));
-      const qTxt = words.map((w, i) => i === pick.i ? '……' : w).join(' ');
+      const wrongs = [];
+      shuffle(spool.filter(x => x !== s)).forEach(t => {
+        if (wrongs.length >= 3) return;
+        const c = corruptSentence(t, K.kws);
+        if (!c) return;
+        const wq = String(c.q || '').trim();
+        if (countWords(wq) < 5 || Math.abs(countWords(wq) - countWords(s)) > 12) return;
+        if (normArW(wq) === normArW(s)) return;
+        if (spool.some(p => normArW(p) === normArW(wq)) || wrongs.some(x => normArW(x) === normArW(wq))) return;
+        wrongs.push(wq);
+      });
+      if (wrongs.length < 3) return;
+      const options = shuffle([s].concat(wrongs));
       used.add(s);
-      questions.push(tag({ type: 'mcq', q: 'اختر الكلمة الأنسب مكان الفراغ: «' + qTxt + '»', options, answer: options.indexOf(pick.w), explain: 'الجملة الأصلية: «' + trimWords(s, 34) + '»', source: s }, level === 'hard' ? 'hard' : 'mid'));
+      questions.push(tag({ type: 'mcq', q: 'أيُّ العبارات التالية وردت في النص كما وردت تماماً؟', options, answer: options.indexOf(s), explain: 'عبارة حرفية من النص: «' + s + '»', source: s }, level === 'hard' ? 'hard' : 'mid'));
     });
   }
   /* صح/خطأ: عبارات صحيحة من النص + عبارات خطأ اتعكست أو اتبدلت
      (بنفضل الجمل اللي ما اتعملش منها MCQ — ولو النص قصير بنسمح بإعادة الاستخدام
      لأن سؤال صح/خطأ على نفس الجملة سؤال مختلف خالص عن MCQ) */
   const falses = [], trues = [];
-  const tfPool = shuffle(K.sents.filter(s => countWords(s) >= 6 && countWords(s) <= 32))
+  const tfPool = shuffle(K.sents.filter(s => countWords(s) >= 6 && countWords(s) <= 40))
     .sort((a, b) => (srcUsed(a) ? 1 : 0) - (srcUsed(b) ? 1 : 0));
+  const tfTxt = s => (countWords(s) <= 28 ? s : (firstClause(s, 26) || s));
   tfPool.forEach(s => {
     if (falses.length >= Math.ceil(cfg.tf * 0.7) + 2) {
-      if (trues.length < cfg.tf + 2) trues.push(tag({ type: 'tf', q: trimWords(s, 26), answer: 1, explain: 'عبارة صحيحة واردة في النص كما هي.', source: s }, 'easy'));
+      if (trues.length < cfg.tf + 2) trues.push(tag({ type: 'tf', q: tfTxt(s), answer: 1, explain: 'عبارة صحيحة واردة في النص كما هي.', source: s }, 'easy'));
       return;
     }
     const f = corruptSentence(s, K.kws);
     if (f) falses.push(tag(f, 'mid'));
-    else if (trues.length < cfg.tf + 2) trues.push(tag({ type: 'tf', q: trimWords(s, 26), answer: 1, explain: 'عبارة صحيحة واردة في النص كما هي.', source: s }, 'easy'));
+    else if (trues.length < cfg.tf + 2) trues.push(tag({ type: 'tf', q: tfTxt(s), answer: 1, explain: 'عبارة صحيحة واردة في النص كما هي.', source: s }, 'easy'));
   });
   let wantFalse = Math.random() < 0.6;
   for (let i = 0; i < cfg.tf; i++) {
@@ -4514,17 +4877,25 @@ function genQuiz(text, cfg, level) {
   const byPref = arr => shuffle(arr).sort((a, b) => (srcUsed(a.s) ? 1 : 0) - (srcUsed(b.s) ? 1 : 0));
   const wOrder = (level === 'easy') ? ['defs', 'sents', 'causes'] : (level === 'hard') ? ['causes', 'sents', 'defs'] : ['causes', 'defs', 'sents'];
   const wSrc = {
-    causes: () => byPref(K.causes).map(c => ({ type: 'written', q: 'علّل: ' + c.claim + '؟', answer: 'لأن ' + c.reason, explain: trimWords(c.s, 40), kws: kwsOf(c.reason), source: c.s, diff: 'hard' })),
-    defs: () => byPref(K.defs).map(d => ({ type: 'written', q: 'عرّف «' + d.subj + '» بأسلوبك موضحاً دوره في السياق.', answer: d.def, explain: trimWords(d.s, 40), kws: kwsOf(d.def), source: d.s, diff: 'easy' })),
-    sents: () => byPref(K.sents.filter(s => countWords(s) >= 10)).map(s => ({ type: 'written', q: 'اشرح بأسلوبك ما ورد في النص في العبارة: «' + trimWords(s, 16) + '»', answer: s, explain: trimWords(s, 40), kws: kwsOf(s), source: s, diff: 'mid' }))
+    causes: () => byPref(K.causes).map(c => ({ type: 'written', q: 'علّل: ' + c.claim + '؟', answer: 'لأن ' + c.reason, explain: c.s, kws: kwsOf(c.reason), source: c.s, diff: 'hard' })),
+    defs: () => byPref(K.defs).map(d => ({ type: 'written', q: 'عرّف «' + d.subj + '» بأسلوبك موضحاً دوره في السياق.', answer: d.def, explain: d.s, kws: kwsOf(d.def), source: d.s, diff: 'easy' })),
+    sents: () => byPref(K.sents.filter(s => countWords(s) >= 10)).map(s => {
+      let qs = s;
+      if (countWords(qs) > 20) qs = firstClause(qs, 20) || qs;
+      if (!qs || countWords(qs) < 8) return null;
+      return { type: 'written', q: 'اشرح بأسلوبك ما ورد في النص في العبارة: «' + qs + '»', answer: s, explain: s, kws: kwsOf(s), source: s, diff: 'mid' };
+    }).filter(Boolean)
   };
   wOrder.forEach(key => {
     if (written.length >= cfg.written) return;
     wSrc[key]().forEach(w => { if (written.length < cfg.written) written.push(w); });
   });
   questions.push(...written);
-  /* فحص جودة نهائي: مفيش سؤال من غير مضمون، ومفيش مموهتين شبه بعض */
+  /* فحص جودة نهائي صارم: أي سؤال فيه نقاط قطع (… أو ..) بينسحب نهائيًا —
+     عشان الامتحان دايمًا ييجي كامل وواضح من غير أي حروف ناقصة */
+  const hasCut = x => /…|\.{2}/.test(String(x || ''));
   return questions.filter(q => {
+    if (hasCut(q.q) || (q.options || []).some(hasCut)) return false;
     if (q.type === 'mcq') {
       if (!q.options || q.options.length !== 4 || q.answer < 0 || q.answer > 3) return false;
       const ns = q.options.map(normArW);
@@ -5653,11 +6024,11 @@ function init() {
     ['cards', setupFlashcards], ['quiz', setupQuiz], ['magic', setupMagic],
     ['export', setupExport], ['drafts', setupDrafts],
     ['imgsum', setupImageSummarize], ['imgcards', setupImageCards],
-    ['lectures', setupLectures], ['chatbot', setupChatbot], ['roulette', setupRoulette]
+    ['lectures', setupLectures], ['chatbot', setupChatbot], ['clears', setupClearAll], ['camps', setupCamps], ['studio', setupStudio]
   ];
   steps.forEach(([name, fn]) => { try { fn(); } catch (e) { console.error('init:' + name, e); } });
   setTimeout(() => toast('أهلاً بك في منصة خلاصة 🌟 — تطوير Ziad Ashraf', 'success'), 600);
-  try { console.log('%ckhulasa v3.1', 'color:#6366f1;font-weight:bold', '— جاهزة 100% أوفلاين 🤖 شات بوت + ⚡ تحدي 60 ثانية + 🎡 عجلة الحظ + مستويات صعوبة — تطوير Ziad Ashraf (@ziaadd_1)'); } catch (e) {}
+  try { console.log('%ckhulasa v4.0', 'color:#6366f1;font-weight:bold', '— جاهزة 100% أوفلاين ⏱️ كامبات دراسية + 🎨 استوديو تخصيص + ⚡ تحدي 60 ثانية + 🤖 شات بوت — تطوير Ziad Ashraf (@ziaadd_1)'); } catch (e) {}
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
 else init();
@@ -5770,21 +6141,5 @@ else init();
   </div>
 </div>
 
-<!-- 🎡 عجلة الحظ الدراسية -->
-<div id="wheel-modal" class="hidden fixed inset-0 z-[94] bg-slate-900/70 backdrop-blur-sm overflow-y-auto p-4">
-  <div class="max-w-md mx-auto my-10">
-    <div class="card !bg-white dark:!bg-[#0f1830]">
-      <div class="flex items-center justify-between gap-3">
-        <h3 class="font-black text-lg">🎡 عجلة الحظ الدراسية</h3>
-        <button type="button" id="wheel-close" class="btn btn-slate !px-3 !py-1">✕</button>
-      </div>
-      <p class="text-[12px] text-slate-500 dark:text-slate-400 font-bold mt-1 text-center">لفّ العجلة — ممكن تطلع لك تحدي سريع، نصيحة تحفيزية، أو قسم للمراجعة!</p>
-      <div class="wheel-pointer"></div>
-      <canvas id="wheel-cv" width="330" height="330" class="cursor-pointer mt-0" title="اضغط للف العجلة"></canvas>
-      <button type="button" id="wheel-spin" class="btn btn-primary w-full !py-3 mt-4">🎡 لفّ العجلة!</button>
-      <div id="wheel-result" class="hidden mt-3"></div>
-    </div>
-  </div>
-</div>
 </body>
 </html>
